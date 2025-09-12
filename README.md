@@ -21,46 +21,75 @@ A comprehensive Spring Boot application for managing laboratory operations inclu
 - **Testing**: JUnit 5, Spring Boot Test
 - **Containerization**: Docker & Docker Compose
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 
 - Java 17 or higher
 - Maven 3.6+
-- Docker and Docker Compose (for containerized deployment)
+- PostgreSQL 12+ (for production)
+- Docker and Docker Compose (optional, for containerized deployment)
+
+### 🗄️ Database Setup
+
+**For detailed database setup instructions, see [DATABASE_SETUP.md](DATABASE_SETUP.md)**
+
+#### Quick PostgreSQL Setup
+```bash
+# 1. Create database and user
+psql -U postgres -c "CREATE DATABASE lab_operations;"
+psql -U postgres -c "CREATE USER lab_user WITH PASSWORD 'your_secure_password';"
+psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE lab_operations TO lab_user;"
+
+# 2. Run setup script (optional)
+psql -U postgres -f scripts/setup-db.sql
+```
 
 ### Running with Docker Compose (Recommended)
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd lab-operations
+git clone https://github.com/LMS-SLNCity/SLNCity.git
+cd SLNCity
 ```
 
-2. Start the application:
+2. Start PostgreSQL and pgAdmin:
 ```bash
-docker-compose up -d
+docker-compose up -d postgres pgadmin
 ```
 
-3. The application will be available at `http://localhost:8080`
+3. Access pgAdmin at `http://localhost:8081` (admin@lab.com / admin)
+
+4. Build and run the application:
+```bash
+mvn spring-boot:run
+```
+
+5. The application will be available at `http://localhost:8080`
 
 ### Running Locally
 
-1. Start PostgreSQL database:
+1. **Setup PostgreSQL** (see [DATABASE_SETUP.md](DATABASE_SETUP.md) for details):
 ```bash
+# Using Docker
 docker run -d \
   --name lab-postgres \
   -e POSTGRES_DB=lab_operations \
   -e POSTGRES_USER=lab_user \
   -e POSTGRES_PASSWORD=lab_password \
   -p 5432:5432 \
-  postgres:15
+  postgres:15-alpine
 ```
 
-2. Build and run the application:
+2. **Build and run the application**:
 ```bash
 mvn clean package
 java -jar target/lab-operations-*.jar
+```
+
+3. **Verify setup**:
+```bash
+curl http://localhost:8080/actuator/health
 ```
 
 ## API Documentation
@@ -148,28 +177,45 @@ mvn test
 
 The tests use Testcontainers to spin up a PostgreSQL instance automatically.
 
-## Database Schema
+## 🗄️ Database Schema
 
-The system uses four main tables:
-- `visits`: Patient visits with JSONB patient details
-- `test_templates`: Reusable test definitions with JSONB parameters
-- `lab_tests`: Individual tests with JSONB results
+The system uses four main tables with PostgreSQL JSON/JSONB support:
+- `visits`: Patient visits with JSON patient details
+- `test_templates`: Reusable test definitions with JSON parameters
+- `lab_tests`: Individual tests with JSON results
 - `billing`: Billing information
 
-## Configuration
+**For complete database documentation, see [DATABASE_SETUP.md](DATABASE_SETUP.md)**
 
-Key configuration properties:
+## ⚙️ Configuration
 
+### Database Configuration
 ```yaml
 spring:
+  profiles:
+    active: postgres  # Use PostgreSQL by default
   datasource:
     url: jdbc:postgresql://localhost:5432/lab_operations
     username: lab_user
-    password: lab_password
-  
+    password: ${DB_PASSWORD:your_secure_password}
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop  # Use 'validate' in production
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+```
+
+### Environment Variables
+```bash
+# Database Configuration
+DB_PASSWORD=your_secure_password
+SPRING_PROFILES_ACTIVE=postgres
+
+# For Docker deployment
+DB_HOST=postgres
+DB_PORT=5432
 ```
 
 ## Health Checks

@@ -1,48 +1,84 @@
 version: '3.8'
 
 services:
+  # PostgreSQL Database
   postgres:
-    image: postgres:15
-    container_name: lab-operations-db
+    image: postgres:15-alpine
+    container_name: lab_operations_db
     environment:
       POSTGRES_DB: lab_operations
       POSTGRES_USER: lab_user
       POSTGRES_PASSWORD: lab_password
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - ./scripts/setup-db.sql:/docker-entrypoint-initdb.d/01-setup-db.sql
     networks:
-      - lab-network
+      - lab_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lab_user -d lab_operations"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: lab_operations_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@lab.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8081:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - lab_network
+    depends_on:
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
 
+  # Lab Operations Application (optional - for full stack development)
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: lab-operations-app
+    container_name: lab_operations_app
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lab_operations
-      SPRING_DATASOURCE_USERNAME: lab_user
-      SPRING_DATASOURCE_PASSWORD: lab_password
-      SPRING_PROFILES_ACTIVE: production
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: lab_operations
+      DB_USERNAME: lab_user
+      DB_PASSWORD: lab_password
     ports:
       - "8080:8080"
-    depends_on:
-      - postgres
     networks:
-      - lab-network
+      - lab_network
+    depends_on:
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       interval: 30s
       timeout: 10s
       retries: 3
+    profiles:
+      - full-stack
 
 volumes:
   postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
 
 networks:
-  lab-network:
+  lab_network:
     driver: bridge
