@@ -342,6 +342,91 @@ public class BasicIntegrationTest {
         assertThat(response.getBody().get("approved")).isEqualTo(true);
     }
 
+    @Test
+    @Order(34)
+    public void testVisitStatusUpdateLogic() {
+        // Create a new visit for this test
+        Map<String, Object> visitRequest = new HashMap<>();
+        Map<String, Object> patientDetails = new HashMap<>();
+        patientDetails.put("name", "Test Patient");
+        patientDetails.put("age", 30);
+        patientDetails.put("phone", "1234567890");
+        visitRequest.put("patientDetails", patientDetails);
+
+        HttpEntity<Map<String, Object>> visitEntity = new HttpEntity<>(visitRequest);
+        ResponseEntity<Map> visitResponse = restTemplate.exchange(
+            "http://localhost:" + port + "/visits",
+            HttpMethod.POST, visitEntity, Map.class);
+
+        assertThat(visitResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        Long testVisitId = ((Number) visitResponse.getBody().get("visitId")).longValue();
+
+        // Add two tests to the visit
+        Map<String, Object> testRequest = new HashMap<>();
+        testRequest.put("testTemplateId", createdTemplateId);
+        testRequest.put("price", 100.00);
+
+        HttpEntity<Map<String, Object>> testEntity = new HttpEntity<>(testRequest);
+
+        // Add first test
+        ResponseEntity<Map> test1Response = restTemplate.exchange(
+            "http://localhost:" + port + "/visits/" + testVisitId + "/tests",
+            HttpMethod.POST, testEntity, Map.class);
+        Long test1Id = ((Number) test1Response.getBody().get("testId")).longValue();
+
+        // Add second test
+        ResponseEntity<Map> test2Response = restTemplate.exchange(
+            "http://localhost:" + port + "/visits/" + testVisitId + "/tests",
+            HttpMethod.POST, testEntity, Map.class);
+        Long test2Id = ((Number) test2Response.getBody().get("testId")).longValue();
+
+        // Complete and approve first test
+        Map<String, Object> resultsRequest = new HashMap<>();
+        Map<String, Object> results = new HashMap<>();
+        results.put("hemoglobin", "14.0 g/dL");
+        resultsRequest.put("results", results);
+
+        HttpEntity<Map<String, Object>> resultsEntity = new HttpEntity<>(resultsRequest);
+        restTemplate.exchange(
+            "http://localhost:" + port + "/visits/" + testVisitId + "/tests/" + test1Id + "/results",
+            HttpMethod.PATCH, resultsEntity, Map.class);
+
+        Map<String, Object> approveRequest = new HashMap<>();
+        approveRequest.put("approvedBy", "Dr. Test");
+        HttpEntity<Map<String, Object>> approveEntity = new HttpEntity<>(approveRequest);
+
+        restTemplate.exchange(
+            "http://localhost:" + port + "/visits/" + testVisitId + "/tests/" + test1Id + "/approve",
+            HttpMethod.PATCH, approveEntity, Map.class);
+
+        // Check visit status - should NOT be approved yet (second test still pending)
+        ResponseEntity<Map> visitStatusResponse = restTemplate.exchange(
+            "http://localhost:" + port + "/visits/" + testVisitId,
+            HttpMethod.GET, null, Map.class);
+
+        String visitStatus = (String) visitStatusResponse.getBody().get("status");
+        assertThat(visitStatus).isNotEqualTo("APPROVED").withFailMessage(
+            "Visit should not be approved when second test is still pending");
+
+        // Complete and approve second test
+        restTemplate.exchange(
+            "http://localhost:" + port + "/visits/" + testVisitId + "/tests/" + test2Id + "/results",
+            HttpMethod.PATCH, resultsEntity, Map.class);
+
+        restTemplate.exchange(
+            "http://localhost:" + port + "/visits/" + testVisitId + "/tests/" + test2Id + "/approve",
+            HttpMethod.PATCH, approveEntity, Map.class);
+
+        // Check visit status - should NOW be approved
+        visitStatusResponse = restTemplate.exchange(
+            "http://localhost:" + port + "/visits/" + testVisitId,
+            HttpMethod.GET, null, Map.class);
+
+        visitStatus = (String) visitStatusResponse.getBody().get("status");
+        assertThat(visitStatus).isEqualTo("APPROVED").withFailMessage(
+            "Visit should be approved when all tests are completed and approved");
+    }
+
     // ========== BILLING TESTS ==========
 
     @Test

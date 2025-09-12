@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.sivalab.laboperations.integration.BasicIntegrationTest" time="4.528" tests="33" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.sivalab.laboperations.integration.BasicIntegrationTest" time="4.526" tests="34" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="24"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/24.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/ramgopal/Desktop/siva_lab/target/surefire/surefirebooter-20250912124534788_3.jar /Users/ramgopal/Desktop/siva_lab/target/surefire 2025-09-12T12-45-34_738-jvmRun1 surefire-20250912124534788_1tmp surefire_0-20250912124534788_2tmp"/>
+    <property name="sun.java.command" value="/Users/ramgopal/Desktop/siva_lab/target/surefire/surefirebooter-20250912191143187_3.jar /Users/ramgopal/Desktop/siva_lab/target/surefire 2025-09-12T19-11-43_139-jvmRun1 surefire-20250912191143187_1tmp surefire_0-20250912191143187_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/ramgopal/Desktop/siva_lab/target/test-classes:/Users/ramgopal/Desktop/siva_lab/target/classes:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-starter-web/3.2.0/spring-boot-starter-web-3.2.0.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-starter/3.2.0/spring-boot-starter-3.2.0.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-starter-logging/3.2.0/spring-boot-starter-logging-3.2.0.jar:/Users/ramgopal/.m2/repository/ch/qos/logback/logback-classic/1.4.11/logback-classic-1.4.11.jar:/Users/ramgopal/.m2/repository/ch/qos/logback/logback-core/1.4.11/logback-core-1.4.11.jar:/Users/ramgopal/.m2/repository/org/apache/logging/log4j/log4j-to-slf4j/2.21.1/log4j-to-slf4j-2.21.1.jar:/Users/ramgopal/.m2/repository/org/apache/logging/log4j/log4j-api/2.21.1/log4j-api-2.21.1.jar:/Users/ramgopal/.m2/repository/org/slf4j/jul-to-slf4j/2.0.9/jul-to-slf4j-2.0.9.jar:/Users/ramgopal/.m2/repository/jakarta/annotation/jakarta.annotation-api/2.1.1/jakarta.annotation-api-2.1.1.jar:/Users/ramgopal/.m2/repository/org/yaml/snakeyaml/2.2/snakeyaml-2.2.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-starter-json/3.2.0/spring-boot-starter-json-3.2.0.jar:/Users/ramgopal/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.15.3/jackson-datatype-jdk8-2.15.3.jar:/Users/ramgopal/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.15.3/jackson-datatype-jsr310-2.15.3.jar:/Users/ramgopal/.m2/repository/com/fasterxml/jackson/module/jackson-module-parameter-names/2.15.3/jackson-module-parameter-names-2.15.3.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-starter-tomcat/3.2.0/spring-boot-starter-tomcat-3.2.0.jar:/Users/ramgopal/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/10.1.16/tomcat-embed-core-10.1.16.jar:/Users/ramgopal/.m2/repository/org/apache/tomcat/embed/tomcat-embed-websocket/10.1.16/tomcat-embed-websocket-10.1.16.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-web/6.1.1/spring-web-6.1.1.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-beans/6.1.1/spring-beans-6.1.1.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-webmvc/6.1.1/spring-webmvc-6.1.1.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-aop/6.1.1/spring-aop-6.1.1.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-context/6.1.1/spring-context-6.1.1.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-expression/6.1.1/spring-expression-6.1.1.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-starter-data-jpa/3.2.0/spring-boot-starter-data-jpa-3.2.0.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-starter-aop/3.2.0/spring-boot-starter-aop-3.2.0.jar:/Users/ramgopal/.m2/repository/org/aspectj/aspectjweaver/1.9.20.1/aspectjweaver-1.9.20.1.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-starter-jdbc/3.2.0/spring-boot-starter-jdbc-3.2.0.jar:/Users/ramgopal/.m2/repository/com/zaxxer/HikariCP/5.0.1/HikariCP-5.0.1.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-jdbc/6.1.1/spring-jdbc-6.1.1.jar:/Users/ramgopal/.m2/repository/org/hibernate/orm/hibernate-core/6.3.1.Final/hibernate-core-6.3.1.Final.jar:/Users/ramgopal/.m2/repository/jakarta/persistence/jakarta.persistence-api/3.1.0/jakarta.persistence-api-3.1.0.jar:/Users/ramgopal/.m2/repository/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar:/Users/ramgopal/.m2/repository/org/jboss/logging/jboss-logging/3.5.3.Final/jboss-logging-3.5.3.Final.jar:/Users/ramgopal/.m2/repository/org/hibernate/common/hibernate-commons-annotations/6.0.6.Final/hibernate-commons-annotations-6.0.6.Final.jar:/Users/ramgopal/.m2/repository/io/smallrye/jandex/3.1.2/jandex-3.1.2.jar:/Users/ramgopal/.m2/repository/com/fasterxml/classmate/1.6.0/classmate-1.6.0.jar:/Users/ramgopal/.m2/repository/net/bytebuddy/byte-buddy/1.14.10/byte-buddy-1.14.10.jar:/Users/ramgopal/.m2/repository/org/glassfish/jaxb/jaxb-runtime/4.0.4/jaxb-runtime-4.0.4.jar:/Users/ramgopal/.m2/repository/org/glassfish/jaxb/jaxb-core/4.0.4/jaxb-core-4.0.4.jar:/Users/ramgopal/.m2/repository/org/eclipse/angus/angus-activation/2.0.1/angus-activation-2.0.1.jar:/Users/ramgopal/.m2/repository/org/glassfish/jaxb/txw2/4.0.4/txw2-4.0.4.jar:/Users/ramgopal/.m2/repository/com/sun/istack/istack-commons-runtime/4.1.2/istack-commons-runtime-4.1.2.jar:/Users/ramgopal/.m2/repository/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar:/Users/ramgopal/.m2/repository/org/antlr/antlr4-runtime/4.10.1/antlr4-runtime-4.10.1.jar:/Users/ramgopal/.m2/repository/org/springframework/data/spring-data-jpa/3.2.0/spring-data-jpa-3.2.0.jar:/Users/ramgopal/.m2/repository/org/springframework/data/spring-data-commons/3.2.0/spring-data-commons-3.2.0.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-orm/6.1.1/spring-orm-6.1.1.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-tx/6.1.1/spring-tx-6.1.1.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-aspects/6.1.1/spring-aspects-6.1.1.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-starter-validation/3.2.0/spring-boot-starter-validation-3.2.0.jar:/Users/ramgopal/.m2/repository/org/apache/tomcat/embed/tomcat-embed-el/10.1.16/tomcat-embed-el-10.1.16.jar:/Users/ramgopal/.m2/repository/org/hibernate/validator/hibernate-validator/8.0.1.Final/hibernate-validator-8.0.1.Final.jar:/Users/ramgopal/.m2/repository/jakarta/validation/jakarta.validation-api/3.0.2/jakarta.validation-api-3.0.2.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-starter-actuator/3.2.0/spring-boot-starter-actuator-3.2.0.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-actuator-autoconfigure/3.2.0/spring-boot-actuator-autoconfigure-3.2.0.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-actuator/3.2.0/spring-boot-actuator-3.2.0.jar:/Users/ramgopal/.m2/repository/io/micrometer/micrometer-observation/1.12.0/micrometer-observation-1.12.0.jar:/Users/ramgopal/.m2/repository/io/micrometer/micrometer-commons/1.12.0/micrometer-commons-1.12.0.jar:/Users/ramgopal/.m2/repository/io/micrometer/micrometer-jakarta9/1.12.0/micrometer-jakarta9-1.12.0.jar:/Users/ramgopal/.m2/repository/io/micrometer/micrometer-core/1.12.0/micrometer-core-1.12.0.jar:/Users/ramgopal/.m2/repository/org/hdrhistogram/HdrHistogram/2.1.12/HdrHistogram-2.1.12.jar:/Users/ramgopal/.m2/repository/org/latencyutils/LatencyUtils/2.0.3/LatencyUtils-2.0.3.jar:/Users/ramgopal/.m2/repository/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar:/Users/ramgopal/.m2/repository/org/checkerframework/checker-qual/3.31.0/checker-qual-3.31.0.jar:/Users/ramgopal/.m2/repository/com/h2database/h2/2.2.224/h2-2.2.224.jar:/Users/ramgopal/.m2/repository/org/flywaydb/flyway-core/9.22.3/flyway-core-9.22.3.jar:/Users/ramgopal/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-toml/2.15.3/jackson-dataformat-toml-2.15.3.jar:/Users/ramgopal/.m2/repository/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar:/Users/ramgopal/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/Users/ramgopal/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/Users/ramgopal/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-starter-test/3.2.0/spring-boot-starter-test-3.2.0.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-test/3.2.0/spring-boot-test-3.2.0.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-test-autoconfigure/3.2.0/spring-boot-test-autoconfigure-3.2.0.jar:/Users/ramgopal/.m2/repository/com/jayway/jsonpath/json-path/2.8.0/json-path-2.8.0.jar:/Users/ramgopal/.m2/repository/jakarta/xml/bind/jakarta.xml.bind-api/4.0.1/jakarta.xml.bind-api-4.0.1.jar:/Users/ramgopal/.m2/repository/jakarta/activation/jakarta.activation-api/2.1.2/jakarta.activation-api-2.1.2.jar:/Users/ramgopal/.m2/repository/net/minidev/json-smart/2.5.0/json-smart-2.5.0.jar:/Users/ramgopal/.m2/repository/net/minidev/accessors-smart/2.5.0/accessors-smart-2.5.0.jar:/Users/ramgopal/.m2/repository/org/ow2/asm/asm/9.3/asm-9.3.jar:/Users/ramgopal/.m2/repository/org/assertj/assertj-core/3.24.2/assertj-core-3.24.2.jar:/Users/ramgopal/.m2/repository/org/awaitility/awaitility/4.2.0/awaitility-4.2.0.jar:/Users/ramgopal/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/Users/ramgopal/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.1/junit-jupiter-5.10.1.jar:/Users/ramgopal/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.1/junit-jupiter-api-5.10.1.jar:/Users/ramgopal/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/ramgopal/.m2/repository/org/junit/platform/junit-platform-commons/1.10.1/junit-platform-commons-1.10.1.jar:/Users/ramgopal/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/ramgopal/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.1/junit-jupiter-params-5.10.1.jar:/Users/ramgopal/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.1/junit-jupiter-engine-5.10.1.jar:/Users/ramgopal/.m2/repository/org/junit/platform/junit-platform-engine/1.10.1/junit-platform-engine-1.10.1.jar:/Users/ramgopal/.m2/repository/org/mockito/mockito-core/5.7.0/mockito-core-5.7.0.jar:/Users/ramgopal/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.10/byte-buddy-agent-1.14.10.jar:/Users/ramgopal/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/Users/ramgopal/.m2/repository/org/mockito/mockito-junit-jupiter/5.7.0/mockito-junit-jupiter-5.7.0.jar:/Users/ramgopal/.m2/repository/org/skyscreamer/jsonassert/1.5.1/jsonassert-1.5.1.jar:/Users/ramgopal/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-core/6.1.1/spring-core-6.1.1.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-jcl/6.1.1/spring-jcl-6.1.1.jar:/Users/ramgopal/.m2/repository/org/springframework/spring-test/6.1.1/spring-test-6.1.1.jar:/Users/ramgopal/.m2/repository/org/xmlunit/xmlunit-core/2.9.1/xmlunit-core-2.9.1.jar:/Users/ramgopal/.m2/repository/org/apache/httpcomponents/client5/httpclient5/5.2.1/httpclient5-5.2.1.jar:/Users/ramgopal/.m2/repository/org/apache/httpcomponents/core5/httpcore5/5.2.3/httpcore5-5.2.3.jar:/Users/ramgopal/.m2/repository/org/apache/httpcomponents/core5/httpcore5-h2/5.2.3/httpcore5-h2-5.2.3.jar:/Users/ramgopal/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/Users/ramgopal/.m2/repository/org/testcontainers/junit-jupiter/1.19.3/junit-jupiter-1.19.3.jar:/Users/ramgopal/.m2/repository/org/testcontainers/testcontainers/1.19.3/testcontainers-1.19.3.jar:/Users/ramgopal/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/Users/ramgopal/.m2/repository/org/hamcrest/hamcrest-core/2.2/hamcrest-core-2.2.jar:/Users/ramgopal/.m2/repository/org/apache/commons/commons-compress/1.24.0/commons-compress-1.24.0.jar:/Users/ramgopal/.m2/repository/org/rnorth/duct-tape/duct-tape/1.0.8/duct-tape-1.0.8.jar:/Users/ramgopal/.m2/repository/org/jetbrains/annotations/17.0.0/annotations-17.0.0.jar:/Users/ramgopal/.m2/repository/com/github/docker-java/docker-java-api/3.3.4/docker-java-api-3.3.4.jar:/Users/ramgopal/.m2/repository/com/github/docker-java/docker-java-transport-zerodep/3.3.4/docker-java-transport-zerodep-3.3.4.jar:/Users/ramgopal/.m2/repository/com/github/docker-java/docker-java-transport/3.3.4/docker-java-transport-3.3.4.jar:/Users/ramgopal/.m2/repository/net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar:/Users/ramgopal/.m2/repository/org/testcontainers/postgresql/1.19.3/postgresql-1.19.3.jar:/Users/ramgopal/.m2/repository/org/testcontainers/jdbc/1.19.3/jdbc-1.19.3.jar:/Users/ramgopal/.m2/repository/org/testcontainers/database-commons/1.19.3/database-commons-1.19.3.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-devtools/3.2.0/spring-boot-devtools-3.2.0.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot/3.2.0/spring-boot-3.2.0.jar:/Users/ramgopal/.m2/repository/org/springframework/boot/spring-boot-autoconfigure/3.2.0/spring-boot-autoconfigure-3.2.0.jar:"/>
     <property name="test" value="BasicIntegrationTest"/>
@@ -34,7 +34,7 @@
     <property name="FILE_LOG_CHARSET" value="UTF-8"/>
     <property name="java.awt.headless" value="true"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/ramgopal/Desktop/siva_lab/target/surefire/surefirebooter-20250912124534788_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/ramgopal/Desktop/siva_lab/target/surefire/surefirebooter-20250912191143187_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="24.0.2"/>
     <property name="user.name" value="ramgopal"/>
@@ -48,15 +48,15 @@
     <property name="localRepository" value="/Users/ramgopal/.m2/repository"/>
     <property name="java.vendor.url.bug" value="https://github.com/Homebrew/homebrew-core/issues"/>
     <property name="java.io.tmpdir" value="/var/folders/3_/j1llkqzd3b78slzg0s6tpxjc0000gn/T/"/>
-    <property name="catalina.home" value="/private/var/folders/3_/j1llkqzd3b78slzg0s6tpxjc0000gn/T/tomcat.0.15512679622042219816"/>
+    <property name="catalina.home" value="/private/var/folders/3_/j1llkqzd3b78slzg0s6tpxjc0000gn/T/tomcat.0.12607388689526771164"/>
     <property name="com.zaxxer.hikari.pool_number" value="1"/>
     <property name="java.version" value="24.0.2"/>
     <property name="user.dir" value="/Users/ramgopal/Desktop/siva_lab"/>
     <property name="os.arch" value="aarch64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="PID" value="95980"/>
+    <property name="PID" value="54714"/>
     <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
-    <property name="catalina.base" value="/private/var/folders/3_/j1llkqzd3b78slzg0s6tpxjc0000gn/T/tomcat.0.15512679622042219816"/>
+    <property name="catalina.base" value="/private/var/folders/3_/j1llkqzd3b78slzg0s6tpxjc0000gn/T/tomcat.0.12607388689526771164"/>
     <property name="native.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/Users/ramgopal/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
     <property name="java.vm.info" value="mixed mode, sharing"/>
@@ -67,10 +67,10 @@
     <property name="java.class.version" value="68.0"/>
     <property name="LOGGED_APPLICATION_NAME" value="[lab-operations] "/>
   </properties>
-  <testcase name="testApplicationStartsSuccessfully" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.301">
-    <system-out><![CDATA[12:45:35.264 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.sivalab.laboperations.integration.BasicIntegrationTest]: BasicIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-12:45:35.329 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.sivalab.laboperations.LabOperationsApplication for test class com.sivalab.laboperations.integration.BasicIntegrationTest
-12:45:35.410 [main] INFO org.springframework.boot.devtools.restart.RestartApplicationListener -- Restart disabled due to context in which it is running
+  <testcase name="testApplicationStartsSuccessfully" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.298">
+    <system-out><![CDATA[19:11:43.627 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.sivalab.laboperations.integration.BasicIntegrationTest]: BasicIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+19:11:43.685 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.sivalab.laboperations.LabOperationsApplication for test class com.sivalab.laboperations.integration.BasicIntegrationTest
+19:11:43.756 [main] INFO org.springframework.boot.devtools.restart.RestartApplicationListener -- Restart disabled due to context in which it is running
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -80,56 +80,56 @@
  =========|_|==============|___/=/_/_/_/
 &amp#27;[32m :: Spring Boot :: &amp#27;[39m              &amp#27;[2m (v3.2.0)&amp#27;[0;39m
 
-&amp#27;[2m2025-09-12T12:45:35.565+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mc.s.l.integration.BasicIntegrationTest  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Starting BasicIntegrationTest using Java 24.0.2 with PID 95980 (started by ramgopal in /Users/ramgopal/Desktop/siva_lab)
-&amp#27;[2m2025-09-12T12:45:35.565+05:30&amp#27;[0;39m &amp#27;[32mDEBUG&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mc.s.l.integration.BasicIntegrationTest  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Running with Spring Boot v3.2.0, Spring v6.1.1
-&amp#27;[2m2025-09-12T12:45:35.565+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mc.s.l.integration.BasicIntegrationTest  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m The following 1 profile is active: "test"
-&amp#27;[2m2025-09-12T12:45:36.011+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36m.s.d.r.c.RepositoryConfigurationDelegate&amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-&amp#27;[2m2025-09-12T12:45:36.043+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36m.s.d.r.c.RepositoryConfigurationDelegate&amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Finished Spring Data repository scanning in 27 ms. Found 4 JPA repository interfaces.
-&amp#27;[2m2025-09-12T12:45:36.451+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.b.w.embedded.tomcat.TomcatWebServer &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Tomcat initialized with port 0 (http)
-&amp#27;[2m2025-09-12T12:45:36.456+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.apache.catalina.core.StandardService  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Starting service [Tomcat]
-&amp#27;[2m2025-09-12T12:45:36.456+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.apache.catalina.core.StandardEngine   &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Starting Servlet engine: [Apache Tomcat/10.1.16]
-&amp#27;[2m2025-09-12T12:45:36.479+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.a.c.c.C.[Tomcat].[localhost].[/]      &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Initializing Spring embedded WebApplicationContext
-&amp#27;[2m2025-09-12T12:45:36.480+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mw.s.c.ServletWebServerApplicationContext&amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Root WebApplicationContext: initialization completed in 905 ms
-&amp#27;[2m2025-09-12T12:45:36.656+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.hibernate.jpa.internal.util.LogHelper &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HHH000204: Processing PersistenceUnitInfo [name: default]
-&amp#27;[2m2025-09-12T12:45:36.685+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36morg.hibernate.Version                   &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HHH000412: Hibernate ORM core version 6.3.1.Final
-&amp#27;[2m2025-09-12T12:45:36.702+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.c.internal.RegionFactoryInitiator   &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HHH000026: Second-level cache disabled
-&amp#27;[2m2025-09-12T12:45:36.816+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.o.j.p.SpringPersistenceUnitInfo     &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m No LoadTimeWeaver setup: ignoring JPA class transformer
-&amp#27;[2m2025-09-12T12:45:36.829+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mcom.zaxxer.hikari.HikariDataSource      &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HikariPool-1 - Starting...
-&amp#27;[2m2025-09-12T12:45:36.950+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mcom.zaxxer.hikari.pool.HikariPool       &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@352e4b6d
-&amp#27;[2m2025-09-12T12:45:36.951+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mcom.zaxxer.hikari.HikariDataSource      &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HikariPool-1 - Start completed.
-&amp#27;[2m2025-09-12T12:45:36.969+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36morg.hibernate.orm.deprecation           &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-&amp#27;[2m2025-09-12T12:45:37.424+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.e.t.j.p.i.JtaPlatformInitiator      &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+&amp#27;[2m2025-09-12T19:11:43.902+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mc.s.l.integration.BasicIntegrationTest  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Starting BasicIntegrationTest using Java 24.0.2 with PID 54714 (started by ramgopal in /Users/ramgopal/Desktop/siva_lab)
+&amp#27;[2m2025-09-12T19:11:43.903+05:30&amp#27;[0;39m &amp#27;[32mDEBUG&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mc.s.l.integration.BasicIntegrationTest  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Running with Spring Boot v3.2.0, Spring v6.1.1
+&amp#27;[2m2025-09-12T19:11:43.903+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mc.s.l.integration.BasicIntegrationTest  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m The following 1 profile is active: "test"
+&amp#27;[2m2025-09-12T19:11:44.318+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36m.s.d.r.c.RepositoryConfigurationDelegate&amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+&amp#27;[2m2025-09-12T19:11:44.346+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36m.s.d.r.c.RepositoryConfigurationDelegate&amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Finished Spring Data repository scanning in 24 ms. Found 4 JPA repository interfaces.
+&amp#27;[2m2025-09-12T19:11:44.753+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.b.w.embedded.tomcat.TomcatWebServer &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Tomcat initialized with port 0 (http)
+&amp#27;[2m2025-09-12T19:11:44.757+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.apache.catalina.core.StandardService  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Starting service [Tomcat]
+&amp#27;[2m2025-09-12T19:11:44.757+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.apache.catalina.core.StandardEngine   &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Starting Servlet engine: [Apache Tomcat/10.1.16]
+&amp#27;[2m2025-09-12T19:11:44.780+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.a.c.c.C.[Tomcat].[localhost].[/]      &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Initializing Spring embedded WebApplicationContext
+&amp#27;[2m2025-09-12T19:11:44.780+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mw.s.c.ServletWebServerApplicationContext&amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Root WebApplicationContext: initialization completed in 869 ms
+&amp#27;[2m2025-09-12T19:11:44.955+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.hibernate.jpa.internal.util.LogHelper &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HHH000204: Processing PersistenceUnitInfo [name: default]
+&amp#27;[2m2025-09-12T19:11:44.981+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36morg.hibernate.Version                   &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HHH000412: Hibernate ORM core version 6.3.1.Final
+&amp#27;[2m2025-09-12T19:11:44.996+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.c.internal.RegionFactoryInitiator   &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HHH000026: Second-level cache disabled
+&amp#27;[2m2025-09-12T19:11:45.101+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.o.j.p.SpringPersistenceUnitInfo     &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m No LoadTimeWeaver setup: ignoring JPA class transformer
+&amp#27;[2m2025-09-12T19:11:45.115+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mcom.zaxxer.hikari.HikariDataSource      &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HikariPool-1 - Starting...
+&amp#27;[2m2025-09-12T19:11:45.225+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mcom.zaxxer.hikari.pool.HikariPool       &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@637d111d
+&amp#27;[2m2025-09-12T19:11:45.226+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mcom.zaxxer.hikari.HikariDataSource      &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HikariPool-1 - Start completed.
+&amp#27;[2m2025-09-12T19:11:45.247+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36morg.hibernate.orm.deprecation           &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+&amp#27;[2m2025-09-12T19:11:45.684+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.e.t.j.p.i.JtaPlatformInitiator      &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
 Hibernate: 
     alter table if exists billing 
        drop constraint if exists FKa5oci06wp8oxjsgnarct81mnp
-&amp#27;[2m2025-09-12T12:45:37.433+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
-&amp#27;[2m2025-09-12T12:45:37.433+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m relation "billing" does not exist, skipping
+&amp#27;[2m2025-09-12T19:11:45.692+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
+&amp#27;[2m2025-09-12T19:11:45.693+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m relation "billing" does not exist, skipping
 Hibernate: 
     alter table if exists lab_tests 
        drop constraint if exists FK4pv70epn1o64jyhr2rj35n5ay
-&amp#27;[2m2025-09-12T12:45:37.433+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
-&amp#27;[2m2025-09-12T12:45:37.433+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m relation "lab_tests" does not exist, skipping
+&amp#27;[2m2025-09-12T19:11:45.693+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
+&amp#27;[2m2025-09-12T19:11:45.693+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m relation "lab_tests" does not exist, skipping
 Hibernate: 
     alter table if exists lab_tests 
        drop constraint if exists FKmxlsk5pvipsxufbf9wpk5jd5y
-&amp#27;[2m2025-09-12T12:45:37.434+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
-&amp#27;[2m2025-09-12T12:45:37.434+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m relation "lab_tests" does not exist, skipping
+&amp#27;[2m2025-09-12T19:11:45.694+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
+&amp#27;[2m2025-09-12T19:11:45.694+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m relation "lab_tests" does not exist, skipping
 Hibernate: 
     drop table if exists billing cascade
-&amp#27;[2m2025-09-12T12:45:37.434+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
-&amp#27;[2m2025-09-12T12:45:37.434+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m table "billing" does not exist, skipping
+&amp#27;[2m2025-09-12T19:11:45.694+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
+&amp#27;[2m2025-09-12T19:11:45.694+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m table "billing" does not exist, skipping
 Hibernate: 
     drop table if exists lab_tests cascade
-&amp#27;[2m2025-09-12T12:45:37.434+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
-&amp#27;[2m2025-09-12T12:45:37.435+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m table "lab_tests" does not exist, skipping
+&amp#27;[2m2025-09-12T19:11:45.694+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
+&amp#27;[2m2025-09-12T19:11:45.694+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m table "lab_tests" does not exist, skipping
 Hibernate: 
     drop table if exists test_templates cascade
-&amp#27;[2m2025-09-12T12:45:37.435+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
-&amp#27;[2m2025-09-12T12:45:37.435+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m table "test_templates" does not exist, skipping
+&amp#27;[2m2025-09-12T19:11:45.695+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
+&amp#27;[2m2025-09-12T19:11:45.695+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m table "test_templates" does not exist, skipping
 Hibernate: 
     drop table if exists visits cascade
-&amp#27;[2m2025-09-12T12:45:37.435+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
-&amp#27;[2m2025-09-12T12:45:37.435+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m table "visits" does not exist, skipping
+&amp#27;[2m2025-09-12T19:11:45.695+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m SQL Warning Code: 0, SQLState: 00000
+&amp#27;[2m2025-09-12T19:11:45.695+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.h.engine.jdbc.spi.SqlExceptionHelper  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m table "visits" does not exist, skipping
 Hibernate: 
     create table billing (
         paid boolean,
@@ -185,12 +185,12 @@ Hibernate:
        add constraint FKmxlsk5pvipsxufbf9wpk5jd5y 
        foreign key (visit_id) 
        references visits
-&amp#27;[2m2025-09-12T12:45:37.472+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mj.LocalContainerEntityManagerFactoryBean&amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Initialized JPA EntityManagerFactory for persistence unit 'default'
-&amp#27;[2m2025-09-12T12:45:37.649+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.d.j.r.query.QueryEnhancerFactory    &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Hibernate is in classpath; If applicable, HQL parser will be used.
-&amp#27;[2m2025-09-12T12:45:38.151+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mJpaBaseConfiguration$JpaWebConfiguration&amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-&amp#27;[2m2025-09-12T12:45:38.557+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.b.a.e.web.EndpointLinksResolver     &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Exposing 1 endpoint(s) beneath base path '/actuator'
-&amp#27;[2m2025-09-12T12:45:38.702+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.b.w.embedded.tomcat.TomcatWebServer &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Tomcat started on port 53387 (http) with context path ''
-&amp#27;[2m2025-09-12T12:45:38.717+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mc.s.l.integration.BasicIntegrationTest  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Started BasicIntegrationTest in 3.313 seconds (process running for 3.876)
+&amp#27;[2m2025-09-12T19:11:45.743+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mj.LocalContainerEntityManagerFactoryBean&amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Initialized JPA EntityManagerFactory for persistence unit 'default'
+&amp#27;[2m2025-09-12T19:11:45.914+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.d.j.r.query.QueryEnhancerFactory    &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Hibernate is in classpath; If applicable, HQL parser will be used.
+&amp#27;[2m2025-09-12T19:11:46.470+05:30&amp#27;[0;39m &amp#27;[33m WARN&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mJpaBaseConfiguration$JpaWebConfiguration&amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+&amp#27;[2m2025-09-12T19:11:46.854+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.b.a.e.web.EndpointLinksResolver     &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Exposing 1 endpoint(s) beneath base path '/actuator'
+&amp#27;[2m2025-09-12T19:11:46.981+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.b.w.embedded.tomcat.TomcatWebServer &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Tomcat started on port 64425 (http) with context path ''
+&amp#27;[2m2025-09-12T19:11:46.995+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [           main]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mc.s.l.integration.BasicIntegrationTest  &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Started BasicIntegrationTest in 3.245 seconds (process running for 3.76)
 ]]></system-out>
     <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/Users/ramgopal/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.10/byte-buddy-agent-1.14.10.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
@@ -198,13 +198,13 @@ WARNING: If a serviceability tool is not in use, please run with -Djdk.instrumen
 WARNING: Dynamic loading of agents will be disallowed by default in a future release
 ]]></system-err>
   </testcase>
-  <testcase name="testHealthEndpoint" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.112">
-    <system-out><![CDATA[&amp#27;[2m2025-09-12T12:45:39.129+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [o-auto-1-exec-1]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.a.c.c.C.[Tomcat].[localhost].[/]      &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Initializing Spring DispatcherServlet 'dispatcherServlet'
-&amp#27;[2m2025-09-12T12:45:39.130+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [o-auto-1-exec-1]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.web.servlet.DispatcherServlet       &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Initializing Servlet 'dispatcherServlet'
-&amp#27;[2m2025-09-12T12:45:39.130+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m95980&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [o-auto-1-exec-1]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.web.servlet.DispatcherServlet       &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Completed initialization in 0 ms
+  <testcase name="testHealthEndpoint" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.11">
+    <system-out><![CDATA[&amp#27;[2m2025-09-12T19:11:47.401+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [o-auto-1-exec-1]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.a.c.c.C.[Tomcat].[localhost].[/]      &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Initializing Spring DispatcherServlet 'dispatcherServlet'
+&amp#27;[2m2025-09-12T19:11:47.401+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [o-auto-1-exec-1]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.web.servlet.DispatcherServlet       &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Initializing Servlet 'dispatcherServlet'
+&amp#27;[2m2025-09-12T19:11:47.402+05:30&amp#27;[0;39m &amp#27;[32m INFO&amp#27;[0;39m &amp#27;[35m54714&amp#27;[0;39m &amp#27;[2m---&amp#27;[0;39m &amp#27;[2m[lab-operations] [o-auto-1-exec-1]&amp#27;[0;39m &amp#27;[2m&amp#27;[0;39m&amp#27;[36mo.s.web.servlet.DispatcherServlet       &amp#27;[0;39m &amp#27;[2m:&amp#27;[0;39m Completed initialization in 0 ms
 ]]></system-out>
   </testcase>
-  <testcase name="testCreateTestTemplate" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.138">
+  <testcase name="testCreateTestTemplate" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.15">
     <system-out><![CDATA[Hibernate: 
     select
         tt1_0.template_id 
@@ -223,7 +223,7 @@ Hibernate:
         (?, ?, ?, ?, ?)
 ]]></system-out>
   </testcase>
-  <testcase name="testGetTestTemplateById" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.024">
+  <testcase name="testGetTestTemplateById" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.02">
     <system-out><![CDATA[Hibernate: 
     select
         tt1_0.template_id,
@@ -238,7 +238,7 @@ Hibernate:
         tt1_0.template_id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testGetAllTestTemplates" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.021">
+  <testcase name="testGetAllTestTemplates" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.016">
     <system-out><![CDATA[Hibernate: 
     select
         tt1_0.template_id,
@@ -253,7 +253,7 @@ Hibernate:
         tt1_0.name
 ]]></system-out>
   </testcase>
-  <testcase name="testSearchTestTemplates" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.014">
+  <testcase name="testSearchTestTemplates" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.013">
     <system-out><![CDATA[Hibernate: 
     select
         tt1_0.template_id,
@@ -268,7 +268,7 @@ Hibernate:
         upper(tt1_0.name) like upper(?) escape '\'
 ]]></system-out>
   </testcase>
-  <testcase name="testUpdateTestTemplate" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.019">
+  <testcase name="testUpdateTestTemplate" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.016">
     <system-out><![CDATA[Hibernate: 
     select
         tt1_0.template_id,
@@ -306,7 +306,7 @@ Hibernate:
         template_id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testCreateVisit" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.015">
+  <testcase name="testCreateVisit" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.02">
     <system-out><![CDATA[Hibernate: 
     insert 
     into
@@ -316,7 +316,7 @@ Hibernate:
         (?, ?, ?)
 ]]></system-out>
   </testcase>
-  <testcase name="testGetVisitById" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.016">
+  <testcase name="testGetVisitById" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.017">
     <system-out><![CDATA[Hibernate: 
     select
         v1_0.visit_id,
@@ -392,7 +392,7 @@ Hibernate:
         lt1_0.visit_id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testGetVisitsByStatus" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.011">
+  <testcase name="testGetVisitsByStatus" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.017">
     <system-out><![CDATA[Hibernate: 
     select
         v1_0.visit_id,
@@ -431,7 +431,7 @@ Hibernate:
         lt1_0.visit_id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testSearchVisitsByPhone" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.033">
+  <testcase name="testSearchVisitsByPhone" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.031">
     <system-out><![CDATA[Hibernate: 
     insert 
     into
@@ -474,7 +474,7 @@ Hibernate:
         lt1_0.visit_id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testUpdateVisitStatus" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.011">
+  <testcase name="testUpdateVisitStatus" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.013">
     <system-out><![CDATA[Hibernate: 
     select
         v1_0.visit_id,
@@ -522,7 +522,7 @@ Hibernate:
         visit_id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testAddTestToVisit" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.019">
+  <testcase name="testAddTestToVisit" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.023">
     <system-out><![CDATA[Hibernate: 
     select
         v1_0.visit_id,
@@ -596,7 +596,7 @@ Hibernate:
         tt1_0.template_id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testUpdateTestResults" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.016">
+  <testcase name="testUpdateTestResults" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.015">
     <system-out><![CDATA[Hibernate: 
     select
         lt1_0.test_id,
@@ -641,7 +641,7 @@ Hibernate:
         test_id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testApproveTestResults" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.022">
+  <testcase name="testApproveTestResults" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.023">
     <system-out><![CDATA[Hibernate: 
     select
         lt1_0.test_id,
@@ -679,6 +679,15 @@ Hibernate:
         lab_tests lt1_0 
     where
         lt1_0.visit_id=? 
+        and lt1_0.status in ('PENDING', 'IN_PROGRESS')
+Hibernate: 
+    select
+        count(lt1_0.test_id) 
+    from
+        lab_tests lt1_0 
+    where
+        lt1_0.visit_id=? 
+        and lt1_0.status='COMPLETED' 
         and lt1_0.approved=false
 Hibernate: 
     select
@@ -722,6 +731,424 @@ Hibernate:
         status=? 
     where
         visit_id=?
+]]></system-out>
+  </testcase>
+  <testcase name="testVisitStatusUpdateLogic" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.08">
+    <system-out><![CDATA[Hibernate: 
+    insert 
+    into
+        visits
+        (created_at, patient_details, status) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    select
+        v1_0.visit_id,
+        v1_0.created_at,
+        v1_0.patient_details,
+        v1_0.status 
+    from
+        visits v1_0 
+    where
+        v1_0.visit_id=?
+Hibernate: 
+    select
+        b1_0.bill_id,
+        b1_0.created_at,
+        b1_0.paid,
+        b1_0.total_amount,
+        b1_0.visit_id 
+    from
+        billing b1_0 
+    where
+        b1_0.visit_id=?
+Hibernate: 
+    select
+        tt1_0.template_id,
+        tt1_0.base_price,
+        tt1_0.created_at,
+        tt1_0.description,
+        tt1_0.name,
+        tt1_0.parameters 
+    from
+        test_templates tt1_0 
+    where
+        tt1_0.template_id=?
+Hibernate: 
+    insert 
+    into
+        lab_tests
+        (approved, approved_at, approved_by, price, results, status, test_template_id, visit_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        v1_0.visit_id,
+        v1_0.created_at,
+        v1_0.patient_details,
+        v1_0.status 
+    from
+        visits v1_0 
+    where
+        v1_0.visit_id=?
+Hibernate: 
+    select
+        b1_0.bill_id,
+        b1_0.created_at,
+        b1_0.paid,
+        b1_0.total_amount,
+        b1_0.visit_id 
+    from
+        billing b1_0 
+    where
+        b1_0.visit_id=?
+Hibernate: 
+    select
+        tt1_0.template_id,
+        tt1_0.base_price,
+        tt1_0.created_at,
+        tt1_0.description,
+        tt1_0.name,
+        tt1_0.parameters 
+    from
+        test_templates tt1_0 
+    where
+        tt1_0.template_id=?
+Hibernate: 
+    insert 
+    into
+        lab_tests
+        (approved, approved_at, approved_by, price, results, status, test_template_id, visit_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        lt1_0.test_id,
+        lt1_0.approved,
+        lt1_0.approved_at,
+        lt1_0.approved_by,
+        lt1_0.price,
+        lt1_0.results,
+        lt1_0.status,
+        lt1_0.test_template_id,
+        lt1_0.visit_id 
+    from
+        lab_tests lt1_0 
+    where
+        lt1_0.visit_id=? 
+        and lt1_0.test_id=?
+Hibernate: 
+    select
+        tt1_0.template_id,
+        tt1_0.base_price,
+        tt1_0.created_at,
+        tt1_0.description,
+        tt1_0.name,
+        tt1_0.parameters 
+    from
+        test_templates tt1_0 
+    where
+        tt1_0.template_id=?
+Hibernate: 
+    update
+        lab_tests 
+    set
+        approved=?,
+        approved_at=?,
+        approved_by=?,
+        price=?,
+        results=?,
+        status=?,
+        test_template_id=?,
+        visit_id=? 
+    where
+        test_id=?
+Hibernate: 
+    select
+        lt1_0.test_id,
+        lt1_0.approved,
+        lt1_0.approved_at,
+        lt1_0.approved_by,
+        lt1_0.price,
+        lt1_0.results,
+        lt1_0.status,
+        lt1_0.test_template_id,
+        lt1_0.visit_id 
+    from
+        lab_tests lt1_0 
+    where
+        lt1_0.visit_id=? 
+        and lt1_0.test_id=?
+Hibernate: 
+    update
+        lab_tests 
+    set
+        approved=?,
+        approved_at=?,
+        approved_by=?,
+        price=?,
+        results=?,
+        status=?,
+        test_template_id=?,
+        visit_id=? 
+    where
+        test_id=?
+Hibernate: 
+    select
+        count(lt1_0.test_id) 
+    from
+        lab_tests lt1_0 
+    where
+        lt1_0.visit_id=? 
+        and lt1_0.status in ('PENDING', 'IN_PROGRESS')
+Hibernate: 
+    select
+        count(lt1_0.test_id) 
+    from
+        lab_tests lt1_0 
+    where
+        lt1_0.visit_id=? 
+        and lt1_0.status='COMPLETED' 
+        and lt1_0.approved=false
+Hibernate: 
+    select
+        tt1_0.template_id,
+        tt1_0.base_price,
+        tt1_0.created_at,
+        tt1_0.description,
+        tt1_0.name,
+        tt1_0.parameters 
+    from
+        test_templates tt1_0 
+    where
+        tt1_0.template_id=?
+Hibernate: 
+    select
+        v1_0.visit_id,
+        v1_0.created_at,
+        v1_0.patient_details,
+        v1_0.status 
+    from
+        visits v1_0 
+    where
+        v1_0.visit_id=?
+Hibernate: 
+    select
+        b1_0.bill_id,
+        b1_0.created_at,
+        b1_0.paid,
+        b1_0.total_amount,
+        b1_0.visit_id 
+    from
+        billing b1_0 
+    where
+        b1_0.visit_id=?
+Hibernate: 
+    select
+        lt1_0.visit_id,
+        lt1_0.test_id,
+        lt1_0.approved,
+        lt1_0.approved_at,
+        lt1_0.approved_by,
+        lt1_0.price,
+        lt1_0.results,
+        lt1_0.status,
+        lt1_0.test_template_id 
+    from
+        lab_tests lt1_0 
+    where
+        lt1_0.visit_id=?
+Hibernate: 
+    select
+        tt1_0.template_id,
+        tt1_0.base_price,
+        tt1_0.created_at,
+        tt1_0.description,
+        tt1_0.name,
+        tt1_0.parameters 
+    from
+        test_templates tt1_0 
+    where
+        tt1_0.template_id=?
+Hibernate: 
+    select
+        lt1_0.test_id,
+        lt1_0.approved,
+        lt1_0.approved_at,
+        lt1_0.approved_by,
+        lt1_0.price,
+        lt1_0.results,
+        lt1_0.status,
+        lt1_0.test_template_id,
+        lt1_0.visit_id 
+    from
+        lab_tests lt1_0 
+    where
+        lt1_0.visit_id=? 
+        and lt1_0.test_id=?
+Hibernate: 
+    select
+        tt1_0.template_id,
+        tt1_0.base_price,
+        tt1_0.created_at,
+        tt1_0.description,
+        tt1_0.name,
+        tt1_0.parameters 
+    from
+        test_templates tt1_0 
+    where
+        tt1_0.template_id=?
+Hibernate: 
+    update
+        lab_tests 
+    set
+        approved=?,
+        approved_at=?,
+        approved_by=?,
+        price=?,
+        results=?,
+        status=?,
+        test_template_id=?,
+        visit_id=? 
+    where
+        test_id=?
+Hibernate: 
+    select
+        lt1_0.test_id,
+        lt1_0.approved,
+        lt1_0.approved_at,
+        lt1_0.approved_by,
+        lt1_0.price,
+        lt1_0.results,
+        lt1_0.status,
+        lt1_0.test_template_id,
+        lt1_0.visit_id 
+    from
+        lab_tests lt1_0 
+    where
+        lt1_0.visit_id=? 
+        and lt1_0.test_id=?
+Hibernate: 
+    update
+        lab_tests 
+    set
+        approved=?,
+        approved_at=?,
+        approved_by=?,
+        price=?,
+        results=?,
+        status=?,
+        test_template_id=?,
+        visit_id=? 
+    where
+        test_id=?
+Hibernate: 
+    select
+        count(lt1_0.test_id) 
+    from
+        lab_tests lt1_0 
+    where
+        lt1_0.visit_id=? 
+        and lt1_0.status in ('PENDING', 'IN_PROGRESS')
+Hibernate: 
+    select
+        count(lt1_0.test_id) 
+    from
+        lab_tests lt1_0 
+    where
+        lt1_0.visit_id=? 
+        and lt1_0.status='COMPLETED' 
+        and lt1_0.approved=false
+Hibernate: 
+    select
+        v1_0.visit_id,
+        v1_0.created_at,
+        v1_0.patient_details,
+        v1_0.status 
+    from
+        visits v1_0 
+    where
+        v1_0.visit_id=?
+Hibernate: 
+    select
+        b1_0.bill_id,
+        b1_0.created_at,
+        b1_0.paid,
+        b1_0.total_amount,
+        b1_0.visit_id 
+    from
+        billing b1_0 
+    where
+        b1_0.visit_id=?
+Hibernate: 
+    select
+        tt1_0.template_id,
+        tt1_0.base_price,
+        tt1_0.created_at,
+        tt1_0.description,
+        tt1_0.name,
+        tt1_0.parameters 
+    from
+        test_templates tt1_0 
+    where
+        tt1_0.template_id=?
+Hibernate: 
+    update
+        visits 
+    set
+        created_at=?,
+        patient_details=?,
+        status=? 
+    where
+        visit_id=?
+Hibernate: 
+    select
+        v1_0.visit_id,
+        v1_0.created_at,
+        v1_0.patient_details,
+        v1_0.status 
+    from
+        visits v1_0 
+    where
+        v1_0.visit_id=?
+Hibernate: 
+    select
+        b1_0.bill_id,
+        b1_0.created_at,
+        b1_0.paid,
+        b1_0.total_amount,
+        b1_0.visit_id 
+    from
+        billing b1_0 
+    where
+        b1_0.visit_id=?
+Hibernate: 
+    select
+        lt1_0.visit_id,
+        lt1_0.test_id,
+        lt1_0.approved,
+        lt1_0.approved_at,
+        lt1_0.approved_by,
+        lt1_0.price,
+        lt1_0.results,
+        lt1_0.status,
+        lt1_0.test_template_id 
+    from
+        lab_tests lt1_0 
+    where
+        lt1_0.visit_id=?
+Hibernate: 
+    select
+        tt1_0.template_id,
+        tt1_0.base_price,
+        tt1_0.created_at,
+        tt1_0.description,
+        tt1_0.name,
+        tt1_0.parameters 
+    from
+        test_templates tt1_0 
+    where
+        tt1_0.template_id=?
 ]]></system-out>
   </testcase>
   <testcase name="testGenerateBill" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.019">
@@ -783,7 +1210,7 @@ Hibernate:
 Created bill ID: 1
 ]]></system-out>
   </testcase>
-  <testcase name="testGetBillById" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.007">
+  <testcase name="testGetBillById" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.006">
     <system-out><![CDATA[Hibernate: 
     select
         b1_0.bill_id,
@@ -823,7 +1250,7 @@ Created bill ID: 1
         b1_0.paid=?
 ]]></system-out>
   </testcase>
-  <testcase name="testMarkBillAsPaid" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.013">
+  <testcase name="testMarkBillAsPaid" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.011">
     <system-out><![CDATA[Hibernate: 
     select
         b1_0.bill_id,
@@ -877,7 +1304,7 @@ Hibernate:
         visit_id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testGetRevenueForPeriod" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.014">
+  <testcase name="testGetRevenueForPeriod" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.015">
     <system-out><![CDATA[Hibernate: 
     select
         coalesce(sum(b1_0.total_amount), 0) 
@@ -888,7 +1315,7 @@ Hibernate:
         and b1_0.created_at between ? and ?
 ]]></system-out>
   </testcase>
-  <testcase name="testGetNonExistentVisit" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.008">
+  <testcase name="testGetNonExistentVisit" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.007">
     <system-out><![CDATA[Hibernate: 
     select
         v1_0.visit_id,
@@ -930,11 +1357,11 @@ Hibernate:
         b1_0.bill_id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testCreateVisitWithInvalidData" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.01"/>
+  <testcase name="testCreateVisitWithInvalidData" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.009"/>
   <testcase name="testCreateTestTemplateWithInvalidData" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.005"/>
-  <testcase name="testSearchVisitsWithEmptyPhone" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.004"/>
+  <testcase name="testSearchVisitsWithEmptyPhone" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.005"/>
   <testcase name="testSearchTestTemplatesWithEmptyName" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.004"/>
-  <testcase name="testUpdateVisitStatusWithInvalidStatus" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.005"/>
+  <testcase name="testUpdateVisitStatusWithInvalidStatus" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.004"/>
   <testcase name="testGetVisitsByInvalidStatus" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.004"/>
-  <testcase name="testGetRevenueWithInvalidDateRange" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.005"/>
+  <testcase name="testGetRevenueWithInvalidDateRange" classname="com.sivalab.laboperations.integration.BasicIntegrationTest" time="0.004"/>
 </testsuite>

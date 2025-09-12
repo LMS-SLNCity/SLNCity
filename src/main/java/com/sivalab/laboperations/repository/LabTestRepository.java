@@ -50,11 +50,17 @@ public interface LabTestRepository extends JpaRepository<LabTest, Long> {
     List<LabTest> findByApprovedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
     
     /**
-     * Count pending tests for a visit
+     * Count tests that are completed but not yet approved for a visit
      */
-    @Query("SELECT COUNT(lt) FROM LabTest lt WHERE lt.visit.visitId = :visitId AND lt.approved = false")
+    @Query("SELECT COUNT(lt) FROM LabTest lt WHERE lt.visit.visitId = :visitId AND lt.status = 'COMPLETED' AND lt.approved = false")
     long countPendingTestsForVisit(@Param("visitId") Long visitId);
-    
+
+    /**
+     * Count tests that are not yet completed for a visit (PENDING or IN_PROGRESS)
+     */
+    @Query("SELECT COUNT(lt) FROM LabTest lt WHERE lt.visit.visitId = :visitId AND lt.status IN ('PENDING', 'IN_PROGRESS')")
+    long countIncompleteTestsForVisit(@Param("visitId") Long visitId);
+
     /**
      * Find tests that need approval (completed but not approved)
      */
