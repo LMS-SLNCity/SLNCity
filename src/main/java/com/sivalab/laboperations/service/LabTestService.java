@@ -104,16 +104,18 @@ public class LabTestService {
         labTest.setStatus(TestStatus.APPROVED);
         
         labTest = labTestRepository.save(labTest);
-        
-        // Check if all tests for the visit are approved
-        long pendingTests = labTestRepository.countPendingTestsForVisit(visitId);
-        if (pendingTests == 0) {
-            // Update visit status to approved
+
+        // Check if all tests for the visit are completed and approved
+        long incompleteTests = labTestRepository.countIncompleteTestsForVisit(visitId);
+        long pendingApprovalTests = labTestRepository.countPendingTestsForVisit(visitId);
+
+        if (incompleteTests == 0 && pendingApprovalTests == 0) {
+            // All tests are completed and approved - update visit status to approved
             Visit visit = labTest.getVisit();
             visit.setStatus(VisitStatus.APPROVED);
             visitRepository.save(visit);
         }
-        
+
         return convertToResponse(labTest);
     }
     
