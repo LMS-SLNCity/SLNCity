@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/lab_operations_test
+    username: test_user
+    password: test_password
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  
+  flyway:
+    enabled: false
+
+logging:
+  level:
+    com.sivalab.laboperations: DEBUG
