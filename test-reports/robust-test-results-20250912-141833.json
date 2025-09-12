@@ -1,0 +1,15 @@
+{
+  "timestamp": "20250912-141833",
+  "summary": {
+    "totalTests": 8,
+    "passed": 7,
+    "failed": 1,
+    "performanceIssues": 0,
+    "securityIssues": 0,
+    "successRate": 87.50
+  },
+  "tests": [{"name":"Health Check","method":"GET","endpoint":"/actuator/health","status":"PASS","expected":"200","actual":"200","responseTime":"0.001830","category":"CORE","message":""},{"name":"List Templates","method":"GET","endpoint":"/test-templates","status":"PASS","expected":"200","actual":"200","responseTime":"0.003344","category":"CORE","message":""},{"name":"List Visits","method":"GET","endpoint":"/visits","status":"PASS","expected":"200","actual":"200","responseTime":"0.008658","category":"CORE","message":""},{"name":"SQL Injection Protection","method":"GET","endpoint":"/test-templates/search?name=%27%3B%20DROP%20TABLE%20test_templates%3B%20--","status":"FAIL","expected":"400","actual":"200","responseTime":"0.002842","category":"SECURITY","message":"Expected: 400, Got: 200"},{"name":"SQL Injection in POST","method":"POST","endpoint":"/test-templates","status":"PASS","expected":"409","actual":"409","responseTime":"0.002871","category":"SECURITY","message":""},{"name":"XSS Protection","method":"POST","endpoint":"/test-templates","status":"PASS","expected":"409","actual":"409","responseTime":"0.002690","category":"SECURITY","message":""},{"name":"Large Payload Protection","method":"POST","endpoint":"/test-templates","status":"PASS","expected":"500","actual":"500","responseTime":"0.004037","category":"SECURITY","message":""},{"name":"Malformed JSON Protection","method":"POST","endpoint":"/test-templates","status":"PASS","expected":"500","actual":"500","responseTime":"0.001991","category":"SECURITY","message":""}],
+  "performance": [{"endpoint":"/actuator/health","concurrentUsers":2,"requestsPerUser":3,"totalDuration":0,"avgResponseTime":"0","successRate":"0","timeouts":0
+0},{"endpoint":"/test-templates","concurrentUsers":2,"requestsPerUser":2,"totalDuration":0,"avgResponseTime":"0","successRate":"0","timeouts":0
+0}]
+}

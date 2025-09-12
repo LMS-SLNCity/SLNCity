@@ -5,6 +5,13 @@
 
 set -e
 
+# Use bash 4+ features if available, otherwise fallback
+if [ "${BASH_VERSION%%.*}" -ge 4 ]; then
+    BASH_4_PLUS=true
+else
+    BASH_4_PLUS=false
+fi
+
 # Configuration
 BASE_URL="http://localhost:8080"
 REPORT_DIR="test-reports"
@@ -20,10 +27,11 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-# Test suite results
-declare -A SUITE_RESULTS
-declare -A SUITE_DURATIONS
-declare -A SUITE_DETAILS
+# Test suite results - using arrays for compatibility
+SUITE_NAMES=()
+SUITE_RESULTS=()
+SUITE_DURATIONS=()
+SUITE_DETAILS=()
 
 mkdir -p "$REPORT_DIR"
 
@@ -39,54 +47,56 @@ run_test_suite() {
     local suite_name="$1"
     local script_path="$2"
     local description="$3"
-    
+
     echo -e "${BLUE}🚀 Running: $suite_name${NC}"
     echo -e "Description: $description"
     echo -e "Script: $script_path"
     echo ""
-    
+
     local start_time=$(date +%s)
     local exit_code=0
-    
+
     # Check if script exists and is executable
     if [ ! -f "$script_path" ]; then
         echo -e "${RED}❌ Script not found: $script_path${NC}"
-        SUITE_RESULTS["$suite_name"]="MISSING"
-        SUITE_DURATIONS["$suite_name"]="0"
-        SUITE_DETAILS["$suite_name"]="Script file not found"
         return 1
     fi
-    
+
     if [ ! -x "$script_path" ]; then
         echo -e "${YELLOW}⚠️  Making script executable: $script_path${NC}"
         chmod +x "$script_path"
     fi
-    
+
     # Run the test suite
-    if ./"$script_path" > "$REPORT_DIR/${suite_name,,}-output-$TIMESTAMP.log" 2>&1; then
+    local log_file="$REPORT_DIR/${suite_name// /_}-output-$TIMESTAMP.log"
+    if ./"$script_path" > "$log_file" 2>&1; then
         exit_code=0
-        SUITE_RESULTS["$suite_name"]="PASSED"
         echo -e "${GREEN}✅ $suite_name completed successfully${NC}"
     else
         exit_code=$?
-        SUITE_RESULTS["$suite_name"]="FAILED"
         echo -e "${RED}❌ $suite_name failed with exit code: $exit_code${NC}"
     fi
-    
+
     local end_time=$(date +%s)
     local duration=$((end_time - start_time))
-    SUITE_DURATIONS["$suite_name"]="$duration"
-    
+
+    # Store results in arrays
+    SUITE_NAMES+=("$suite_name")
+    if [ $exit_code -eq 0 ]; then
+        SUITE_RESULTS+=("PASSED")
+    else
+        SUITE_RESULTS+=("FAILED")
+    fi
+    SUITE_DURATIONS+=("$duration")
+
     # Extract key metrics from log file
-    local log_file="$REPORT_DIR/${suite_name,,}-output-$TIMESTAMP.log"
     local details=""
-    
     if [ -f "$log_file" ]; then
         # Try to extract test counts and success rates
         local total_tests=$(grep -o "Total Tests: [0-9]*" "$log_file" | tail -1 | grep -o "[0-9]*" || echo "0")
         local passed_tests=$(grep -o "Passed: [0-9]*" "$log_file" | tail -1 | grep -o "[0-9]*" || echo "0")
         local failed_tests=$(grep -o "Failed: [0-9]*" "$log_file" | tail -1 | grep -o "[0-9]*" || echo "0")
-        
+
         if [ "$total_tests" -gt 0 ]; then
             local success_rate=$(echo "scale=1; ($passed_tests * 100) / $total_tests" | bc -l 2>/dev/null || echo "0")
             details="Tests: $total_tests, Passed: $passed_tests, Failed: $failed_tests, Success Rate: ${success_rate}%"
@@ -96,13 +106,13 @@ run_test_suite() {
     else
         details="Duration: ${duration}s, Exit Code: $exit_code"
     fi
-    
-    SUITE_DETAILS["$suite_name"]="$details"
-    
+
+    SUITE_DETAILS+=("$details")
+
     echo -e "Duration: ${duration}s"
     echo -e "Details: $details"
     echo ""
-    
+
     return $exit_code
 }
 
@@ -116,13 +126,14 @@ check_application_health() {
     while [ $attempt -le $max_attempts ]; do
         echo -e "Attempt $attempt/$max_attempts..."
         
-        local response=$(curl -s -w "%{http_code}" --max-time 10 "$BASE_URL/actuator/health" 2>/dev/null || echo "000")
+        local response=$(curl -s -w "\n%{http_code}" --max-time 10 "$BASE_URL/actuator/health" 2>/dev/null || echo -e "\n000")
+        local http_code=$(echo "$response" | tail -1)
         
-        if [ "$response" = "200" ]; then
+        if [ "$http_code" = "200" ]; then
             echo -e "${GREEN}✅ Application is healthy${NC}"
             return 0
         else
-            echo -e "${YELLOW}⚠️  Health check failed (HTTP: $response)${NC}"
+            echo -e "${YELLOW}⚠️  Health check failed (HTTP: $http_code)${NC}"
             if [ $attempt -lt $max_attempts ]; then
                 echo -e "Waiting 10 seconds before retry..."
                 sleep 10
@@ -139,22 +150,22 @@ check_application_health() {
 # Function to generate master report
 generate_master_report() {
     echo -e "${CYAN}📊 Generating Master Test Report...${NC}"
-    
-    local total_suites=${#SUITE_RESULTS[@]}
+
+    local total_suites=${#SUITE_NAMES[@]}
     local passed_suites=0
     local failed_suites=0
     local total_duration=0
-    
+
     # Calculate summary statistics
-    for suite in "${!SUITE_RESULTS[@]}"; do
-        if [ "${SUITE_RESULTS[$suite]}" = "PASSED" ]; then
+    for ((i=0; i<${#SUITE_NAMES[@]}; i++)); do
+        if [ "${SUITE_RESULTS[$i]}" = "PASSED" ]; then
             ((passed_suites++))
         else
             ((failed_suites++))
         fi
-        total_duration=$((total_duration + SUITE_DURATIONS[$suite]))
+        total_duration=$((total_duration + SUITE_DURATIONS[$i]))
     done
-    
+
     local success_rate=$(echo "scale=1; ($passed_suites * 100) / $total_suites" | bc -l 2>/dev/null || echo "0")
     
     cat > "$MASTER_REPORT" << EOF
@@ -266,18 +277,19 @@ generate_master_report() {
 EOF
 
     # Add test suite results to HTML
-    for suite in "${!SUITE_RESULTS[@]}"; do
-        local status="${SUITE_RESULTS[$suite]}"
-        local duration="${SUITE_DURATIONS[$suite]}"
-        local details="${SUITE_DETAILS[$suite]}"
-        
+    for ((i=0; i<${#SUITE_NAMES[@]}; i++)); do
+        local suite="${SUITE_NAMES[$i]}"
+        local status="${SUITE_RESULTS[$i]}"
+        local duration="${SUITE_DURATIONS[$i]}"
+        local details="${SUITE_DETAILS[$i]}"
+
         local badge_class="badge-warning"
         if [ "$status" = "PASSED" ]; then
             badge_class="badge-success"
         elif [ "$status" = "FAILED" ]; then
             badge_class="badge-danger"
         fi
-        
+
         cat >> "$MASTER_REPORT" << EOF
                         <tr>
                             <td><strong>$suite</strong></td>
@@ -361,13 +373,13 @@ main() {
     echo ""
     echo -e "${CYAN}📊 Execution Summary${NC}"
     echo -e "Total Execution Time: ${total_execution_time}s"
-    echo -e "Test Suites Run: ${#SUITE_RESULTS[@]}"
-    
+    echo -e "Test Suites Run: ${#SUITE_NAMES[@]}"
+
     local passed_count=0
     local failed_count=0
-    
-    for suite in "${!SUITE_RESULTS[@]}"; do
-        if [ "${SUITE_RESULTS[$suite]}" = "PASSED" ]; then
+
+    for ((i=0; i<${#SUITE_NAMES[@]}; i++)); do
+        if [ "${SUITE_RESULTS[$i]}" = "PASSED" ]; then
             ((passed_count++))
         else
             ((failed_count++))
