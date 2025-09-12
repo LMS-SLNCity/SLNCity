@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,6 +75,30 @@ public class VisitService {
         return visitRepository.findByPatientPhone(phone).stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Get visit count by status
+     * Returns a map with status as key and count as value
+     */
+    @Transactional(readOnly = true)
+    public Map<String, Long> getVisitCountByStatus() {
+        List<Object[]> results = visitRepository.countByStatus();
+        Map<String, Long> statusCounts = new HashMap<>();
+
+        // Initialize all statuses with 0 count
+        for (VisitStatus status : VisitStatus.values()) {
+            statusCounts.put(status.getValue(), 0L);
+        }
+
+        // Update with actual counts from database
+        for (Object[] result : results) {
+            VisitStatus status = (VisitStatus) result[0];
+            Long count = (Long) result[1];
+            statusCounts.put(status.getValue(), count);
+        }
+
+        return statusCounts;
     }
     
     /**
