@@ -103,12 +103,138 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,flyway
+        include: health,info,metrics,flyway,circuitbreakers,ratelimiters,retries,bulkheads,timelimiters
   endpoint:
     health:
       show-details: always
+      show-components: always
     flyway:
       enabled: true
+    metrics:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      percentiles:
+        http.server.requests: 0.5, 0.95, 0.99
+    tags:
+      application: ${spring.application.name}
+
+# Resilience4j Configuration
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 30s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+        recordExceptions:
+          - org.springframework.dao.DataAccessException
+          - java.sql.SQLException
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+    instances:
+      database:
+        baseConfig: default
+        waitDurationInOpenState: 30s
+        failureRateThreshold: 50
+      pdfGeneration:
+        baseConfig: default
+        waitDurationInOpenState: 60s
+        failureRateThreshold: 60
+        slowCallDurationThreshold: 5s
+      barcodeGeneration:
+        baseConfig: default
+        waitDurationInOpenState: 20s
+        failureRateThreshold: 40
+        slowCallDurationThreshold: 1s
+
+  retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 500ms
+        exponentialBackoffMultiplier: 2
+        retryExceptions:
+          - org.springframework.dao.DataAccessException
+          - java.sql.SQLException
+          - java.io.IOException
+          - java.net.SocketTimeoutException
+    instances:
+      database:
+        baseConfig: default
+        maxAttempts: 3
+        waitDuration: 500ms
+      externalService:
+        baseConfig: default
+        maxAttempts: 2
+        waitDuration: 1s
+
+  ratelimiter:
+    configs:
+      default:
+        registerHealthIndicator: true
+        limitForPeriod: 100
+        limitRefreshPeriod: 1m
+        timeoutDuration: 5s
+    instances:
+      api:
+        baseConfig: default
+        limitForPeriod: 100
+        limitRefreshPeriod: 1m
+      barcode:
+        baseConfig: default
+        limitForPeriod: 50
+        limitRefreshPeriod: 1m
+        timeoutDuration: 3s
+      pdf:
+        baseConfig: default
+        limitForPeriod: 20
+        limitRefreshPeriod: 1m
+        timeoutDuration: 10s
+
+  bulkhead:
+    configs:
+      default:
+        maxConcurrentCalls: 10
+        maxWaitDuration: 5s
+    instances:
+      database:
+        baseConfig: default
+        maxConcurrentCalls: 10
+      pdf:
+        baseConfig: default
+        maxConcurrentCalls: 3
+        maxWaitDuration: 15s
+      barcode:
+        baseConfig: default
+        maxConcurrentCalls: 5
+        maxWaitDuration: 3s
+
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 10s
+        cancelRunningFuture: true
+    instances:
+      database:
+        baseConfig: default
+        timeoutDuration: 10s
+      pdf:
+        baseConfig: default
+        timeoutDuration: 30s
+      barcode:
+        baseConfig: default
+        timeoutDuration: 5s
 
 logging:
   level:

@@ -31,7 +31,7 @@ public class CorsConfig implements WebMvcConfigurer {
                 )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true)
+                .allowCredentials(false)  // Temporarily disable for testing
                 .maxAge(3600); // Cache preflight response for 1 hour
     }
 }
