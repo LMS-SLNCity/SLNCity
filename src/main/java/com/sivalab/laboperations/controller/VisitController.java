@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/visits")
@@ -91,12 +92,26 @@ public class VisitController {
         if (phone == null || phone.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        
+
         try {
             List<VisitResponse> visits = visitService.getVisitsByPatientPhone(phone);
             return ResponseEntity.ok(visits);
         } catch (Exception e) {
             throw new RuntimeException("Failed to search visits: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Get visit count by status
+     * GET /visits/count-by-status
+     */
+    @GetMapping("/count-by-status")
+    public ResponseEntity<Map<String, Long>> getVisitCountByStatus() {
+        try {
+            Map<String, Long> statusCounts = visitService.getVisitCountByStatus();
+            return ResponseEntity.ok(statusCounts);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get visit count by status: " + e.getMessage(), e);
         }
     }
     

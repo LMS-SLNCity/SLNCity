@@ -57,4 +57,11 @@ public interface VisitRepository extends JpaRepository<Visit, Long> {
      */
     @Query("SELECT v FROM Visit v WHERE v.status = 'APPROVED' AND v.billing IS NULL")
     List<Visit> findVisitsReadyForBilling();
+
+    /**
+     * Count visits grouped by status
+     * Returns array of [status, count] pairs
+     */
+    @Query("SELECT v.status, COUNT(v) FROM Visit v GROUP BY v.status")
+    List<Object[]> countByStatus();
 }

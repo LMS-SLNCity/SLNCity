@@ -626,4 +626,94 @@ public class BasicIntegrationTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
+
+    @Test
+    @Order(34)
+    public void testVisitCountByStatus() {
+        // Test the visit count by status endpoint
+        ResponseEntity<Map> response = restTemplate.getForEntity(
+            "http://localhost:" + port + "/visits/count-by-status",
+            Map.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+
+        Map<String, Object> statusCounts = response.getBody();
+
+        // Verify all status types are present
+        assertThat(statusCounts).containsKeys(
+            "pending", "in-progress", "awaiting-approval",
+            "approved", "billed", "completed"
+        );
+
+        // Verify counts are numbers (Long values)
+        for (Object count : statusCounts.values()) {
+            assertThat(count).isInstanceOf(Number.class);
+            assertThat(((Number) count).longValue()).isGreaterThanOrEqualTo(0);
+        }
+
+        // Verify total visits count is non-negative (could be 0 if no visits exist)
+        long totalVisits = statusCounts.values().stream()
+            .mapToLong(count -> ((Number) count).longValue())
+            .sum();
+        assertThat(totalVisits).isGreaterThanOrEqualTo(0);
+    }
+
+    @Test
+    @Order(35)
+    public void testVisitCountByStatusWithSpecificData() {
+        // Create visits with known statuses to test counting accuracy
+
+        // Create first visit (will be PENDING by default)
+        Map<String, Object> patientDetails1 = new HashMap<>();
+        patientDetails1.put("name", "Count Test Patient 1");
+        patientDetails1.put("age", 30);
+        patientDetails1.put("phone", "1111111111");
+
+        Map<String, Object> visitRequest1 = new HashMap<>();
+        visitRequest1.put("patientDetails", patientDetails1);
+
+        ResponseEntity<Map> createResponse1 = restTemplate.postForEntity(
+            "http://localhost:" + port + "/visits",
+            visitRequest1,
+            Map.class);
+
+        assertThat(createResponse1.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        Long visitId1 = ((Number) createResponse1.getBody().get("visitId")).longValue();
+
+        // Create second visit and update to IN_PROGRESS
+        Map<String, Object> patientDetails2 = new HashMap<>();
+        patientDetails2.put("name", "Count Test Patient 2");
+        patientDetails2.put("age", 25);
+        patientDetails2.put("phone", "2222222222");
+
+        Map<String, Object> visitRequest2 = new HashMap<>();
+        visitRequest2.put("patientDetails", patientDetails2);
+
+        ResponseEntity<Map> createResponse2 = restTemplate.postForEntity(
+            "http://localhost:" + port + "/visits",
+            visitRequest2,
+            Map.class);
+
+        assertThat(createResponse2.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        Long visitId2 = ((Number) createResponse2.getBody().get("visitId")).longValue();
+
+        // Update second visit to IN_PROGRESS
+        restTemplate.patchForObject(
+            "http://localhost:" + port + "/visits/" + visitId2 + "/status?status=in-progress",
+            null,
+            Map.class);
+
+        // Get count by status
+        ResponseEntity<Map> countResponse = restTemplate.getForEntity(
+            "http://localhost:" + port + "/visits/count-by-status",
+            Map.class);
+
+        assertThat(countResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Map<String, Object> statusCounts = countResponse.getBody();
+
+        // Verify we have at least 1 pending and 1 in-progress
+        assertThat(((Number) statusCounts.get("pending")).longValue()).isGreaterThanOrEqualTo(1);
+        assertThat(((Number) statusCounts.get("in-progress")).longValue()).isGreaterThanOrEqualTo(1);
+    }
 }
