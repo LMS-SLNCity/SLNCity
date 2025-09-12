@@ -26,3 +26,4 @@
 /Users/ramgopal/Desktop/siva_lab/src/main/java/com/sivalab/laboperations/repository/VisitRepository.java
 /Users/ramgopal/Desktop/siva_lab/src/main/java/com/sivalab/laboperations/repository/LabTestRepository.java
 /Users/ramgopal/Desktop/siva_lab/src/main/java/com/sivalab/laboperations/entity/LabTest.java
+/Users/ramgopal/Desktop/siva_lab/src/main/java/com/sivalab/laboperations/config/CorsConfig.java

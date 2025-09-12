@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/test-templates")
-@CrossOrigin(origins = "*")
 public class TestTemplateController {
     
     private final TestTemplateService testTemplateService;
