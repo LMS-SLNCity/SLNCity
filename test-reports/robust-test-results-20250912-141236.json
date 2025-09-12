@@ -1,0 +1,15 @@
+{
+  "timestamp": "20250912-141236",
+  "summary": {
+    "totalTests": 8,
+    "passed": 3,
+    "failed": 5,
+    "performanceIssues": 0,
+    "securityIssues": 0,
+    "successRate": 37.50
+  },
+  "tests": [{"name":"Health Check","method":"GET","endpoint":"/actuator/health","status":"PASS","expected":"200","actual":"200","responseTime":"0.002115","category":"CORE","message":""},{"name":"List Templates","method":"GET","endpoint":"/test-templates","status":"PASS","expected":"200","actual":"200","responseTime":"0.003976","category":"CORE","message":""},{"name":"List Visits","method":"GET","endpoint":"/visits","status":"PASS","expected":"200","actual":"200","responseTime":"0.007081","category":"CORE","message":""},{"name":"SQL Injection Protection","method":"GET","endpoint":"/test-templates/search?name='; DROP TABLE test_templates; --","status":"FAIL","expected":"400","actual":"000","responseTime":"timeout","category":"SECURITY","message":"Expected: 400, Got: 000"},{"name":"SQL Injection in POST","method":"POST","endpoint":"/test-templates","status":"FAIL","expected":"400","actual":"409","responseTime":"0.003226","category":"SECURITY","message":"Expected: 400, Got: 409"},{"name":"XSS Protection","method":"POST","endpoint":"/test-templates","status":"FAIL","expected":"400","actual":"409","responseTime":"0.003232","category":"SECURITY","message":"Expected: 400, Got: 409"},{"name":"Large Payload Protection","method":"POST","endpoint":"/test-templates","status":"FAIL","expected":"400","actual":"500","responseTime":"0.004856","category":"SECURITY","message":"Expected: 400, Got: 500"},{"name":"Malformed JSON Protection","method":"POST","endpoint":"/test-templates","status":"FAIL","expected":"400","actual":"500","responseTime":"0.002219","category":"SECURITY","message":"Expected: 400, Got: 500"}],
+  "performance": [{"endpoint":"/actuator/health","concurrentUsers":3,"requestsPerUser":5,"totalDuration":0,"avgResponseTime":"0","successRate":"0","timeouts":0
+0},{"endpoint":"/test-templates","concurrentUsers":2,"requestsPerUser":3,"totalDuration":0,"avgResponseTime":"0","successRate":"0","timeouts":0
+0}]
+}
