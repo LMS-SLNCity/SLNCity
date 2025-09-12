@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Operations API Focused Edge Case Report</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 40px; text-align: center; }
+        .header h1 { margin: 0; font-size: 2.5em; font-weight: 300; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; font-size: 1.2em; }
+        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 30px; background: #f8f9fa; }
+        .summary-card { background: white; padding: 30px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .summary-card h3 { margin: 0 0 10px 0; font-size: 2.5em; font-weight: bold; }
+        .summary-card p { margin: 0; color: #666; font-size: 1.1em; }
+        .total { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; }
+        .pass { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); color: white; }
+        .fail { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; }
+        .rate { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); color: white; }
+        .content { padding: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        th { background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); color: white; padding: 15px; text-align: left; font-weight: 600; }
+        td { padding: 12px 15px; border-bottom: 1px solid #ecf0f1; }
+        tr:hover { background: #f8f9fa; }
+        .status-pass { color: #27ae60; font-weight: bold; }
+        .status-fail { color: #e74c3c; font-weight: bold; }
+        .category { padding: 6px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; color: white; display: inline-block; }
+        .category-validation { background: #e74c3c; }
+        .category-business { background: #9b59b6; }
+        .category-boundary { background: #f39c12; }
+        .category-valid { background: #27ae60; }
+        .method { padding: 4px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
+        .method-get { background: #e3f2fd; color: #1976d2; }
+        .method-post { background: #e8f5e8; color: #388e3c; }
+        .method-patch { background: #fff3e0; color: #f57c00; }
+        .method-put { background: #f3e5f5; color: #7b1fa2; }
+        .response { max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'Courier New', monospace; font-size: 0.85em; background: #f8f9fa; padding: 5px; border-radius: 3px; }
+        .footer { text-align: center; padding: 30px; background: #34495e; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔬 Focused Edge Case Analysis</h1>
+            <p>Lab Operations API Critical Validation Testing</p>
+        </div>
+        
+        <div class="summary">
+            <div class="summary-card total">
+                <h3>48</h3>
+                <p>Total Tests</p>
+            </div>
+            <div class="summary-card pass">
+                <h3>44</h3>
+                <p>Passed</p>
+            </div>
+            <div class="summary-card fail">
+                <h3>4</h3>
+                <p>Failed</p>
+            </div>
+            <div class="summary-card rate">
+                <h3>91%</h3>
+                <p>Success Rate</p>
+            </div>
+        </div>
+        
+        <div class="content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Status</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Method</th>
+                        <th>Endpoint</th>
+                        <th>Expected</th>
+                        <th>Actual</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Empty request body</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/test-templates</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:03.75719\",\"erro</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Empty name field</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/test-templates</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:03.783108\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Whitespace-only name</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/test-templates</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:03.807001\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Zero base price</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/test-templates</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:03.830593\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Negative base price</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/test-templates</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:03.854256\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Missing parameters field</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/test-templates</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:03.877212\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="status-fail">FAIL</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Null parameters</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/test-templates</code></td>
+                        <td>400</td>
+                        <td>500</td>
+                        <td class="response">{\"message\":\"Failed to create test template: Parameters cannot be null\",\"status\":500,\"timestam</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-boundary">BOUNDARY</span></td>
+                        <td>Minimum valid values</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/test-templates</code></td>
+                        <td>201</td>
+                        <td>201</td>
+                        <td class="response">{\"templateId\":2,\"name\":\"A\",\"description\":null,\"parameters\":{},\"basePrice\":0.01,\"created</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-boundary">BOUNDARY</span></td>
+                        <td>Maximum decimal price</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/test-templates</code></td>
+                        <td>201</td>
+                        <td>201</td>
+                        <td class="response">{\"templateId\":3,\"name\":\"ValidTest\",\"description\":null,\"parameters\":{},\"basePrice\":999999</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-business">BUSINESS</span></td>
+                        <td>Duplicate template name</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/test-templates</code></td>
+                        <td>409</td>
+                        <td>409</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Empty visit request</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/visits</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:04.021608\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td class="status-fail">FAIL</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Null patient details</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/visits</code></td>
+                        <td>400</td>
+                        <td>500</td>
+                        <td class="response">{\"message\":\"Failed to create visit: Patient details cannot be null\",\"status\":500,\"timestamp\"</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-boundary">BOUNDARY</span></td>
+                        <td>Empty patient details object</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/visits</code></td>
+                        <td>201</td>
+                        <td>201</td>
+                        <td class="response">{\"visitId\":2,\"patientDetails\":{},\"createdAt\":\"2025-09-12T14:00:04.067928\",\"status\":\"PENDI</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Invalid status value</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/status?status=invalid-status</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Empty status parameter</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/status?status=</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Missing status parameter</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/status</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"timestamp\":\"2025-09-12T08:30:04.138+00:00\",\"status\":400,\"error\":\"Bad Request\",\"trace\":</td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-business">BUSINESS</span></td>
+                        <td>Valid status transition</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/status?status=in-progress</code></td>
+                        <td>200</td>
+                        <td>200</td>
+                        <td class="response">{\"visitId\":1,\"patientDetails\":{\"name\":\"Test Patient\",\"age\":30,\"gender\":\"M\",\"phone\":\</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-business">BUSINESS</span></td>
+                        <td>Invalid status jump</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/status?status=completed</code></td>
+                        <td>500</td>
+                        <td>500</td>
+                        <td class="response">{\"message\":\"Failed to update visit status: Invalid status transition from IN_PROGRESS to COMPLETE</td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-business">BUSINESS</span></td>
+                        <td>Invalid status jump to billed</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/status?status=billed</code></td>
+                        <td>500</td>
+                        <td>500</td>
+                        <td class="response">{\"message\":\"Failed to update visit status: Invalid status transition from IN_PROGRESS to BILLED\"</td>
+                    </tr>
+                    <tr>
+                        <td>20</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-boundary">BOUNDARY</span></td>
+                        <td>Visit ID zero</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/visits/0</code></td>
+                        <td>404</td>
+                        <td>404</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>21</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-boundary">BOUNDARY</span></td>
+                        <td>Negative visit ID</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/visits/-1</code></td>
+                        <td>404</td>
+                        <td>404</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>22</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-boundary">BOUNDARY</span></td>
+                        <td>Very large visit ID</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/visits/999999</code></td>
+                        <td>404</td>
+                        <td>404</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>23</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Empty test request</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/visits/1/tests</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:04.313727\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>24</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Null template ID</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/visits/1/tests</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:04.337793\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>25</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Non-existent template ID</td>
+                        <td><span class="method method-post">POST</span></td>
+                        <td><code>/visits/1/tests</code></td>
+                        <td>404</td>
+                        <td>404</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>26</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Empty results request</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/tests/1/results</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:04.474529\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>27</td>
+                        <td class="status-fail">FAIL</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Null results</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/tests/1/results</code></td>
+                        <td>400</td>
+                        <td>500</td>
+                        <td class="response">{\"message\":\"Failed to update test results: Results cannot be null\",\"status\":500,\"timestamp\":</td>
+                    </tr>
+                    <tr>
+                        <td>28</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-valid">VALID</span></td>
+                        <td>Update test results</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/tests/1/results</code></td>
+                        <td>200</td>
+                        <td>200</td>
+                        <td class="response">{\"testId\":1,\"visitId\":1,\"testTemplate\":{\"templateId\":1,\"name\":\"EdgeTest_1757665803\",\"de</td>
+                    </tr>
+                    <tr>
+                        <td>29</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Empty approval request</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/tests/1/approve</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:04.550265\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>30</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Empty approver name</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/tests/1/approve</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:04.573844\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>31</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Whitespace approver</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/tests/1/approve</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"message\":\"Validation failed\",\"status\":400,\"timestamp\":\"2025-09-12T14:00:04.598639\",\"err</td>
+                    </tr>
+                    <tr>
+                        <td>32</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-business">BUSINESS</span></td>
+                        <td>Approve test results</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/tests/1/approve</code></td>
+                        <td>200</td>
+                        <td>200</td>
+                        <td class="response">{\"testId\":1,\"visitId\":1,\"testTemplate\":{\"templateId\":1,\"name\":\"EdgeTest_1757665803\",\"de</td>
+                    </tr>
+                    <tr>
+                        <td>33</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-business">BUSINESS</span></td>
+                        <td>Double approval attempt</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/1/tests/1/approve</code></td>
+                        <td>500</td>
+                        <td>500</td>
+                        <td class="response">{\"message\":\"Failed to approve test: Cannot approve test that is not completed\",\"status\":500,\"</td>
+                    </tr>
+                    <tr>
+                        <td>34</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Update non-existent test</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/999999/tests/999999/results</code></td>
+                        <td>404</td>
+                        <td>404</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>35</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Approve non-existent test</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/visits/999999/tests/999999/approve</code></td>
+                        <td>404</td>
+                        <td>404</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>36</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Search without name parameter</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/test-templates/search</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"timestamp\":\"2025-09-12T08:30:04.733+00:00\",\"status\":400,\"error\":\"Bad Request\",\"trace\":</td>
+                    </tr>
+                    <tr>
+                        <td>37</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Search with empty name</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/test-templates/search?name=</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>38</td>
+                        <td class="status-fail">FAIL</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Search with whitespace name</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/test-templates/search?name=   </code></td>
+                        <td>400</td>
+                        <td>000</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>39</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-valid">VALID</span></td>
+                        <td>Search for non-existent template</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/test-templates/search?name=NonExistent</code></td>
+                        <td>200</td>
+                        <td>200</td>
+                        <td class="response">[]</td>
+                    </tr>
+                    <tr>
+                        <td>40</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Filter by invalid status</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/visits?status=invalid-status</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>41</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Filter with empty status</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/visits?status=</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>42</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-valid">VALID</span></td>
+                        <td>Filter by valid status</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/visits?status=pending</code></td>
+                        <td>200</td>
+                        <td>200</td>
+                        <td class="response">[{\"visitId\":2,\"patientDetails\":{},\"createdAt\":\"2025-09-12T14:00:04.067928\",\"status\":\"PEND</td>
+                    </tr>
+                    <tr>
+                        <td>43</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Revenue without date parameters</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/billing/revenue</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response">{\"timestamp\":\"2025-09-12T08:30:04.896+00:00\",\"status\":400,\"error\":\"Bad Request\",\"trace\":</td>
+                    </tr>
+                    <tr>
+                        <td>44</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Invalid start date format</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/billing/revenue?startDate=invalid</code></td>
+                        <td>500</td>
+                        <td>500</td>
+                        <td class="response">{\"message\":\"Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalD</td>
+                    </tr>
+                    <tr>
+                        <td>45</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-business">BUSINESS</span></td>
+                        <td>End date before start date</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/billing/revenue?startDate=2025-01-01T00:00:00&endDate=2024-12-31T23:59:59</code></td>
+                        <td>400</td>
+                        <td>400</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>46</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-valid">VALID</span></td>
+                        <td>Valid revenue calculation</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/billing/revenue?startDate=2025-08-12T00:00:00&endDate=2025-09-12T23:59:59</code></td>
+                        <td>200</td>
+                        <td>200</td>
+                        <td class="response">0</td>
+                    </tr>
+                    <tr>
+                        <td>47</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Get non-existent bill</td>
+                        <td><span class="method method-get">GET</span></td>
+                        <td><code>/billing/999999</code></td>
+                        <td>404</td>
+                        <td>404</td>
+                        <td class="response"></td>
+                    </tr>
+                    <tr>
+                        <td>48</td>
+                        <td class="status-pass">PASS</td>
+                        <td><span class="category category-validation">VALIDATION</span></td>
+                        <td>Pay non-existent bill</td>
+                        <td><span class="method method-patch">PATCH</span></td>
+                        <td><code>/billing/999999/pay</code></td>
+                        <td>404</td>
+                        <td>404</td>
+                        <td class="response"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>Focused Edge Case Report generated on Fri Sep 12 14:00:05 IST 2025</p>
+            <p>Base URL: http://localhost:8080</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -33,6 +33,11 @@ public class VisitController {
     @PostMapping
     public ResponseEntity<VisitResponse> createVisit(@Valid @RequestBody CreateVisitRequest request) {
         try {
+            // Additional validation for null patient details
+            if (request.getPatientDetails() == null || request.getPatientDetails().isNull()) {
+                throw new IllegalArgumentException("Patient details cannot be null");
+            }
+
             VisitResponse response = visitService.createVisit(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
@@ -62,7 +67,11 @@ public class VisitController {
     public ResponseEntity<List<VisitResponse>> getVisits(@RequestParam(required = false) String status) {
         try {
             List<VisitResponse> visits;
-            if (status != null && !status.isEmpty()) {
+            if (status != null) {
+                // If status parameter is provided but empty or whitespace, return error
+                if (status.isEmpty() || status.trim().isEmpty()) {
+                    return ResponseEntity.badRequest().build();
+                }
                 VisitStatus visitStatus = VisitStatus.fromValue(status);
                 visits = visitService.getVisitsByStatus(visitStatus);
             } else {
@@ -97,9 +106,14 @@ public class VisitController {
      * PATCH /visits/{id}/status
      */
     @PatchMapping("/{id}/status")
-    public ResponseEntity<VisitResponse> updateVisitStatus(@PathVariable Long id, 
+    public ResponseEntity<VisitResponse> updateVisitStatus(@PathVariable Long id,
                                                           @RequestParam String status) {
         try {
+            // Validate status parameter
+            if (status == null || status.trim().isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+
             VisitStatus newStatus = VisitStatus.fromValue(status);
             VisitResponse response = visitService.updateVisitStatus(id, newStatus);
             return ResponseEntity.ok(response);
@@ -171,6 +185,11 @@ public class VisitController {
                                                             @PathVariable Long testId,
                                                             @Valid @RequestBody UpdateTestResultsRequest request) {
         try {
+            // Additional validation for null results
+            if (request.getResults() == null || request.getResults().isNull()) {
+                throw new IllegalArgumentException("Results cannot be null");
+            }
+
             LabTestResponse response = labTestService.updateTestResults(visitId, testId, request);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {

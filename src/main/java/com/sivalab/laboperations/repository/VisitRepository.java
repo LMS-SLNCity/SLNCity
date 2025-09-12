@@ -19,11 +19,10 @@ public interface VisitRepository extends JpaRepository<Visit, Long> {
     List<Visit> findByStatus(VisitStatus status);
     
     /**
-     * Find visits by patient phone number using JSON query
-     * Note: Simplified for H2 compatibility - will be enhanced for PostgreSQL
+     * Find visits by patient phone number using PostgreSQL JSON query
      */
-    // @Query("SELECT v FROM Visit v WHERE JSON_EXTRACT(v.patientDetails, '$.phone') = :phone")
-    // List<Visit> findByPatientPhone(@Param("phone") String phone);
+    @Query(value = "SELECT * FROM visits WHERE patient_details->>'phone' = :phone", nativeQuery = true)
+    List<Visit> findByPatientPhone(@Param("phone") String phone);
 
     /**
      * Find visits by patient name using JSON query (case-insensitive)

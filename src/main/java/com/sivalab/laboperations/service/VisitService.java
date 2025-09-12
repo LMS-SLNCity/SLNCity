@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,15 +67,12 @@ public class VisitService {
     
     /**
      * Get visits by patient phone
-     * Note: Temporarily disabled for H2 compatibility
      */
     @Transactional(readOnly = true)
     public List<VisitResponse> getVisitsByPatientPhone(String phone) {
-        // Temporarily return empty list - will be implemented with PostgreSQL
-        return Collections.emptyList();
-        // return visitRepository.findByPatientPhone(phone).stream()
-        //         .map(this::convertToResponse)
-        //         .collect(Collectors.toList());
+        return visitRepository.findByPatientPhone(phone).stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
     }
     
     /**

@@ -30,6 +30,11 @@ public class TestTemplateController {
     @PostMapping
     public ResponseEntity<TestTemplateResponse> createTestTemplate(@Valid @RequestBody CreateTestTemplateRequest request) {
         try {
+            // Additional validation for null parameters
+            if (request.getParameters() == null || request.getParameters().isNull()) {
+                throw new IllegalArgumentException("Parameters cannot be null");
+            }
+
             TestTemplateResponse response = testTemplateService.createTestTemplate(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (RuntimeException e) {
@@ -77,10 +82,10 @@ public class TestTemplateController {
      */
     @GetMapping("/search")
     public ResponseEntity<List<TestTemplateResponse>> searchTestTemplates(@RequestParam String name) {
-        if (name == null || name.trim().isEmpty()) {
+        if (name == null || name.trim().isEmpty() || name.trim().isBlank()) {
             return ResponseEntity.badRequest().build();
         }
-        
+
         try {
             List<TestTemplateResponse> templates = testTemplateService.searchTestTemplatesByName(name.trim());
             return ResponseEntity.ok(templates);

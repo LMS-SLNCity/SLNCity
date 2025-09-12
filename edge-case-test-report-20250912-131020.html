@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Operations API Edge Case Test Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; color: #333; border-bottom: 2px solid #e74c3c; padding-bottom: 20px; margin-bottom: 30px; }
+        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .summary-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; }
+        .summary-card h3 { margin: 0 0 10px 0; font-size: 2em; }
+        .summary-card p { margin: 0; opacity: 0.9; }
+        .pass { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); }
+        .fail { background: linear-gradient(135deg, #f44336 0%, #da190b 100%); }
+        .total { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; font-weight: bold; }
+        .status-pass { color: #4CAF50; font-weight: bold; }
+        .status-fail { color: #f44336; font-weight: bold; }
+        .category { padding: 4px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; color: white; }
+        .category-validation { background: #e74c3c; }
+        .category-boundary { background: #f39c12; }
+        .category-business { background: #9b59b6; }
+        .category-format { background: #34495e; }
+        .category-complex { background: #16a085; }
+        .category-special { background: #e67e22; }
+        .category-concurrent { background: #8e44ad; }
+        .category-valid { background: #27ae60; }
+        .category-idempotent { background: #3498db; }
+        .method { padding: 4px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
+        .method-get { background: #e3f2fd; color: #1976d2; }
+        .method-post { background: #e8f5e8; color: #388e3c; }
+        .method-patch { background: #fff3e0; color: #f57c00; }
+        .method-put { background: #f3e5f5; color: #7b1fa2; }
+        .method-delete { background: #ffebee; color: #d32f2f; }
+        .response { max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: monospace; font-size: 0.9em; }
+        .timestamp { text-align: center; color: #666; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔬 Lab Operations API Edge Case Test Report</h1>
+            <p>Comprehensive Boundary and Validation Testing</p>
+        </div>
+        
+        <div class="summary">
+            <div class="summary-card total">
+                <h3>66</h3>
+                <p>Total Edge Cases</p>
+            </div>
+            <div class="summary-card pass">
+                <h3>36</h3>
+                <p>Passed</p>
+            </div>
+            <div class="summary-card fail">
+                <h3>30</h3>
+                <p>Failed</p>
+            </div>
+            <div class="summary-card">
+                <h3>54%</h3>
+                <p>Success Rate</p>
+            </div>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Status</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Status Code</th>
+                    <th>Response</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Empty request body</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:20.962722","errors":{"name":"Test name is required","parameters":"Parameters are required","basePrice":"Base price is required"}}</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Empty name</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:20.981396","errors":{"name":"Test name is required","parameters":"Parameters are required","basePrice":"Base price is required"}}</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Whitespace-only name</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:20.999946","errors":{"name":"Test name is required","parameters":"Parameters are required","basePrice":"Base price is required"}}</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Zero base price</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:21.019444","errors":{"parameters":"Parameters are required","basePrice":"Base price must be greater than 0"}}</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Negative base price</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:21.039217","errors":{"parameters":"Parameters are required","basePrice":"Base price must be greater than 0"}}</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Missing parameters</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:21.05811","errors":{"parameters":"Parameters are required"}}</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Null parameters</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>201</td>
+                    <td class="response">{"templateId":4,"name":"Test","description":null,"parameters":null,"basePrice":100,"createdAt":"2025-09-12T13:10:21.077462"}</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Minimum valid values</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>201</td>
+                    <td class="response">{"templateId":5,"name":"A","description":"","parameters":{},"basePrice":0.01,"createdAt":"2025-09-12T13:10:21.106314"}</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Name too long (300 chars)</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>500</td>
+                    <td class="response">{"message":"Failed to create test template: could not execute statement [Value too long for column \"NAME CHARACTER VARYING(255)\": \"'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA... (300)\"; SQL statement:\ninsert into test_templates (base_price,created_at,description,name,parameters,template_id) values (?,?,?,?,? format json,default) [22001-224]] [insert into test_templates (base_price,created_at,description,name,parameters,template_id) values (?,?,?,?,? format json,default)]; SQL [insert into test_templates (base_price,created_at,description,name,parameters,template_id) values (?,?,?,?,? format json,default)]","status":500,"timestamp":"2025-09-12T13:10:21.145741","errors":null}</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Maximum decimal price</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>201</td>
+                    <td class="response">{"templateId":7,"name":"BigPrice","description":null,"parameters":{},"basePrice":99999999.99,"createdAt":"2025-09-12T13:10:21.164197"}</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Price exceeds decimal(10,2)</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>500</td>
+                    <td class="response">{"message":"Failed to create test template: could not execute statement [Value too long for column \"BASE_PRICE NUMERIC(10, 2)\": \"999999999.99 (11)\"; SQL statement:\ninsert into test_templates (base_price,created_at,description,name,parameters,template_id) values (?,?,?,?,? format json,default) [22001-224]] [insert into test_templates (base_price,created_at,description,name,parameters,template_id) values (?,?,?,?,? format json,default)]; SQL [insert into test_templates (base_price,created_at,description,name,parameters,template_id) values (?,?,?,?,? format json,default)]","status":500,"timestamp":"2025-09-12T13:10:21.185228","errors":null}</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-business">BUSINESS</span></td>
+                    <td>Duplicate template name</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>409</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-format">FORMAT</span></td>
+                    <td>Invalid JSON syntax</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>500</td>
+                    <td class="response">{"message":"JSON parse error: Unexpected character ('i' (code 105)): was expecting double-quote to start field name","status":500,"timestamp":"2025-09-12T13:10:21.244261","errors":null}</td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-complex">COMPLEX</span></td>
+                    <td>Complex nested parameters</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/test-templates</code></td>
+                    <td>201</td>
+                    <td class="response">{"templateId":8,"name":"ComplexParams_1757662821","description":null,"parameters":{"hemoglobin":{"type":"number","unit":"g/dL","normalRange":"12-16","criticalLow":8,"criticalHigh":20},"nested":{"deep":{"value":true}}},"basePrice":100,"createdAt":"2025-09-12T13:10:21.267326"}</td>
+                </tr>
+                <tr>
+                    <td>15</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Empty request body</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:21.286865","errors":{"patientDetails":"Patient details are required"}}</td>
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Null patient details</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits</code></td>
+                    <td>201</td>
+                    <td class="response">{"visitId":4,"patientDetails":null,"createdAt":"2025-09-12T13:10:21.305301","status":"PENDING","labTests":null,"billing":null}</td>
+                </tr>
+                <tr>
+                    <td>17</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Empty patient details object</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits</code></td>
+                    <td>201</td>
+                    <td class="response">{"visitId":5,"patientDetails":{},"createdAt":"2025-09-12T13:10:21.325784","status":"PENDING","labTests":null,"billing":null}</td>
+                </tr>
+                <tr>
+                    <td>18</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Negative age (no validation)</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits</code></td>
+                    <td>201</td>
+                    <td class="response">{"visitId":6,"patientDetails":{"age":-5},"createdAt":"2025-09-12T13:10:21.344985","status":"PENDING","labTests":null,"billing":null}</td>
+                </tr>
+                <tr>
+                    <td>19</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Very high age (no validation)</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits</code></td>
+                    <td>201</td>
+                    <td class="response">{"visitId":7,"patientDetails":{"age":200},"createdAt":"2025-09-12T13:10:21.363648","status":"PENDING","labTests":null,"billing":null}</td>
+                </tr>
+                <tr>
+                    <td>20</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Very long patient name</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits</code></td>
+                    <td>201</td>
+                    <td class="response">{"visitId":8,"patientDetails":{"name":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","phone":"1234567890"},"createdAt":"2025-09-12T13:10:21.384297","status":"PENDING","labTests":null,"billing":null}</td>
+                </tr>
+                <tr>
+                    <td>21</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-special">SPECIAL</span></td>
+                    <td>Special characters in patient data</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits</code></td>
+                    <td>201</td>
+                    <td class="response">{"visitId":9,"patientDetails":{"name":"José María","address":"123 Main St. #4B","phone":"+1-555-123-4567"},"createdAt":"2025-09-12T13:10:21.404386","status":"PENDING","labTests":null,"billing":null}</td>
+                </tr>
+                <tr>
+                    <td>22</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-invalid status value">Invalid status value</span></td>
+                    <td></td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/status?status=invalid</code></td>
+                    <td>400</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>23</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-empty status parameter">Empty status parameter</span></td>
+                    <td></td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/status?status=</code></td>
+                    <td>400</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>24</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-missing status parameter">Missing status parameter</span></td>
+                    <td></td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/status</code></td>
+                    <td>400</td>
+                    <td class="response">{"timestamp":"2025-09-12T07:40:21.464+00:00","status":400,"error":"Bad Request","trace":"org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'status' for method parameter type String is not present\n\tat org.springframework.web.method.annotation.RequestParamMethodArgumentResolver.handleMissingValueInternal(RequestParamMethodArgumentResolver.java:217)\n\tat org.springframework.web.method.annotation.RequestParamMethodArgumentResolver.handleMissingValue(RequestParamMethodArgumentResolver.java:193)\n\tat org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:124)\n\tat org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:122)\n\tat org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:218)\n\tat org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:171)\n\tat org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:917)\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:829)\n\tat org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)\n\tat org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)\n\tat org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)\n\tat org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)\n\tat org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:888)\n\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)\n\tat org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)\n\tat org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)\n\tat org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)\n\tat org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)\n\tat org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)\n\tat org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)\n\tat org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)\n\tat org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)\n\tat org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)\n\tat org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)\n\tat org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)\n\tat org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)\n\tat org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)\n\tat org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)\n\tat java.base/java.lang.Thread.run(Thread.java:1447)\n","message":"Required parameter 'status' is not present.","path":"/visits/3/status"}</td>
+                </tr>
+                <tr>
+                    <td>25</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-valid status transition">Valid status transition</span></td>
+                    <td></td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/status?status=in-progress</code></td>
+                    <td>200</td>
+                    <td class="response">{"visitId":3,"patientDetails":{"name":"Test Patient","age":30,"gender":"M","phone":"1234567890"},"createdAt":"2025-09-12T13:10:20.919713","status":"IN_PROGRESS","labTests":[{"testId":3,"visitId":3,"testTemplate":{"templateId":3,"name":"EdgeTest_1757662820","description":"Test template","parameters":{"test":"value"},"basePrice":100.00,"createdAt":"2025-09-12T13:10:20.878843"},"status":"PENDING","price":100.00,"results":null,"approved":false,"approvedBy":null,"approvedAt":null}],"billing":null}</td>
+                </tr>
+                <tr>
+                    <td>26</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-invalid status jump (in-progress to completed)">Invalid status jump (in-progress to completed)</span></td>
+                    <td></td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/status?status=completed</code></td>
+                    <td>500</td>
+                    <td class="response">{"message":"Failed to update visit status: Invalid status transition from IN_PROGRESS to COMPLETED","status":500,"timestamp":"2025-09-12T13:10:21.511424","errors":null}</td>
+                </tr>
+                <tr>
+                    <td>27</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-invalid status jump (in-progress to billed)">Invalid status jump (in-progress to billed)</span></td>
+                    <td></td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/status?status=billed</code></td>
+                    <td>500</td>
+                    <td class="response">{"message":"Failed to update visit status: Invalid status transition from IN_PROGRESS to BILLED","status":500,"timestamp":"2025-09-12T13:10:21.531024","errors":null}</td>
+                </tr>
+                <tr>
+                    <td>28</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-visit id zero">Visit ID zero</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/visits/0</code></td>
+                    <td>404</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>29</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-negative visit id">Negative visit ID</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/visits/-1</code></td>
+                    <td>404</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>30</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-very large visit id">Very large visit ID</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/visits/999999999</code></td>
+                    <td>404</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>31</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-update non-existent visit status">Update non-existent visit status</span></td>
+                    <td></td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/999999/status?status=in-progress</code></td>
+                    <td>404</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>32</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Non-existent template ID</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits/3/tests</code></td>
+                    <td>404</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>33</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Zero template ID</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits/3/tests</code></td>
+                    <td>404</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>34</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Negative template ID</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits/3/tests</code></td>
+                    <td>404</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>35</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Missing template ID</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits/3/tests</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:21.695176","errors":{"testTemplateId":"Test template ID is required"}}</td>
+                </tr>
+                <tr>
+                    <td>36</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Null template ID</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits/3/tests</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:21.714888","errors":{"testTemplateId":"Test template ID is required"}}</td>
+                </tr>
+                <tr>
+                    <td>37</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Zero price (allowed)</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits/3/tests</code></td>
+                    <td>201</td>
+                    <td class="response">{"testId":4,"visitId":3,"testTemplate":{"templateId":3,"name":"EdgeTest_1757662820","description":"Test template","parameters":{"test":"value"},"basePrice":100.00,"createdAt":"2025-09-12T13:10:20.878843"},"status":"PENDING","price":0,"results":null,"approved":false,"approvedBy":null,"approvedAt":null}</td>
+                </tr>
+                <tr>
+                    <td>38</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Negative price (no validation)</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits/3/tests</code></td>
+                    <td>201</td>
+                    <td class="response">{"testId":5,"visitId":3,"testTemplate":{"templateId":3,"name":"EdgeTest_1757662820","description":"Test template","parameters":{"test":"value"},"basePrice":100.00,"createdAt":"2025-09-12T13:10:20.878843"},"status":"PENDING","price":-10,"results":null,"approved":false,"approvedBy":null,"approvedAt":null}</td>
+                </tr>
+                <tr>
+                    <td>39</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-boundary">BOUNDARY</span></td>
+                    <td>Maximum price</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits/3/tests</code></td>
+                    <td>201</td>
+                    <td class="response">{"testId":6,"visitId":3,"testTemplate":{"templateId":3,"name":"EdgeTest_1757662820","description":"Test template","parameters":{"test":"value"},"basePrice":100.00,"createdAt":"2025-09-12T13:10:20.878843"},"status":"PENDING","price":99999999.99,"results":null,"approved":false,"approvedBy":null,"approvedAt":null}</td>
+                </tr>
+                <tr>
+                    <td>40</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Add test to non-existent visit</td>
+                    <td><span class="method method-post">POST</span></td>
+                    <td><code>/visits/999999/tests</code></td>
+                    <td>404</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>41</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Empty results</td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/tests/3/results</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:21.817759","errors":{"results":"Results are required"}}</td>
+                </tr>
+                <tr>
+                    <td>42</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Null results</td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/tests/3/results</code></td>
+                    <td>200</td>
+                    <td class="response">{"testId":3,"visitId":3,"testTemplate":{"templateId":3,"name":"EdgeTest_1757662820","description":"Test template","parameters":{"test":"value"},"basePrice":100.00,"createdAt":"2025-09-12T13:10:20.878843"},"status":"COMPLETED","price":100.00,"results":null,"approved":false,"approvedBy":null,"approvedAt":null}</td>
+                </tr>
+                <tr>
+                    <td>43</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-valid">VALID</span></td>
+                    <td>Update test results</td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/tests/3/results</code></td>
+                    <td>200</td>
+                    <td class="response">{"testId":3,"visitId":3,"testTemplate":{"templateId":3,"name":"EdgeTest_1757662820","description":"Test template","parameters":{"test":"value"},"basePrice":100.00,"createdAt":"2025-09-12T13:10:20.878843"},"status":"COMPLETED","price":100.00,"results":{"value":"normal"},"approved":false,"approvedBy":null,"approvedAt":null}</td>
+                </tr>
+                <tr>
+                    <td>44</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Empty approval request</td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/tests/3/approve</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:21.877196","errors":{"approvedBy":"Approver name is required"}}</td>
+                </tr>
+                <tr>
+                    <td>45</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Empty approver name</td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/tests/3/approve</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:21.897791","errors":{"approvedBy":"Approver name is required"}}</td>
+                </tr>
+                <tr>
+                    <td>46</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Whitespace-only approver</td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/tests/3/approve</code></td>
+                    <td>400</td>
+                    <td class="response">{"message":"Validation failed","status":400,"timestamp":"2025-09-12T13:10:21.916524","errors":{"approvedBy":"Approver name is required"}}</td>
+                </tr>
+                <tr>
+                    <td>47</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-valid">VALID</span></td>
+                    <td>Approve test results</td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/tests/3/approve</code></td>
+                    <td>200</td>
+                    <td class="response">{"testId":3,"visitId":3,"testTemplate":{"templateId":3,"name":"EdgeTest_1757662820","description":"Test template","parameters":{"test":"value"},"basePrice":100.00,"createdAt":"2025-09-12T13:10:20.878843"},"status":"APPROVED","price":100.00,"results":{"value":"normal"},"approved":true,"approvedBy":"Dr. Smith","approvedAt":"2025-09-12T13:10:21.935109"}</td>
+                </tr>
+                <tr>
+                    <td>48</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-business">BUSINESS</span></td>
+                    <td>Double approval attempt</td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/tests/3/approve</code></td>
+                    <td>500</td>
+                    <td class="response">{"message":"Failed to approve test: Cannot approve test that is not completed","status":500,"timestamp":"2025-09-12T13:10:21.959242","errors":null}</td>
+                </tr>
+                <tr>
+                    <td>49</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Update non-existent test results</td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/tests/999999/results</code></td>
+                    <td>404</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>50</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-validation">VALIDATION</span></td>
+                    <td>Approve non-existent test</td>
+                    <td><span class="method method-patch">PATCH</span></td>
+                    <td><code>/visits/3/tests/999999/approve</code></td>
+                    <td>404</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>51</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-generate bill for non-approved visit">Generate bill for non-approved visit</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/billing/visits/3/bill</code></td>
+                    <td>400</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>52</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-revenue without date parameters">Revenue without date parameters</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/billing/revenue</code></td>
+                    <td>400</td>
+                    <td class="response">{"timestamp":"2025-09-12T07:40:22.054+00:00","status":400,"error":"Bad Request","trace":"org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'startDate' for method parameter type LocalDateTime is not present\n\tat org.springframework.web.method.annotation.RequestParamMethodArgumentResolver.handleMissingValueInternal(RequestParamMethodArgumentResolver.java:217)\n\tat org.springframework.web.method.annotation.RequestParamMethodArgumentResolver.handleMissingValue(RequestParamMethodArgumentResolver.java:193)\n\tat org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:124)\n\tat org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:122)\n\tat org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:218)\n\tat org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:171)\n\tat org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:917)\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:829)\n\tat org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)\n\tat org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)\n\tat org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)\n\tat org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)\n\tat org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)\n\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)\n\tat org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)\n\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)\n\tat org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)\n\tat org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)\n\tat org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)\n\tat org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)\n\tat org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)\n\tat org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)\n\tat org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)\n\tat org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)\n\tat org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)\n\tat org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)\n\tat org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)\n\tat org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)\n\tat org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)\n\tat org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)\n\tat java.base/java.lang.Thread.run(Thread.java:1447)\n","message":"Required parameter 'startDate' is not present.","path":"/billing/revenue"}</td>
+                </tr>
+                <tr>
+                    <td>53</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-invalid start date format">Invalid start date format</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/billing/revenue?startDate=invalid</code></td>
+                    <td>500</td>
+                    <td class="response">{"message":"Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.RequestParam @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value [invalid]","status":500,"timestamp":"2025-09-12T13:10:22.073298","errors":null}</td>
+                </tr>
+                <tr>
+                    <td>54</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-end date before start date">End date before start date</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/billing/revenue?startDate=2025-01-01T00:00:00&endDate=2024-12-31T23:59:59</code></td>
+                    <td>400</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>55</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-valid revenue calculation">Valid revenue calculation</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/billing/revenue?startDate=2025-08-12T00:00:00&endDate=2025-09-12T23:59:59</code></td>
+                    <td>200</td>
+                    <td class="response">1000.00</td>
+                </tr>
+                <tr>
+                    <td>56</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-search without name parameter">Search without name parameter</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/test-templates/search</code></td>
+                    <td>400</td>
+                    <td class="response">{"timestamp":"2025-09-12T07:40:22.137+00:00","status":400,"error":"Bad Request","trace":"org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'name' for method parameter type String is not present\n\tat org.springframework.web.method.annotation.RequestParamMethodArgumentResolver.handleMissingValueInternal(RequestParamMethodArgumentResolver.java:217)\n\tat org.springframework.web.method.annotation.RequestParamMethodArgumentResolver.handleMissingValue(RequestParamMethodArgumentResolver.java:193)\n\tat org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:124)\n\tat org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:122)\n\tat org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:218)\n\tat org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:171)\n\tat org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:917)\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:829)\n\tat org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)\n\tat org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)\n\tat org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)\n\tat org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)\n\tat org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)\n\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)\n\tat org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)\n\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)\n\tat org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)\n\tat org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)\n\tat org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)\n\tat org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)\n\tat org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)\n\tat org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)\n\tat org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)\n\tat org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)\n\tat org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)\n\tat org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)\n\tat org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)\n\tat org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)\n\tat org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)\n\tat org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)\n\tat org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)\n\tat java.base/java.lang.Thread.run(Thread.java:1447)\n","message":"Required parameter 'name' is not present.","path":"/test-templates/search"}</td>
+                </tr>
+                <tr>
+                    <td>57</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-search with empty name">Search with empty name</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/test-templates/search?name=</code></td>
+                    <td>400</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>58</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-search with whitespace-only name">Search with whitespace-only name</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/test-templates/search?name=   </code></td>
+                    <td>000</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>59</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-search for non-existent template">Search for non-existent template</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/test-templates/search?name=NonExistentTemplate</code></td>
+                    <td>200</td>
+                    <td class="response">[]</td>
+                </tr>
+                <tr>
+                    <td>60</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-filter by invalid status">Filter by invalid status</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/visits?status=invalid-status</code></td>
+                    <td>400</td>
+                    <td class="response"></td>
+                </tr>
+                <tr>
+                    <td>61</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-filter with empty status">Filter with empty status</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/visits?status=</code></td>
+                    <td>200</td>
+                    <td class="response">[{"visitId":1,"patientDetails":{"name":"John Doe","age":35,"gender":"M","phone":"9876543210","address":"123 Main St, Hyderabad","email":"john.doe@example.com"},"createdAt":"2025-09-12T13:03:28.261798","status":"COMPLETED","labTests":[{"testId":1,"visitId":1,"testTemplate":{"templateId":1,"name":"Blood Test 1757662407","description":"Full blood analysis","parameters":{"hemoglobin":{"type":"number","unit":"g/dL","normalRange":"12-16"}},"basePrice":500.00,"createdAt":"2025-09-12T13:03:28.094583"},"status":"APPROVED","price":500.00,"results":{"hemoglobin":"14.2 g/dL","conclusion":"Normal"},"approved":true,"approvedBy":"Dr. Smith","approvedAt":"2025-09-12T13:03:28.478484"}],"billing":{"billId":1,"visitId":1,"totalAmount":500.00,"paid":true,"createdAt":"2025-09-12T13:03:28.53894"}},{"visitId":2,"patientDetails":{"name":"John Doe","age":35,"gender":"M","phone":"9876543210","address":"123 Main St, Hyderabad","email":"john.doe@example.com"},"createdAt":"2025-09-12T13:06:45.356802","status":"COMPLETED","labTests":[{"testId":2,"visitId":2,"testTemplate":{"templateId":2,"name":"Blood Test 1757662605 - Updated","description":"Updated description","parameters":{"hemoglobin":{"type":"number","unit":"g/dL","normalRange":"12-16"}},"basePrice":550.00,"createdAt":"2025-09-12T13:06:45.244631"},"status":"APPROVED","price":500.00,"results":{"hemoglobin":"14.2 g/dL","conclusion":"Normal"},"approved":true,"approvedBy":"Dr. Smith","approvedAt":"2025-09-12T13:06:45.538939"}],"billing":{"billId":2,"visitId":2,"totalAmount":500.00,"paid":true,"createdAt":"2025-09-12T13:06:45.565893"}},{"visitId":3,"patientDetails":{"name":"Test Patient","age":30,"gender":"M","phone":"1234567890"},"createdAt":"2025-09-12T13:10:20.919713","status":"IN_PROGRESS","labTests":[{"testId":3,"visitId":3,"testTemplate":{"templateId":3,"name":"EdgeTest_1757662820","description":"Test template","parameters":{"test":"value"},"basePrice":100.00,"createdAt":"2025-09-12T13:10:20.878843"},"status":"APPROVED","price":100.00,"results":{"value":"normal"},"approved":true,"approvedBy":"Dr. Smith","approvedAt":"2025-09-12T13:10:21.935109"},{"testId":4,"visitId":3,"testTemplate":{"templateId":3,"name":"EdgeTest_1757662820","description":"Test template","parameters":{"test":"value"},"basePrice":100.00,"createdAt":"2025-09-12T13:10:20.878843"},"status":"PENDING","price":0.00,"results":null,"approved":false,"approvedBy":null,"approvedAt":null},{"testId":5,"visitId":3,"testTemplate":{"templateId":3,"name":"EdgeTest_1757662820","description":"Test template","parameters":{"test":"value"},"basePrice":100.00,"createdAt":"2025-09-12T13:10:20.878843"},"status":"PENDING","price":-10.00,"results":null,"approved":false,"approvedBy":null,"approvedAt":null},{"testId":6,"visitId":3,"testTemplate":{"templateId":3,"name":"EdgeTest_1757662820","description":"Test template","parameters":{"test":"value"},"basePrice":100.00,"createdAt":"2025-09-12T13:10:20.878843"},"status":"PENDING","price":99999999.99,"results":null,"approved":false,"approvedBy":null,"approvedAt":null}],"billing":null},{"visitId":4,"patientDetails":null,"createdAt":"2025-09-12T13:10:21.305301","status":"PENDING","labTests":null,"billing":null},{"visitId":5,"patientDetails":{},"createdAt":"2025-09-12T13:10:21.325784","status":"PENDING","labTests":null,"billing":null},{"visitId":6,"patientDetails":{"age":-5},"createdAt":"2025-09-12T13:10:21.344985","status":"PENDING","labTests":null,"billing":null},{"visitId":7,"patientDetails":{"age":200},"createdAt":"2025-09-12T13:10:21.363648","status":"PENDING","labTests":null,"billing":null},{"visitId":8,"patientDetails":{"name":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","phone":"1234567890"},"createdAt":"2025-09-12T13:10:21.384297","status":"PENDING","labTests":null,"billing":null},{"visitId":9,"patientDetails":{"name":"José María","address":"123 Main St. #4B","phone":"+1-555-123-4567"},"createdAt":"2025-09-12T13:10:21.404386","status":"PENDING","labTests":null,"billing":null}]</td>
+                </tr>
+                <tr>
+                    <td>62</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-filter by valid status">Filter by valid status</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/visits?status=pending</code></td>
+                    <td>200</td>
+                    <td class="response">[{"visitId":4,"patientDetails":null,"createdAt":"2025-09-12T13:10:21.305301","status":"PENDING","labTests":null,"billing":null},{"visitId":5,"patientDetails":{},"createdAt":"2025-09-12T13:10:21.325784","status":"PENDING","labTests":null,"billing":null},{"visitId":6,"patientDetails":{"age":-5},"createdAt":"2025-09-12T13:10:21.344985","status":"PENDING","labTests":null,"billing":null},{"visitId":7,"patientDetails":{"age":200},"createdAt":"2025-09-12T13:10:21.363648","status":"PENDING","labTests":null,"billing":null},{"visitId":8,"patientDetails":{"name":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","phone":"1234567890"},"createdAt":"2025-09-12T13:10:21.384297","status":"PENDING","labTests":null,"billing":null},{"visitId":9,"patientDetails":{"name":"José María","address":"123 Main St. #4B","phone":"+1-555-123-4567"},"createdAt":"2025-09-12T13:10:21.404386","status":"PENDING","labTests":null,"billing":null}]</td>
+                </tr>
+                <tr>
+                    <td>63</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-search with url-encoded spaces">Search with URL-encoded spaces</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/test-templates/search?name=Test%20With%20Spaces</code></td>
+                    <td>200</td>
+                    <td class="response">[]</td>
+                </tr>
+                <tr>
+                    <td>64</td>
+                    <td class="status-fail">FAIL</td>
+                    <td><span class="category category-search with special characters">Search with special characters</span></td>
+                    <td></td>
+                    <td><span class="method method-get">GET</span></td>
+                    <td><code>/test-templates/search?name=Test%26Special</code></td>
+                    <td>200</td>
+                    <td class="response">[]</td>
+                </tr>
+                <tr>
+                    <td>65</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-concurrent">CONCURRENT</span></td>
+                    <td>First concurrent update</td>
+                    <td><span class="method method-put">PUT</span></td>
+                    <td><code>/test-templates/3</code></td>
+                    <td>200</td>
+                    <td class="response">{"templateId":3,"name":"ConcurrentTest_1757662822_1","description":null,"parameters":{},"basePrice":100,"createdAt":"2025-09-12T13:10:20.878843"}</td>
+                </tr>
+                <tr>
+                    <td>66</td>
+                    <td class="status-pass">PASS</td>
+                    <td><span class="category category-concurrent">CONCURRENT</span></td>
+                    <td>Second concurrent update</td>
+                    <td><span class="method method-put">PUT</span></td>
+                    <td><code>/test-templates/3</code></td>
+                    <td>200</td>
+                    <td class="response">{"templateId":3,"name":"ConcurrentTest_1757662822_2","description":null,"parameters":{},"basePrice":200,"createdAt":"2025-09-12T13:10:20.878843"}</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="timestamp">
+            <p>Edge Case Report generated on Fri Sep 12 13:10:23 IST 2025</p>
+            <p>Base URL: http://localhost:8080</p>
+        </div>
+    </div>
+</body>
+</html>
