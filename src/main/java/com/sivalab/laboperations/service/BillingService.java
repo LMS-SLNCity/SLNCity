@@ -2,11 +2,16 @@ package com.sivalab.laboperations.service;
 
 import com.sivalab.laboperations.dto.BillingResponse;
 import com.sivalab.laboperations.entity.Billing;
+import com.sivalab.laboperations.entity.LabTest;
 import com.sivalab.laboperations.entity.Visit;
 import com.sivalab.laboperations.entity.VisitStatus;
 import com.sivalab.laboperations.repository.BillingRepository;
 import com.sivalab.laboperations.repository.LabTestRepository;
 import com.sivalab.laboperations.repository.VisitRepository;
+
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +42,18 @@ public class BillingService {
      * Generate bill for visit
      */
     public BillingResponse generateBill(Long visitId) {
+
+        List<LabTest> tests = labTestRepository.findByVisitVisitId(visitId);
+        if (tests.isEmpty()) {
+            throw new RuntimeException("No tests found for visit ID: " + visitId);
+        }
+        for (LabTest test : tests) {
+            if (test.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+                throw new RuntimeException("Test price is invalid "+test.getPrice()+" (must be greater than zero) for test ID: " + test.getTestId());
+
+            }
+        }
+
         Visit visit = visitRepository.findById(visitId)
                 .orElseThrow(() -> new RuntimeException("Visit not found with ID: " + visitId));
         
@@ -51,6 +68,8 @@ public class BillingService {
         }
         
         // Calculate total amount from lab tests
+        @NotNull(message = "Total amount cannot be null ")
+        @DecimalMin(value = "0.0", inclusive = false, message = "Total amount must be greater than zero")
         BigDecimal totalAmount = labTestRepository.calculateTotalPriceForVisit(visitId);
         
         if (totalAmount.compareTo(BigDecimal.ZERO) <= 0) {

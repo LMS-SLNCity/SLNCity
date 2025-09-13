@@ -14,9 +14,11 @@ CREATE TABLE test_templates (
     template_id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
-    parameters JSONB NOT NULL, -- defines dynamic fields, reference ranges, types
+    parameters JSONB NOT NULL,
     base_price DECIMAL(10,2) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP DEFAULT NOW(),
+    CONSTRAINT check_positive_base_price 
+    CHECK (base_price > 0)
 );
 
 -- Create lab_tests table
@@ -30,6 +32,8 @@ CREATE TABLE lab_tests (
     approved BOOLEAN DEFAULT FALSE,
     approved_by VARCHAR(255),
     approved_at TIMESTAMP
+    Add check_positive_price
+    Check (price > 0)
 );
 
 -- Create billing table

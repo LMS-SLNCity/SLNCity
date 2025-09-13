@@ -2,6 +2,8 @@ package com.sivalab.laboperations.entity;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -29,6 +31,7 @@ public class LabTest {
     @Column(name = "status")
     private TestStatus status = TestStatus.PENDING;
     
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
     
