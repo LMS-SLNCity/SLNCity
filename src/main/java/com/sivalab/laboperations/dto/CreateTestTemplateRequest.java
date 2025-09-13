@@ -18,7 +18,7 @@ public class CreateTestTemplateRequest {
     private JsonNode parameters;
     
     @NotNull(message = "Base price is required")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Base price must be greater than 0")
+    @DecimalMin(value = "0.01", inclusive = false, message = "Base price must be greater than 0")
     private BigDecimal basePrice;
     
     // Constructors

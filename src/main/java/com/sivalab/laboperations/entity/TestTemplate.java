@@ -31,7 +31,7 @@ public class TestTemplate {
     @Column(name = "parameters", nullable = false, columnDefinition = "json")
     private JsonNode parameters;
     
-    @DecimalMin(value="0.0", inclusive= false, message="Base Price must be Greater than zero")
+    @DecimalMin(value="0.01", inclusive= false, message="Base Price must be Greater than zero")
     @Column(name = "base_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal basePrice;
     
