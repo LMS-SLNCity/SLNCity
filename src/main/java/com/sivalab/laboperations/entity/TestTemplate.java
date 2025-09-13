@@ -2,6 +2,8 @@ package com.sivalab.laboperations.entity;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -29,6 +31,7 @@ public class TestTemplate {
     @Column(name = "parameters", nullable = false, columnDefinition = "json")
     private JsonNode parameters;
     
+    @DecimalMin(value="0.01", inclusive= false, message="Base Price must be Greater than zero")
     @Column(name = "base_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal basePrice;
     

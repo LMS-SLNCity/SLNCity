@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,11 @@ public class TestTemplateService {
      * Create a new test template
      */
     public TestTemplateResponse createTestTemplate(CreateTestTemplateRequest request) {
+
+        if(request.getBasePrice().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Base price must be greater than 0");
+        }   
+
         // Check if template with same name already exists
         if (testTemplateRepository.existsByNameIgnoreCase(request.getName())) {
             throw new RuntimeException("Test template with name '" + request.getName() + "' already exists");
