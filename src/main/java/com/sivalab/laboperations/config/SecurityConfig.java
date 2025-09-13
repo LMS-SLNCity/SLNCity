@@ -47,6 +47,12 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/actuator/**",           // Actuator endpoints for monitoring
                     "/api/v1/resilient/**",   // Resilient service endpoints
+                    "/api/v1/equipment/**",   // Equipment management endpoints
+                    "/api/v1/inventory/**",   // Inventory management endpoints
+                    "/visits/**",             // Visit endpoints for testing
+                    "/billing/**",            // Billing endpoints for testing
+                    "/swagger-ui/**",         // Swagger UI
+                    "/v3/api-docs/**",        // OpenAPI docs
                     "/h2-console/**",         // H2 console for development
                     "/error",                 // Error pages
                     "/favicon.ico"            // Favicon
