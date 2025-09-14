@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +54,8 @@ public class SampleCollectionService {
         // Create new sample
         Sample sample = new Sample();
         sample.setLabTest(labTest);
+        sample.setVisit(labTest.getVisit()); // Set visit from lab test
+        sample.setSampleNumber(generateSampleNumber()); // Generate unique sample number
         sample.setSampleType(request.getSampleType());
         sample.setStatus(SampleStatus.COLLECTED);
         sample.setCollectedAt(LocalDateTime.now());
@@ -203,5 +206,16 @@ public class SampleCollectionService {
             }
         }
         return false;
+    }
+
+    /**
+     * Generate unique sample number
+     */
+    private String generateSampleNumber() {
+        // Generate sample number in format: S-YYYYMMDD-HHMMSS-XXX
+        LocalDateTime now = LocalDateTime.now();
+        String timestamp = now.format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
+        String randomSuffix = String.format("%03d", (int)(Math.random() * 1000));
+        return "S-" + timestamp + "-" + randomSuffix;
     }
 }

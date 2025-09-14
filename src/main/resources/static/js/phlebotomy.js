@@ -502,7 +502,8 @@ class PhlebotomyApp {
         sampleTypeSelect.value = defaultType;
 
         // Show modal
-        document.getElementById('sample-collection-modal').style.display = 'block';
+        const modal = document.getElementById('sample-collection-modal');
+        modal.classList.add('show');
     }
 
     async submitSampleCollection(testId) {
