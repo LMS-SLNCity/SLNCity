@@ -9,10 +9,12 @@ import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -148,6 +150,57 @@ public class BasicIntegrationTest {
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().get("name")).isEqualTo("Updated Blood Test Template");
         assertThat(response.getBody().get("basePrice")).isEqualTo(200.0);
+    }
+
+    @Test
+    @Order(15)
+    public void testTemplateCreatedAtField() {
+        // Create a new template
+        Map<String, Object> templateRequest = new HashMap<>();
+        templateRequest.put("name", "Template with Creation Time");
+        templateRequest.put("description", "Testing createdAt field");
+        templateRequest.put("basePrice", 150.0);
+        templateRequest.put("parameters", new HashMap<>());
+
+        // Send create request
+        ResponseEntity<Map> createResponse = restTemplate.postForEntity(
+            "http://localhost:" + port + "/test-templates",
+            templateRequest,
+            Map.class
+        );
+
+        // Verify creation was successful
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(createResponse.getBody()).isNotNull();
+        
+        // Get the created template ID
+        Long templateId = Long.valueOf(createResponse.getBody().get("templateId").toString());
+
+        // Fetch the template to verify createdAt
+        ResponseEntity<Map> getResponse = restTemplate.getForEntity(
+            "http://localhost:" + port + "/test-templates/" + templateId,
+            Map.class
+        );
+
+        // Verify the response
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(getResponse.getBody()).isNotNull();
+        assertThat(getResponse.getBody().get("createdAt")).isNotNull();
+
+        // Parse and verify the createdAt timestamp
+        String createdAtStr = getResponse.getBody().get("createdAt").toString();
+        assertThat(createdAtStr).isNotEmpty();
+
+        try {
+            LocalDateTime createdAt = LocalDateTime.parse(createdAtStr.replace(" ", "T"));
+            LocalDateTime now = LocalDateTime.now();
+            
+            // Verify the creation time is recent (within last minute)
+            assertThat(createdAt).isBefore(now.plusMinutes(1));
+            assertThat(createdAt).isAfter(now.minusMinutes(1));
+        } catch (Exception e) {
+            fail("Failed to parse createdAt timestamp: " + createdAtStr);
+        }
     }
 
     // ========== VISIT TESTS ==========
