@@ -141,24 +141,34 @@ class TechnicianApp {
                 return;
             }
 
-            tableBody.innerHTML = pendingTests.map(test => `
-                <tr>
-                    <td>${test.testId}</td>
-                    <td>${test.patientName}</td>
-                    <td>${test.testTemplate?.name || 'Unknown Test'}</td>
-                    <td>${this.getSampleTypeForTest(test.testTemplate?.name)}</td>
-                    <td><span class="priority-badge normal">Normal</span></td>
-                    <td><span class="status-badge status-${test.status.toLowerCase().replace('_', '-')}">${test.status}</span></td>
-                    <td>
-                        <button class="btn btn-sm btn-primary" onclick="technicianApp.startTest(${test.testId})">
-                            <i class="fas fa-play"></i> Start
-                        </button>
-                        <button class="btn btn-sm btn-success" onclick="technicianApp.viewTest(${test.testId})">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            tableBody.innerHTML = pendingTests.map(test => {
+                const canStart = test.status === 'PENDING' && this.isSampleReady(test);
+                const sampleStatus = this.getSampleStatus(test);
+
+                return `
+                    <tr>
+                        <td>${test.testId}</td>
+                        <td>${test.patientName}</td>
+                        <td>${test.testTemplate?.name || 'Unknown Test'}</td>
+                        <td>${this.getSampleTypeForTest(test.testTemplate?.name)}</td>
+                        <td><span class="sample-status ${sampleStatus.class}">${sampleStatus.text}</span></td>
+                        <td><span class="status-badge status-${test.status.toLowerCase().replace('_', '-')}">${test.status}</span></td>
+                        <td>
+                            ${canStart ?
+                                `<button class="btn btn-sm btn-primary" onclick="technicianApp.startTest(${test.testId})">
+                                    <i class="fas fa-play"></i> Start
+                                </button>` :
+                                `<button class="btn btn-sm btn-secondary" disabled title="Sample not ready">
+                                    <i class="fas fa-clock"></i> Waiting
+                                </button>`
+                            }
+                            <button class="btn btn-sm btn-success" onclick="technicianApp.viewTest(${test.testId})">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
 
         } catch (error) {
             console.error('Error loading test queue:', error);
@@ -294,10 +304,58 @@ class TechnicianApp {
         }
     }
 
-    startTest(testId) {
-        this.showSection('test-processing');
-        document.getElementById('test-id').value = testId;
-        this.showNotification(`Started processing test ${testId}`, 'info');
+    async startTest(testId) {
+        try {
+            // Check if sample is ready before starting test
+            const response = await fetch(`/visits`);
+            const visits = await response.json();
+
+            let testFound = false;
+            let canStart = false;
+
+            for (const visit of visits) {
+                if (visit.labTests) {
+                    const test = visit.labTests.find(t => t.testId === testId);
+                    if (test) {
+                        testFound = true;
+                        canStart = this.isSampleReady(test);
+                        break;
+                    }
+                }
+            }
+
+            if (!testFound) {
+                this.showNotification('Test not found', 'error');
+                return;
+            }
+
+            if (!canStart) {
+                this.showNotification('Cannot start test: Sample not collected or not ready', 'warning');
+                return;
+            }
+
+            // Update test status to IN_PROGRESS
+            const updateResponse = await fetch(`/visits/${testId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: 'IN_PROGRESS' })
+            });
+
+            if (updateResponse.ok) {
+                this.showSection('test-processing');
+                document.getElementById('test-id').value = testId;
+                this.showNotification(`Started processing test ${testId}`, 'success');
+                this.loadTestQueue(); // Refresh the queue
+            } else {
+                this.showNotification('Failed to start test', 'error');
+            }
+
+        } catch (error) {
+            console.error('Error starting test:', error);
+            this.showNotification('Error starting test', 'error');
+        }
     }
 
     viewTest(testId) {
@@ -429,6 +487,25 @@ class TechnicianApp {
         };
 
         return sampleTypeMap[testName] || 'WHOLE_BLOOD';
+    }
+
+    // Sample status checking methods
+    isSampleReady(test) {
+        // For now, assume sample is ready if test status is PENDING
+        // In a real implementation, this would check the sample collection status
+        return test.status === 'PENDING' || test.status === 'IN_PROGRESS';
+    }
+
+    getSampleStatus(test) {
+        if (test.status === 'SAMPLE_PENDING') {
+            return { text: 'Sample Collected', class: 'sample-collected' };
+        } else if (test.status === 'PENDING') {
+            return { text: 'Sample Ready', class: 'sample-ready' };
+        } else if (test.status === 'IN_PROGRESS') {
+            return { text: 'Processing', class: 'sample-processing' };
+        } else {
+            return { text: 'Not Collected', class: 'sample-not-collected' };
+        }
     }
 }
 

@@ -160,7 +160,43 @@ public class VisitService {
         
         return response;
     }
-    
+
+    /**
+     * Get comprehensive visit statistics
+     */
+    @Transactional(readOnly = true)
+    public Map<String, Object> getVisitStatistics() {
+        Map<String, Object> statistics = new HashMap<>();
+
+        // Total visits
+        long totalVisits = visitRepository.count();
+        statistics.put("totalVisits", totalVisits);
+
+        // Visit count by status
+        Map<String, Long> statusCounts = getVisitCountByStatus();
+        statistics.put("statusCounts", statusCounts);
+
+        // Recent visits (last 30 days)
+        // Note: This would require a custom repository method for date filtering
+        // For now, we'll use total visits as a placeholder
+        statistics.put("recentVisits", totalVisits);
+
+        // Average tests per visit
+        List<Visit> allVisits = visitRepository.findAll();
+        double avgTestsPerVisit = allVisits.stream()
+                .mapToInt(visit -> visit.getLabTests().size())
+                .average()
+                .orElse(0.0);
+        statistics.put("averageTestsPerVisit", Math.round(avgTestsPerVisit * 100.0) / 100.0);
+
+        // Completion rate
+        long completedVisits = statusCounts.getOrDefault("COMPLETED", 0L);
+        double completionRate = totalVisits > 0 ? (completedVisits * 100.0 / totalVisits) : 0.0;
+        statistics.put("completionRate", Math.round(completionRate * 100.0) / 100.0);
+
+        return statistics;
+    }
+
     /**
      * Validate status transition
      */

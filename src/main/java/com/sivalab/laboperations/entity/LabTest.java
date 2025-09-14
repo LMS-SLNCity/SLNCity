@@ -47,7 +47,26 @@ public class LabTest {
 
     @Column(name = "results_entered_at")
     private LocalDateTime resultsEnteredAt;
-    
+
+    // Sample collection tracking
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "sample_id")
+    private Sample sample;
+
+    // Machine tracking for internal audit
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "equipment_id")
+    private LabEquipment equipment;
+
+    @Column(name = "machine_used")
+    private String machineUsed; // For internal tracking, not printed on reports
+
+    @Column(name = "test_started_at")
+    private LocalDateTime testStartedAt;
+
+    @Column(name = "test_completed_at")
+    private LocalDateTime testCompletedAt;
+
     // Constructors
     public LabTest() {}
     
@@ -139,5 +158,61 @@ public class LabTest {
 
     public void setResultsEnteredAt(LocalDateTime resultsEnteredAt) {
         this.resultsEnteredAt = resultsEnteredAt;
+    }
+
+    public Sample getSample() {
+        return sample;
+    }
+
+    public void setSample(Sample sample) {
+        this.sample = sample;
+    }
+
+    public LabEquipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(LabEquipment equipment) {
+        this.equipment = equipment;
+    }
+
+    public String getMachineUsed() {
+        return machineUsed;
+    }
+
+    public void setMachineUsed(String machineUsed) {
+        this.machineUsed = machineUsed;
+    }
+
+    public LocalDateTime getTestStartedAt() {
+        return testStartedAt;
+    }
+
+    public void setTestStartedAt(LocalDateTime testStartedAt) {
+        this.testStartedAt = testStartedAt;
+    }
+
+    public LocalDateTime getTestCompletedAt() {
+        return testCompletedAt;
+    }
+
+    public void setTestCompletedAt(LocalDateTime testCompletedAt) {
+        this.testCompletedAt = testCompletedAt;
+    }
+
+    /**
+     * Check if sample is collected and ready for testing
+     */
+    public boolean isSampleReadyForTesting() {
+        return sample != null && sample.getStatus() != null &&
+               sample.getStatus().isAvailableForTesting();
+    }
+
+    /**
+     * Check if test can be started (sample collected and accepted)
+     */
+    public boolean canStartTest() {
+        return isSampleReadyForTesting() &&
+               (status == TestStatus.PENDING || status == TestStatus.IN_PROGRESS);
     }
 }

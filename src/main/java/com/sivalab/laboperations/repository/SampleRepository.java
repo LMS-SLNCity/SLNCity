@@ -215,4 +215,9 @@ public interface SampleRepository extends JpaRepository<Sample, Long> {
      */
     @Query("SELECT COUNT(s) FROM Sample s WHERE CAST(s.processingCompletedAt AS date) = CURRENT_DATE")
     Long countSamplesProcessedToday();
+
+    /**
+     * Find samples by lab test visit ID
+     */
+    List<Sample> findByLabTestVisitVisitId(Long visitId);
 }

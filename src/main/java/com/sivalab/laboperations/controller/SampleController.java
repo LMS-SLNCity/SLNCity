@@ -370,4 +370,13 @@ public class SampleController {
         public String getDisposalBatch() { return disposalBatch; }
         public void setDisposalBatch(String disposalBatch) { this.disposalBatch = disposalBatch; }
     }
+
+    /**
+     * Get all sample types
+     * GET /api/v1/samples/types
+     */
+    @GetMapping("/api/v1/samples/types")
+    public ResponseEntity<SampleType[]> getSampleTypes() {
+        return ResponseEntity.ok(SampleType.values());
+    }
 }

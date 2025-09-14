@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -148,6 +151,38 @@ public class BillingService {
     @Transactional(readOnly = true)
     public BigDecimal getRevenueForPeriod(LocalDateTime startDate, LocalDateTime endDate) {
         return billingRepository.calculateRevenueForPeriod(startDate, endDate);
+    }
+
+    /**
+     * Get comprehensive billing statistics
+     */
+    @Transactional(readOnly = true)
+    public Map<String, Object> getBillingStatistics() {
+        Map<String, Object> statistics = new HashMap<>();
+
+        // Get revenue stats
+        RevenueStats revenueStats = getRevenueStats();
+        statistics.put("totalRevenue", revenueStats.getTotalRevenue());
+        statistics.put("outstandingAmount", revenueStats.getOutstandingAmount());
+        statistics.put("paidBillsCount", revenueStats.getPaidBillsCount());
+        statistics.put("unpaidBillsCount", revenueStats.getUnpaidBillsCount());
+
+        // Total bills
+        long totalBills = revenueStats.getPaidBillsCount() + revenueStats.getUnpaidBillsCount();
+        statistics.put("totalBills", totalBills);
+
+        // Payment rate
+        double paymentRate = totalBills > 0 ? (revenueStats.getPaidBillsCount() * 100.0 / totalBills) : 0.0;
+        statistics.put("paymentRate", Math.round(paymentRate * 100.0) / 100.0);
+
+        // Average bill amount
+        BigDecimal avgBillAmount = totalBills > 0 ?
+            revenueStats.getTotalRevenue().add(revenueStats.getOutstandingAmount())
+                .divide(BigDecimal.valueOf(totalBills), 2, RoundingMode.HALF_UP) :
+            BigDecimal.ZERO;
+        statistics.put("averageBillAmount", avgBillAmount);
+
+        return statistics;
     }
     
     /**

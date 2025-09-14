@@ -28,6 +28,11 @@ public interface LabTestRepository extends JpaRepository<LabTest, Long> {
      * Find lab tests by status
      */
     List<LabTest> findByStatus(TestStatus status);
+
+    /**
+     * Count lab tests by status
+     */
+    long countByStatus(TestStatus status);
     
     /**
      * Find lab tests by approval status
@@ -79,4 +84,10 @@ public interface LabTestRepository extends JpaRepository<LabTest, Long> {
      */
     // @Query("SELECT lt FROM LabTest lt WHERE JSON_EXTRACT(lt.results, CONCAT('$.', :key)) IS NOT NULL")
     // List<LabTest> findTestsWithResultKey(@Param("key") String key);
+
+    /**
+     * Find tests that don't have samples collected yet
+     */
+    @Query("SELECT lt FROM LabTest lt WHERE lt.sample IS NULL AND lt.status = 'PENDING'")
+    List<LabTest> findTestsWithoutSamples();
 }

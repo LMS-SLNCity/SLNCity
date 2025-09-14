@@ -108,26 +108,26 @@ class PhlebotomyApp {
 
     async loadCollectionSchedule() {
         try {
-            const visits = await this.fetchData('/visits');
-            const pendingVisits = visits.filter(v => v.status === 'PENDING' || v.status === 'IN_PROGRESS');
-            
+            // Load pending samples that need collection
+            const pendingSamples = await this.fetchData('/sample-collection/pending');
+
             const tableBody = document.querySelector('#collection-schedule-table tbody');
             if (!tableBody) return;
 
-            if (pendingVisits.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No pending collections</td></tr>';
+            if (pendingSamples.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No samples pending collection</td></tr>';
                 return;
             }
 
-            tableBody.innerHTML = pendingVisits.map(visit => `
+            tableBody.innerHTML = pendingSamples.map(sample => `
                 <tr>
-                    <td>${this.formatTime(visit.createdAt)}</td>
-                    <td>${visit.patientDetails?.name || 'N/A'}</td>
-                    <td>${this.getTestNames(visit.labTests)}</td>
-                    <td>${this.getSampleTypes(visit.labTests)}</td>
-                    <td><span class="status-badge status-${visit.status.toLowerCase()}">${visit.status}</span></td>
+                    <td>${this.formatTime(new Date())}</td>
+                    <td>${sample.patientName || 'N/A'}</td>
+                    <td>${sample.testName || 'Unknown Test'}</td>
+                    <td>${this.getSampleTypeForTest(sample.testName)}</td>
+                    <td><span class="status-badge status-pending">PENDING</span></td>
                     <td>
-                        <button class="btn btn-sm btn-primary" onclick="phlebotomyApp.startCollection(${visit.visitId})">
+                        <button class="btn btn-sm btn-primary" onclick="phlebotomyApp.collectSample(${sample.testId}, '${sample.testName}')">
                             <i class="fas fa-vial"></i> Collect
                         </button>
                     </td>
@@ -432,6 +432,137 @@ class PhlebotomyApp {
     getPriorityText(labTests) {
         const priority = this.getPriority(labTests);
         return priority === 'urgent' ? 'Urgent' : 'Normal';
+    }
+
+    // Sample collection methods
+    async collectSample(testId, testName) {
+        try {
+            // Show sample collection modal
+            this.showSampleCollectionModal(testId, testName);
+        } catch (error) {
+            console.error('Error initiating sample collection:', error);
+            this.showNotification('Error initiating sample collection', 'error');
+        }
+    }
+
+    showSampleCollectionModal(testId, testName) {
+        // Create modal HTML
+        const modalHtml = `
+            <div id="sample-collection-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Collect Sample - ${testName}</h3>
+                        <span class="close" onclick="phlebotomyApp.closeSampleModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form id="sample-collection-form">
+                            <div class="form-group">
+                                <label for="sample-type">Sample Type *</label>
+                                <select id="sample-type" name="sampleType" required>
+                                    <option value="">Select sample type</option>
+                                    <option value="WHOLE_BLOOD">Whole Blood</option>
+                                    <option value="SERUM">Serum</option>
+                                    <option value="PLASMA">Plasma</option>
+                                    <option value="RANDOM_URINE">Random Urine</option>
+                                    <option value="STOOL">Stool</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="collected-by">Collected By *</label>
+                                <input type="text" id="collected-by" name="collectedBy" value="phlebotomy" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="collection-site">Collection Site</label>
+                                <input type="text" id="collection-site" name="collectionSite" placeholder="e.g., Left arm">
+                            </div>
+                            <div class="form-group">
+                                <label for="container-type">Container Type</label>
+                                <input type="text" id="container-type" name="containerType" placeholder="e.g., EDTA tube">
+                            </div>
+                            <div class="form-group">
+                                <label for="volume">Volume (ml)</label>
+                                <input type="number" id="volume" name="volumeReceived" step="0.1" min="0">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="phlebotomyApp.closeSampleModal()">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="phlebotomyApp.submitSampleCollection(${testId})">Collect Sample</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Add modal to page
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+        // Set default sample type based on test
+        const sampleTypeSelect = document.getElementById('sample-type');
+        const defaultType = this.getSampleTypeForTest(testName);
+        sampleTypeSelect.value = defaultType;
+
+        // Show modal
+        document.getElementById('sample-collection-modal').style.display = 'block';
+    }
+
+    async submitSampleCollection(testId) {
+        try {
+            const form = document.getElementById('sample-collection-form');
+            const formData = new FormData(form);
+
+            const sampleData = {
+                sampleType: formData.get('sampleType'),
+                collectedBy: formData.get('collectedBy'),
+                collectionSite: formData.get('collectionSite'),
+                containerType: formData.get('containerType'),
+                volumeReceived: formData.get('volumeReceived') ? parseFloat(formData.get('volumeReceived')) : null
+            };
+
+            const response = await fetch(`/sample-collection/collect/${testId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(sampleData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to collect sample');
+            }
+
+            this.showNotification('Sample collected successfully', 'success');
+            this.closeSampleModal();
+            this.loadCollectionSchedule();
+            this.loadCollectionQueue();
+
+        } catch (error) {
+            console.error('Error collecting sample:', error);
+            this.showNotification('Error collecting sample', 'error');
+        }
+    }
+
+    closeSampleModal() {
+        const modal = document.getElementById('sample-collection-modal');
+        if (modal) {
+            modal.remove();
+        }
+    }
+
+    getSampleTypeForTest(testName) {
+        if (!testName) return 'WHOLE_BLOOD';
+
+        const sampleTypeMap = {
+            'Complete Blood Count (CBC)': 'WHOLE_BLOOD',
+            'Blood Sugar (Fasting)': 'SERUM',
+            'Lipid Profile': 'SERUM',
+            'Liver Function Test (LFT)': 'SERUM',
+            'Kidney Function Test': 'SERUM',
+            'Thyroid Function Test': 'SERUM',
+            'Urine Analysis': 'RANDOM_URINE',
+            'Stool Analysis': 'STOOL'
+        };
+
+        return sampleTypeMap[testName] || 'WHOLE_BLOOD';
     }
 }
 

@@ -2,6 +2,7 @@ package com.sivalab.laboperations.entity;
 
 public enum TestStatus {
     PENDING("pending"),
+    SAMPLE_PENDING("sample-pending"),
     IN_PROGRESS("in-progress"),
     COMPLETED("completed"),
     APPROVED("approved");

@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/test-templates")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class TestTemplateController {
     
     private final TestTemplateService testTemplateService;
@@ -133,4 +134,6 @@ public class TestTemplateController {
             throw new RuntimeException("Failed to delete test template: " + e.getMessage(), e);
         }
     }
+
+
 }

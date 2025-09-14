@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle + ' - Lab Operations Management System'}">Lab Operations Management System</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    
+    <!-- Page-specific CSS -->
+    <th:block th:fragment="page-css">
+        <!-- Override in child templates -->
+    </th:block>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <i class="fas fa-flask"></i>
+                Lab Operations
+            </a>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link" th:classappend="${currentPage == 'dashboard'} ? 'active' : ''">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a></li>
+                    <li><a href="/visits-ui" class="nav-link" th:classappend="${currentPage == 'visits'} ? 'active' : ''">
+                        <i class="fas fa-user-injured"></i> Visits
+                    </a></li>
+                    <li><a href="/equipment" class="nav-link" th:classappend="${currentPage == 'equipment'} ? 'active' : ''">
+                        <i class="fas fa-microscope"></i> Equipment
+                    </a></li>
+                    <li><a href="/inventory" class="nav-link" th:classappend="${currentPage == 'inventory'} ? 'active' : ''">
+                        <i class="fas fa-boxes"></i> Inventory
+                    </a></li>
+                    <li><a href="/samples" class="nav-link" th:classappend="${currentPage == 'samples'} ? 'active' : ''">
+                        <i class="fas fa-vial"></i> Samples
+                    </a></li>
+                    <li><a href="/tests" class="nav-link" th:classappend="${currentPage == 'tests'} ? 'active' : ''">
+                        <i class="fas fa-clipboard-list"></i> Tests
+                    </a></li>
+                    <li><a href="/reports" class="nav-link" th:classappend="${currentPage == 'reports'} ? 'active' : ''">
+                        <i class="fas fa-file-medical"></i> Reports
+                    </a></li>
+                    <li><a href="/billing" class="nav-link" th:classappend="${currentPage == 'billing'} ? 'active' : ''">
+                        <i class="fas fa-receipt"></i> Billing
+                    </a></li>
+                    <li><a href="/network" class="nav-link" th:classappend="${currentPage == 'network'} ? 'active' : ''">
+                        <i class="fas fa-wifi"></i> Network
+                    </a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-actions">
+                <span class="badge" id="system-health">
+                    <i class="fas fa-circle"></i> Loading...
+                </span>
+                <a href="/settings" class="btn btn-outline">
+                    <i class="fas fa-cog"></i>
+                </a>
+                <a href="/help" class="btn btn-outline">
+                    <i class="fas fa-question-circle"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title" th:text="${pageTitle}">Page Title</h1>
+            <p class="page-subtitle" th:if="${pageSubtitle}" th:text="${pageSubtitle}">Page subtitle</p>
+        </div>
+
+        <!-- Page Content -->
+        <div th:fragment="content">
+            <!-- Override in child templates -->
+        </div>
+    </main>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- Main JavaScript -->
+    <script th:src="@{/js/main.js}"></script>
+    
+    <!-- Page-specific JavaScript -->
+    <th:block th:fragment="page-js">
+        <!-- Override in child templates -->
+    </th:block>
+</body>
+</html>

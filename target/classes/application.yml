@@ -242,3 +242,24 @@ logging:
     org.springframework.web: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# WLAN and Network Management Configuration (Optional - Plug and Play)
+lab:
+  network:
+    enabled: ${NETWORK_MONITORING_ENABLED:true}  # Optional feature - enabled for testing
+    monitoring:
+      interval: ${WLAN_MONITORING_INTERVAL:60}    # seconds
+      auto-detection: ${NETWORK_AUTO_DETECTION:true}
+      retry-attempts: ${NETWORK_RETRY_ATTEMPTS:3}
+      timeout: ${NETWORK_TIMEOUT:30}              # seconds
+    machine-id:
+      validation: ${MACHINE_ID_VALIDATION:false}  # Optional validation - disabled by default
+      auto-register: ${MACHINE_ID_AUTO_REGISTER:false}  # Optional auto-registration
+      duplicate-check: ${MACHINE_ID_DUPLICATE_CHECK:false}  # Optional duplicate checking
+    features:
+      connectivity-test: ${NETWORK_CONNECTIVITY_TEST:false}  # Optional connectivity testing
+      issue-auto-detection: ${NETWORK_ISSUE_AUTO_DETECTION:false}  # Optional auto issue detection
+      statistics-collection: ${NETWORK_STATISTICS:true}     # Statistics always available
+    fallback:
+      graceful-degradation: true  # System continues without network features
+      skip-network-errors: true   # Don't fail startup on network issues

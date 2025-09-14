@@ -2,19 +2,29 @@ package com.sivalab.laboperations.controller;
 
 import com.sivalab.laboperations.dto.BillingResponse;
 import com.sivalab.laboperations.service.BillingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/billing")
+@Tag(name = "Billing Management", description = "Billing and payment management operations")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class BillingController {
-    
+
+    private static final Logger logger = LoggerFactory.getLogger(BillingController.class);
+
     private final BillingService billingService;
     
     @Autowired
@@ -129,12 +139,31 @@ public class BillingController {
      * GET /billing/stats
      */
     @GetMapping("/stats")
+    @Operation(summary = "Get revenue statistics", description = "Retrieve revenue statistics")
     public ResponseEntity<BillingService.RevenueStats> getRevenueStats() {
         try {
             BillingService.RevenueStats stats = billingService.getRevenueStats();
             return ResponseEntity.ok(stats);
         } catch (Exception e) {
+            logger.error("Error getting revenue stats", e);
             throw new RuntimeException("Failed to get revenue stats: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Get billing statistics
+     * GET /billing/statistics
+     */
+    @GetMapping("/statistics")
+    @Operation(summary = "Get billing statistics", description = "Retrieve comprehensive billing statistics")
+    public ResponseEntity<Map<String, Object>> getBillingStatistics() {
+        try {
+            Map<String, Object> statistics = billingService.getBillingStatistics();
+            return ResponseEntity.ok(statistics);
+        } catch (Exception e) {
+            logger.error("Error getting billing statistics", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed to retrieve billing statistics", "message", e.getMessage()));
         }
     }
     

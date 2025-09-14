@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Operations - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .role-selector {
+            margin-bottom: 1.5rem;
+        }
+
+        .role-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .role-btn {
+            padding: 0.5rem;
+            border: 2px solid #e1e5e9;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .role-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .role-btn:hover {
+            border-color: #667eea;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .demo-credentials {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .demo-credentials h4 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .demo-credentials div {
+            margin-bottom: 0.3rem;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .role-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>🧪 Lab Operations</h1>
+            <p>Role-Based Access Control System</p>
+        </div>
+
+        <!-- Error/Success Messages -->
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="success-message" class="success-message" style="display: none;"></div>
+
+        <form id="loginForm" action="/login" method="post">
+            <div class="role-selector">
+                <label>Select Your Role:</label>
+                <div class="role-buttons">
+                    <div class="role-btn" data-role="admin" data-username="admin" data-password="admin123">
+                        👨‍💼 Admin
+                    </div>
+                    <div class="role-btn" data-role="reception" data-username="reception" data-password="reception123">
+                        🏥 Reception
+                    </div>
+                    <div class="role-btn" data-role="phlebotomy" data-username="phlebotomy" data-password="phlebotomy123">
+                        💉 Phlebotomy
+                    </div>
+                    <div class="role-btn" data-role="technician" data-username="technician" data-password="technician123">
+                        🔬 Technician
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+
+        <div class="demo-credentials">
+            <h4>Demo Credentials:</h4>
+            <div><strong>Admin:</strong> admin / admin123</div>
+            <div><strong>Reception:</strong> reception / reception123</div>
+            <div><strong>Phlebotomy:</strong> phlebotomy / phlebotomy123</div>
+            <div><strong>Technician:</strong> technician / technician123</div>
+        </div>
+    </div>
+
+    <script>
+        // Handle role selection
+        document.querySelectorAll('.role-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Auto-fill credentials
+                const username = this.dataset.username;
+                const password = this.dataset.password;
+                
+                document.getElementById('username').value = username;
+                document.getElementById('password').value = password;
+            });
+        });
+
+        // Handle URL parameters for error/success messages
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        if (urlParams.get('error')) {
+            document.getElementById('error-message').textContent = 'Invalid username or password';
+            document.getElementById('error-message').style.display = 'block';
+        }
+        
+        if (urlParams.get('logout')) {
+            document.getElementById('success-message').textContent = 'You have been logged out successfully';
+            document.getElementById('success-message').style.display = 'block';
+        }
+
+        // Auto-select admin role by default
+        document.querySelector('[data-role="admin"]').click();
+    </script>
+</body>
+</html>

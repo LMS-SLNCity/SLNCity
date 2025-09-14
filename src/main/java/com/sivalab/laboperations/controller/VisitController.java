@@ -4,7 +4,11 @@ import com.sivalab.laboperations.dto.*;
 import com.sivalab.laboperations.entity.VisitStatus;
 import com.sivalab.laboperations.service.LabTestService;
 import com.sivalab.laboperations.service.VisitService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +19,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/visits")
+@Tag(name = "Visit Management", description = "Visit and lab test management operations")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class VisitController {
-    
+
+    private static final Logger logger = LoggerFactory.getLogger(VisitController.class);
+
     private final VisitService visitService;
     private final LabTestService labTestService;
     
@@ -106,12 +114,31 @@ public class VisitController {
      * GET /visits/count-by-status
      */
     @GetMapping("/count-by-status")
+    @Operation(summary = "Get visit count by status", description = "Retrieve visit counts grouped by status")
     public ResponseEntity<Map<String, Long>> getVisitCountByStatus() {
         try {
             Map<String, Long> statusCounts = visitService.getVisitCountByStatus();
             return ResponseEntity.ok(statusCounts);
         } catch (Exception e) {
+            logger.error("Error getting visit count by status", e);
             throw new RuntimeException("Failed to get visit count by status: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Get visit statistics
+     * GET /visits/statistics
+     */
+    @GetMapping("/statistics")
+    @Operation(summary = "Get visit statistics", description = "Retrieve comprehensive visit statistics")
+    public ResponseEntity<Map<String, Object>> getVisitStatistics() {
+        try {
+            Map<String, Object> statistics = visitService.getVisitStatistics();
+            return ResponseEntity.ok(statistics);
+        } catch (Exception e) {
+            logger.error("Error getting visit statistics", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed to retrieve visit statistics", "message", e.getMessage()));
         }
     }
     
@@ -248,5 +275,15 @@ public class VisitController {
             }
             throw new RuntimeException("Failed to delete test: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Get all visit statuses
+     * GET /api/v1/visits/statuses
+     */
+    @GetMapping("/api/v1/visits/statuses")
+    @Operation(summary = "Get all visit statuses", description = "Retrieve all available visit statuses")
+    public ResponseEntity<VisitStatus[]> getVisitStatuses() {
+        return ResponseEntity.ok(VisitStatus.values());
     }
 }

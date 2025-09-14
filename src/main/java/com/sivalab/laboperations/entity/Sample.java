@@ -28,6 +28,11 @@ public class Sample {
     @JoinColumn(name = "visit_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Visit visit;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lab_test_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private LabTest labTest;
     
     @Enumerated(EnumType.STRING)
     @Column(name = "sample_type", nullable = false)
@@ -263,7 +268,10 @@ public class Sample {
     
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-    
+
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public LabTest getLabTest() { return labTest; }
+    public void setLabTest(LabTest labTest) { this.labTest = labTest; }
 }

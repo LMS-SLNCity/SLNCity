@@ -57,6 +57,8 @@ services:
       DB_NAME: lab_operations
       DB_USERNAME: lab_user
       DB_PASSWORD: lab_password
+      NETWORK_MONITORING_ENABLED: "true"
+      WLAN_MONITORING_INTERVAL: "30"
     ports:
       - "8080:8080"
     networks:
@@ -72,6 +74,40 @@ services:
       retries: 3
     profiles:
       - full-stack
+
+  # Network Monitoring Service
+  network-monitor:
+    image: nicolaka/netshoot:latest
+    container_name: lab_network_monitor
+    command: ["sleep", "infinity"]
+    networks:
+      - lab_network
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+  # WLAN Access Point Simulator (for testing)
+  wlan-simulator:
+    image: alpine:latest
+    container_name: lab_wlan_simulator
+    command: |
+      sh -c "
+        apk add --no-cache hostapd dnsmasq wireless-tools &&
+        echo 'Simulating WLAN Access Point for Lab Equipment' &&
+        sleep infinity
+      "
+    networks:
+      - lab_network
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+    profiles:
+      - simulation
 
 volumes:
   postgres_data:

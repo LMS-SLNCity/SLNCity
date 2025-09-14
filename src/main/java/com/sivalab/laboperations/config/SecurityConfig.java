@@ -63,6 +63,7 @@ public class SecurityConfig {
                 // Phlebotomy endpoints
                 .requestMatchers("/phlebotomy/**").hasAnyRole("ADMIN", "PHLEBOTOMIST")
                 .requestMatchers("/samples/**").hasAnyRole("ADMIN", "PHLEBOTOMIST", "TECHNICIAN")
+                .requestMatchers("/sample-collection/**").hasAnyRole("ADMIN", "PHLEBOTOMIST", "TECHNICIAN")
                 .requestMatchers("/test-templates/**").hasAnyRole("ADMIN", "RECEPTION", "PHLEBOTOMIST", "TECHNICIAN")
 
                 // Technician endpoints

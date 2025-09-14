@@ -234,13 +234,32 @@ echo "🔍 TESTING FAULT TOLERANCE"
 echo "=========================="
 
 # Test 31: Test circuit breaker endpoints
-test_api "GET" "/actuator/circuitbreakers" "" "200" "Circuit Breaker Status"
+test_api "GET" "/api/v1/monitoring/circuit-breaker" "" "200" "Circuit Breaker Status"
 
 # Test 32: Test rate limiter endpoints
-test_api "GET" "/actuator/ratelimiters" "" "200" "Rate Limiter Status"
+test_api "GET" "/api/v1/monitoring/rate-limiter" "" "200" "Rate Limiter Status"
 
 # Test 33: Test resilient barcode service health
 test_api "GET" "/api/v1/resilient/barcodes/health" "" "200" "Resilient Barcode Service Health"
+
+echo ""
+echo "🔄 TESTING WORKFLOW INTEGRATION"
+echo "==============================="
+
+# Test 34: Test workflow statistics
+test_api "GET" "/api/v1/workflow/statistics" "" "200" "Workflow Statistics"
+
+# Test 35: Test workflow health
+test_api "GET" "/api/v1/workflow/health" "" "200" "Workflow Health Check"
+
+# Test 36: Test equipment utilization
+test_api "GET" "/api/v1/workflow/equipment/utilization" "" "200" "Equipment Utilization"
+
+# Test 37: Test inventory consumption
+test_api "GET" "/api/v1/workflow/inventory/consumption" "" "200" "Inventory Consumption"
+
+# Test 38: Test active operations
+test_api "GET" "/api/v1/workflow/operations/active" "" "200" "Active Operations"
 
 echo ""
 echo "📋 TEST SUMMARY"
@@ -276,6 +295,7 @@ echo "- Inventory Management" >> "advanced_lab_test_summary_${TIMESTAMP}.txt"
 echo "- Stock Operations" >> "advanced_lab_test_summary_${TIMESTAMP}.txt"
 echo "- Enhanced Analytics" >> "advanced_lab_test_summary_${TIMESTAMP}.txt"
 echo "- Fault Tolerance" >> "advanced_lab_test_summary_${TIMESTAMP}.txt"
+echo "- Workflow Integration" >> "advanced_lab_test_summary_${TIMESTAMP}.txt"
 
 echo "📊 Summary report saved to: advanced_lab_test_summary_${TIMESTAMP}.txt"
 

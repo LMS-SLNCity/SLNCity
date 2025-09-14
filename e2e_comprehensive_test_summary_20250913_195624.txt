@@ -1,0 +1,20 @@
+COMPREHENSIVE END-TO-END TEST SUMMARY
+=====================================
+Test Date: Sat Sep 13 19:56:26 IST 2025
+Network Features Enabled: false
+Total Tests: 22
+Passed: 18
+Failed: 4
+Success Rate: 81.8%
+
+⚠️  NEEDS ATTENTION. Several system features need fixes.
+
+System Architecture:
+- Core Lab Operations: Always Available
+- Equipment Management: Always Available
+- Inventory Management: Always Available
+- Workflow Integration: Always Available
+- Monitoring & Notifications: Always Available
+- Network Features: Disabled (Basic Mode)
+
+Detailed results: e2e_comprehensive_test_results_20250913_195624.log
