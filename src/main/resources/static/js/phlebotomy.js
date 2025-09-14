@@ -82,14 +82,14 @@ class PhlebotomyApp {
 
     async loadDashboardData() {
         try {
-            // Load statistics
-            const [visits, samples] = await Promise.all([
-                this.fetchData('/visits'),
+            // Load statistics using the same data sources as the tables
+            const [pendingSamples, samples] = await Promise.all([
+                this.fetchData('/sample-collection/pending'),
                 this.fetchData('/samples')
             ]);
 
             // Calculate statistics
-            const pendingCollections = visits.filter(v => v.status === 'PENDING').length;
+            const pendingCollections = pendingSamples.length; // Use actual pending samples, not visits
             const todayCollections = this.getTodayCount(samples);
             const samplesProcessing = samples.filter(s => s.status === 'PROCESSING').length;
             const efficiency = this.calculateEfficiency(samples);
