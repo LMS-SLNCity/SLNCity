@@ -519,6 +519,9 @@ class PhlebotomyApp {
                 volumeReceived: formData.get('volumeReceived') ? parseFloat(formData.get('volumeReceived')) : null
             };
 
+            console.log('Collecting sample for test ID:', testId);
+            console.log('Sample data:', sampleData);
+
             const response = await fetch(`/sample-collection/collect/${testId}`, {
                 method: 'POST',
                 headers: {
@@ -528,11 +531,14 @@ class PhlebotomyApp {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to collect sample');
+                const errorText = await response.text();
+                console.error('Sample collection failed:', response.status, errorText);
+                throw new Error(`Failed to collect sample: ${response.status} - ${errorText}`);
             }
 
             this.showNotification('Sample collected successfully', 'success');
             this.closeSampleModal();
+            this.loadDashboardData(); // Refresh dashboard statistics
             this.loadCollectionSchedule();
             this.loadCollectionQueue();
 

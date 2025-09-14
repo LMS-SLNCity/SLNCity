@@ -186,8 +186,8 @@ public class SampleCollectionService {
             response.setRejected(sample.getRejected());
             response.setRejectionReason(sample.getRejectionReason());
         } else {
-            // No sample collected yet
-            response.setStatus(SampleStatus.COLLECTED); // Default status for pending collection
+            // No sample collected yet - status should be null to indicate pending collection
+            response.setStatus(null); // No status until sample is collected
         }
         
         return response;
