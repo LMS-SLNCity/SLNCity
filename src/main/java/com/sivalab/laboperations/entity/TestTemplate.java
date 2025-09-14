@@ -43,12 +43,13 @@ public class TestTemplate {
         this.createdAt = LocalDateTime.now();
     }
     
-    public TestTemplate(String name, String description, JsonNode parameters, BigDecimal basePrice) {
+    public TestTemplate(String name, String description, JsonNode parameters, BigDecimal basePrice, LocalDateTime createdAt) {
         this();
         this.name = name;
         this.description = description;
         this.parameters = parameters;
         this.basePrice = basePrice;
+        this.createdAt = LocalDateTime.now();
     }
     
     // Getters and Setters
