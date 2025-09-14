@@ -6,6 +6,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -24,63 +30,120 @@ import java.util.List;
 public class SecurityConfig {
 
     /**
-     * Configure HTTP Security with comprehensive hardening
+     * Configure HTTP Security with RBAC
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             // CORS Configuration
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            
-            // CSRF Protection - Disabled for API endpoints, enabled for web forms
-            .csrf(csrf -> csrf
-                .ignoringRequestMatchers(
-                    "/api/**",
-                    "/actuator/**",
-                    "/h2-console/**"
-                )
-            )
-            
-            // Authorization Rules
+
+            // CSRF Protection - Disabled for API endpoints
+            .csrf(AbstractHttpConfigurer::disable)
+
+            // Authorization Rules with Role-Based Access Control
             .authorizeHttpRequests(authz -> authz
-                // Public endpoints - no authentication required
-                .requestMatchers(
-                    "/actuator/**",           // Actuator endpoints for monitoring
-                    "/api/v1/resilient/**",   // Resilient service endpoints
-                    "/api/v1/equipment/**",   // Equipment management endpoints
-                    "/api/v1/inventory/**",   // Inventory management endpoints
-                    "/visits/**",             // Visit endpoints for testing
-                    "/billing/**",            // Billing endpoints for testing
-                    "/swagger-ui/**",         // Swagger UI
-                    "/v3/api-docs/**",        // OpenAPI docs
-                    "/h2-console/**",         // H2 console for development
-                    "/error",                 // Error pages
-                    "/favicon.ico"            // Favicon
-                ).permitAll()
-                
-                // API endpoints - require authentication
-                .requestMatchers("/api/**").authenticated()
-                
+                // Public endpoints
+                .requestMatchers("/", "/login", "/login.html", "/css/**", "/js/**", "/images/**", "/static/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll() // H2 console for development
+                .requestMatchers("/actuator/health").permitAll() // Health check
+
+                // Admin-only endpoints
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/v1/equipment/**").hasAnyRole("ADMIN", "TECHNICIAN")
+                .requestMatchers("/api/v1/inventory/**").hasAnyRole("ADMIN", "TECHNICIAN")
+                .requestMatchers("/api/v1/monitoring/**").hasRole("ADMIN")
+                .requestMatchers("/api/v1/workflow/**").hasRole("ADMIN")
+
+                // Reception endpoints
+                .requestMatchers("/reception/**").hasAnyRole("ADMIN", "RECEPTION")
+                .requestMatchers("/visits/**").hasAnyRole("ADMIN", "RECEPTION", "PHLEBOTOMIST", "TECHNICIAN")
+                .requestMatchers("/billing/**").hasAnyRole("ADMIN", "RECEPTION")
+
+                // Phlebotomy endpoints
+                .requestMatchers("/phlebotomy/**").hasAnyRole("ADMIN", "PHLEBOTOMIST")
+                .requestMatchers("/samples/**").hasAnyRole("ADMIN", "PHLEBOTOMIST", "TECHNICIAN")
+                .requestMatchers("/test-templates/**").hasAnyRole("ADMIN", "RECEPTION", "PHLEBOTOMIST", "TECHNICIAN")
+
+                // Technician endpoints
+                .requestMatchers("/technician/**").hasAnyRole("ADMIN", "TECHNICIAN")
+                .requestMatchers("/api/v1/tests/**").hasAnyRole("ADMIN", "TECHNICIAN")
+                .requestMatchers("/api/v1/reports/**").hasAnyRole("ADMIN", "TECHNICIAN")
+
                 // All other requests require authentication
                 .anyRequest().authenticated()
             )
-            
-            // HTTP Basic Authentication for API access
-            .httpBasic(basic -> basic.realmName("Lab Operations API"))
-            
+
+            // Form-based login
+            .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/dashboard", true)
+                .failureUrl("/login?error=true")
+                .permitAll()
+            )
+
+            // Logout configuration
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout=true")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+            )
+
             // Security Headers Configuration
             .headers(headers -> headers
-                // Frame Options - Allow same origin for H2 console
                 .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
             )
-            
+
             // Session Management
             .sessionManagement(session -> session
-                .maximumSessions(10)
+                .maximumSessions(1)
                 .maxSessionsPreventsLogin(false)
             );
 
         return http.build();
+    }
+
+    /**
+     * Password encoder for secure password storage
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * In-memory user details service for development
+     * In production, this should be replaced with database-backed user service
+     */
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password(passwordEncoder().encode("admin123"))
+                .roles("ADMIN")
+                .build();
+
+        UserDetails reception = User.builder()
+                .username("reception")
+                .password(passwordEncoder().encode("reception123"))
+                .roles("RECEPTION")
+                .build();
+
+        UserDetails phlebotomist = User.builder()
+                .username("phlebotomy")
+                .password(passwordEncoder().encode("phlebotomy123"))
+                .roles("PHLEBOTOMIST")
+                .build();
+
+        UserDetails technician = User.builder()
+                .username("technician")
+                .password(passwordEncoder().encode("technician123"))
+                .roles("TECHNICIAN")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin, reception, phlebotomist, technician);
     }
 
     /**
