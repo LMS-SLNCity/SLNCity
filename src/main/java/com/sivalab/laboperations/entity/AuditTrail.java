@@ -273,16 +273,4 @@ public class AuditTrail {
     }
 }
 
-/**
- * Enum representing different types of audit actions
- */
-enum AuditAction {
-    INSERT,
-    UPDATE,
-    DELETE,
-    LOGIN,
-    LOGOUT,
-    ACCESS,
-    EXPORT,
-    PRINT
-}
+

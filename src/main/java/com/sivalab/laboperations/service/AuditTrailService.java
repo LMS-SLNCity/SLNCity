@@ -1,5 +1,6 @@
 package com.sivalab.laboperations.service;
 
+import com.sivalab.laboperations.entity.AuditAction;
 import com.sivalab.laboperations.entity.AuditTrail;
 import com.sivalab.laboperations.repository.AuditTrailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,11 +125,16 @@ public class AuditTrailService {
     /**
      * Create audit trail entry
      */
-    public AuditTrail createAuditTrailEntry(String tableName, String action, String userId, 
+    public AuditTrail createAuditTrailEntry(String tableName, String action, String userId,
                                           String description, String severity) {
         AuditTrail auditTrail = new AuditTrail();
         auditTrail.setTableName(tableName);
-        auditTrail.setAction(action);
+        // Convert string action to AuditAction enum
+        try {
+            auditTrail.setAction(AuditAction.valueOf(action.toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            auditTrail.setAction(AuditAction.ACCESS); // Default fallback
+        }
         auditTrail.setUserId(userId);
         auditTrail.setDescription(description);
         auditTrail.setSeverity(severity);

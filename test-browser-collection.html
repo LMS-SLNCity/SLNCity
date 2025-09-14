@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Collection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        button { margin: 5px; padding: 10px; }
+        #log { background: #f5f5f5; padding: 10px; height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Sample Collection Browser Test</h1>
+    
+    <div class="test-section">
+        <h3>Step 1: Login Test</h3>
+        <button onclick="testLogin()">Test Login</button>
+        <div id="login-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Step 2: API Test</h3>
+        <button onclick="testPendingSamples()">Test Pending Samples API</button>
+        <div id="api-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Step 3: Sample Collection Test</h3>
+        <button onclick="testSampleCollection()">Test Sample Collection</button>
+        <div id="collection-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Step 4: Dashboard Test</h3>
+        <button onclick="testDashboard()">Open Dashboard</button>
+        <button onclick="testJavaScript()">Test JavaScript Load</button>
+        <div id="dashboard-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Console Log</h3>
+        <div id="log"></div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+            logDiv.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+
+        async function testLogin() {
+            log('Testing login...', 'info');
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'username=phlebotomy&password=phlebotomy123'
+                });
+                
+                if (response.ok) {
+                    log('✅ Login successful', 'success');
+                    document.getElementById('login-result').innerHTML = '<span class="success">✅ Login OK</span>';
+                } else {
+                    log(`❌ Login failed: ${response.status}`, 'error');
+                    document.getElementById('login-result').innerHTML = '<span class="error">❌ Login Failed</span>';
+                }
+            } catch (error) {
+                log(`❌ Login error: ${error.message}`, 'error');
+                document.getElementById('login-result').innerHTML = '<span class="error">❌ Login Error</span>';
+            }
+        }
+
+        async function testPendingSamples() {
+            log('Testing pending samples API...', 'info');
+            try {
+                const response = await fetch('/sample-collection/pending');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Pending samples API working. Found ${data.length} samples`, 'success');
+                    document.getElementById('api-result').innerHTML = `<span class="success">✅ Found ${data.length} pending samples</span>`;
+                    log(`Sample data: ${JSON.stringify(data, null, 2)}`, 'info');
+                } else {
+                    log(`❌ API failed: ${response.status}`, 'error');
+                    document.getElementById('api-result').innerHTML = '<span class="error">❌ API Failed</span>';
+                }
+            } catch (error) {
+                log(`❌ API error: ${error.message}`, 'error');
+                document.getElementById('api-result').innerHTML = '<span class="error">❌ API Error</span>';
+            }
+        }
+
+        async function testSampleCollection() {
+            log('Testing sample collection...', 'info');
+            try {
+                // First get pending samples to get a test ID
+                const pendingResponse = await fetch('/sample-collection/pending');
+                const pendingSamples = await pendingResponse.json();
+                
+                if (pendingSamples.length === 0) {
+                    log('❌ No pending samples to test collection', 'error');
+                    document.getElementById('collection-result').innerHTML = '<span class="error">❌ No pending samples</span>';
+                    return;
+                }
+                
+                const testId = pendingSamples[0].testId;
+                log(`Testing collection for test ID: ${testId}`, 'info');
+                
+                const collectionResponse = await fetch(`/sample-collection/collect/${testId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sampleType: 'WHOLE_BLOOD',
+                        collectedBy: 'phlebotomy',
+                        collectionSite: 'Left arm',
+                        containerType: 'EDTA tube',
+                        volumeReceived: 5.0
+                    })
+                });
+                
+                if (collectionResponse.ok) {
+                    const result = await collectionResponse.json();
+                    log(`✅ Sample collection successful! Sample ID: ${result.sampleId}`, 'success');
+                    document.getElementById('collection-result').innerHTML = `<span class="success">✅ Collection OK - Sample ID: ${result.sampleId}</span>`;
+                } else {
+                    const errorText = await collectionResponse.text();
+                    log(`❌ Collection failed: ${collectionResponse.status} - ${errorText}`, 'error');
+                    document.getElementById('collection-result').innerHTML = '<span class="error">❌ Collection Failed</span>';
+                }
+            } catch (error) {
+                log(`❌ Collection error: ${error.message}`, 'error');
+                document.getElementById('collection-result').innerHTML = '<span class="error">❌ Collection Error</span>';
+            }
+        }
+
+        async function testDashboard() {
+            log('Opening dashboard in new tab...', 'info');
+            window.open('/phlebotomy/dashboard.html', '_blank');
+            document.getElementById('dashboard-result').innerHTML = '<span class="info">📱 Dashboard opened in new tab</span>';
+        }
+
+        async function testJavaScript() {
+            log('Testing JavaScript file access...', 'info');
+            try {
+                const response = await fetch('/js/phlebotomy.js');
+                if (response.ok) {
+                    log('✅ JavaScript file accessible', 'success');
+                    document.getElementById('dashboard-result').innerHTML = '<span class="success">✅ JS File OK</span>';
+                } else {
+                    log(`❌ JavaScript file not accessible: ${response.status}`, 'error');
+                    document.getElementById('dashboard-result').innerHTML = '<span class="error">❌ JS File Failed</span>';
+                }
+            } catch (error) {
+                log(`❌ JavaScript file error: ${error.message}`, 'error');
+                document.getElementById('dashboard-result').innerHTML = '<span class="error">❌ JS File Error</span>';
+            }
+        }
+
+        // Capture all console errors
+        window.addEventListener('error', function(e) {
+            log(`❌ JavaScript Error: ${e.message} at ${e.filename}:${e.lineno}`, 'error');
+        });
+
+        // Initial log
+        log('🧪 Sample Collection Browser Test Ready', 'info');
+    </script>
+</body>
+</html>
