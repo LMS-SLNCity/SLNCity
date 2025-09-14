@@ -71,6 +71,11 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/tests/**").hasAnyRole("ADMIN", "TECHNICIAN")
                 .requestMatchers("/api/v1/reports/**").hasAnyRole("ADMIN", "TECHNICIAN")
 
+                // History and audit endpoints
+                .requestMatchers("/samples/**").hasAnyRole("ADMIN", "PHLEBOTOMIST", "TECHNICIAN")
+                .requestMatchers("/lab-tests/**").hasAnyRole("ADMIN", "TECHNICIAN")
+                .requestMatchers("/audit-trail/**").hasRole("ADMIN")
+
                 // All other requests require authentication
                 .anyRequest().authenticated()
             )

@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -171,5 +174,67 @@ public class LabTestService {
         response.setApprovedBy(labTest.getApprovedBy());
         response.setApprovedAt(labTest.getApprovedAt());
         return response;
+    }
+
+    /**
+     * Get all lab tests
+     */
+    public List<LabTest> getAllLabTests() {
+        return labTestRepository.findAll();
+    }
+
+    /**
+     * Get lab test by ID
+     */
+    public Optional<LabTest> getLabTestById(Long testId) {
+        return labTestRepository.findById(testId);
+    }
+
+    /**
+     * Get lab tests by visit ID
+     */
+    public List<LabTest> getLabTestsByVisitId(Long visitId) {
+        return labTestRepository.findByVisitVisitId(visitId);
+    }
+
+    /**
+     * Get lab tests by status
+     */
+    public List<LabTest> getLabTestsByStatus(String status) {
+        return labTestRepository.findByStatus(TestStatus.valueOf(status.toUpperCase()));
+    }
+
+    /**
+     * Get pending lab tests
+     */
+    public List<LabTest> getPendingLabTests() {
+        return labTestRepository.findByStatus(TestStatus.PENDING);
+    }
+
+    /**
+     * Get completed lab tests
+     */
+    public List<LabTest> getCompletedLabTests() {
+        return labTestRepository.findByStatus(TestStatus.COMPLETED);
+    }
+
+    /**
+     * Get lab test statistics
+     */
+    public Map<String, Object> getLabTestStatistics() {
+        Map<String, Object> stats = new HashMap<>();
+
+        long totalTests = labTestRepository.count();
+        long pendingTests = labTestRepository.countByStatus(TestStatus.PENDING);
+        long completedTests = labTestRepository.countByStatus(TestStatus.COMPLETED);
+        long approvedTests = labTestRepository.countByApprovedTrue();
+
+        stats.put("totalTests", totalTests);
+        stats.put("pendingTests", pendingTests);
+        stats.put("completedTests", completedTests);
+        stats.put("approvedTests", approvedTests);
+        stats.put("timestamp", LocalDateTime.now());
+
+        return stats;
     }
 }

@@ -239,6 +239,20 @@ public class SampleController {
     }
     
     /**
+     * Get all samples
+     * GET /samples
+     */
+    @GetMapping
+    public ResponseEntity<List<Sample>> getAllSamples() {
+        try {
+            List<Sample> samples = sampleService.getAllSamples();
+            return ResponseEntity.ok(samples);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to retrieve samples: " + e.getMessage(), e);
+        }
+    }
+
+    /**
      * Get samples by status
      * GET /samples/status/{status}
      */

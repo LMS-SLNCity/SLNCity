@@ -33,6 +33,11 @@ public interface LabTestRepository extends JpaRepository<LabTest, Long> {
      * Count lab tests by status
      */
     long countByStatus(TestStatus status);
+
+    /**
+     * Count approved lab tests
+     */
+    long countByApprovedTrue();
     
     /**
      * Find lab tests by approval status

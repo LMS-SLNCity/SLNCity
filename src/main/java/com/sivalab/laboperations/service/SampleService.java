@@ -355,4 +355,11 @@ public class SampleService {
         
         return true;
     }
+
+    /**
+     * Get all samples
+     */
+    public List<Sample> getAllSamples() {
+        return sampleRepository.findAll();
+    }
 }

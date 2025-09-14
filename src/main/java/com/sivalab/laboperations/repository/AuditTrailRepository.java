@@ -131,4 +131,19 @@ public interface AuditTrailRepository extends JpaRepository<AuditTrail, Long> {
      * Count records older than specified date
      */
     long countByTimestampBefore(LocalDateTime cutoffDate);
+
+    /**
+     * Find all audit trail entries ordered by timestamp descending
+     */
+    Page<AuditTrail> findAllByOrderByTimestampDesc(Pageable pageable);
+
+    /**
+     * Find audit records after specific timestamp
+     */
+    Page<AuditTrail> findByTimestampAfterOrderByTimestampDesc(LocalDateTime timestamp, Pageable pageable);
+
+    /**
+     * Count records after specific timestamp
+     */
+    long countByTimestampAfter(LocalDateTime timestamp);
 }
