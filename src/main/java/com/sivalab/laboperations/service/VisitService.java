@@ -46,6 +46,14 @@ public class VisitService {
                 .orElseThrow(() -> new RuntimeException("Visit not found with ID: " + visitId));
         return convertToResponse(visit);
     }
+
+    /**
+     * Get visit entity by ID (for internal use)
+     */
+    @Transactional(readOnly = true)
+    public java.util.Optional<Visit> getVisitById(Long visitId) {
+        return visitRepository.findById(visitId);
+    }
     
     /**
      * Get all visits

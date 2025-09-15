@@ -5,6 +5,7 @@ import com.sivalab.laboperations.entity.*;
 import com.sivalab.laboperations.repository.LabTestRepository;
 import com.sivalab.laboperations.repository.TestTemplateRepository;
 import com.sivalab.laboperations.repository.VisitRepository;
+import com.sivalab.laboperations.validator.TestResultsValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +23,19 @@ public class LabTestService {
     private final VisitRepository visitRepository;
     private final TestTemplateRepository testTemplateRepository;
     private final TestTemplateService testTemplateService;
-    
+    private final TestResultsValidator testResultsValidator;
+
     @Autowired
-    public LabTestService(LabTestRepository labTestRepository, 
+    public LabTestService(LabTestRepository labTestRepository,
                          VisitRepository visitRepository,
                          TestTemplateRepository testTemplateRepository,
-                         TestTemplateService testTemplateService) {
+                         TestTemplateService testTemplateService,
+                         TestResultsValidator testResultsValidator) {
         this.labTestRepository = labTestRepository;
         this.visitRepository = visitRepository;
         this.testTemplateRepository = testTemplateRepository;
         this.testTemplateService = testTemplateService;
+        this.testResultsValidator = testResultsValidator;
     }
     
     /**
@@ -74,16 +78,25 @@ public class LabTestService {
     }
     
     /**
-     * Update test results
+     * Update test results with validation
      */
     public LabTestResponse updateTestResults(Long visitId, Long testId, UpdateTestResultsRequest request) {
         LabTest labTest = labTestRepository.findByVisitVisitIdAndTestId(visitId, testId)
                 .orElseThrow(() -> new RuntimeException("Lab test not found with ID: " + testId + " for visit: " + visitId));
-        
+
+        // Validate results against test template parameters
+        TestTemplate testTemplate = labTest.getTestTemplate();
+        if (testTemplate != null && testTemplate.getParameters() != null) {
+            testResultsValidator.validateResults(request.getResults(), testTemplate.getParameters());
+            // Also validate NABL compliance
+            testResultsValidator.validateNABLCompliance(request.getResults());
+        }
+
         labTest.setResults(request.getResults());
+        labTest.setResultsEnteredAt(LocalDateTime.now());
         labTest.setStatus(TestStatus.COMPLETED);
         labTest = labTestRepository.save(labTest);
-        
+
         return convertToResponse(labTest);
     }
     

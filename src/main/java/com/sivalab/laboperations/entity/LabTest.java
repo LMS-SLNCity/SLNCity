@@ -41,9 +41,12 @@ public class LabTest {
     
     @Column(name = "approved_by")
     private String approvedBy;
-    
+
     @Column(name = "approved_at")
     private LocalDateTime approvedAt;
+
+    @Column(name = "results_entered_at")
+    private LocalDateTime resultsEnteredAt;
     
     // Constructors
     public LabTest() {}
@@ -125,8 +128,16 @@ public class LabTest {
     public LocalDateTime getApprovedAt() {
         return approvedAt;
     }
-    
+
     public void setApprovedAt(LocalDateTime approvedAt) {
         this.approvedAt = approvedAt;
+    }
+
+    public LocalDateTime getResultsEnteredAt() {
+        return resultsEnteredAt;
+    }
+
+    public void setResultsEnteredAt(LocalDateTime resultsEnteredAt) {
+        this.resultsEnteredAt = resultsEnteredAt;
     }
 }
