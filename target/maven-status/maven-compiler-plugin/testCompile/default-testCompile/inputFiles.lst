@@ -1,2 +1,3 @@
-/Users/ramgopal/Desktop/siva_lab/src/test/java/com/sivalab/laboperations/integration/BasicIntegrationTest.java
-/Users/ramgopal/Desktop/siva_lab/src/test/java/com/sivalab/laboperations/SimpleApplicationTest.java
+/app/src/test/java/com/sivalab/laboperations/config/TestSecurityConfig.java
+/app/src/test/java/com/sivalab/laboperations/SimpleApplicationTest.java
+/app/src/test/java/com/sivalab/laboperations/integration/BasicIntegrationTest.java

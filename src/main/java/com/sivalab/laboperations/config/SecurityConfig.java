@@ -19,8 +19,11 @@ import java.util.List;
  * Security Configuration for Lab Operations System
  * Implements comprehensive security hardening with fault tolerance support
  */
+import org.springframework.context.annotation.Profile;
+
 @Configuration
 @EnableWebSecurity
+@Profile("!test")
 public class SecurityConfig {
 
     /**
