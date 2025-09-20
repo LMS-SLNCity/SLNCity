@@ -32,6 +32,26 @@ class PhlebotomyApp {
             });
         }
 
+        // Sample search functionality
+        const searchButton = document.querySelector('#sample-tracking-section .btn-primary');
+        if (searchButton) {
+            searchButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.searchSample();
+            });
+        }
+
+        // Search on Enter key
+        const searchInput = document.getElementById('search-sample');
+        if (searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.searchSample();
+                }
+            });
+        }
+
         // Auto-refresh data every 30 seconds
         setInterval(() => {
             if (this.currentSection === 'dashboard') {
@@ -127,7 +147,7 @@ class PhlebotomyApp {
                     <td>${this.getSampleTypeForTest(sample.testName)}</td>
                     <td><span class="status-badge status-pending">PENDING</span></td>
                     <td>
-                        <button class="btn btn-sm btn-primary" onclick="phlebotomyApp.collectSample(${sample.testId}, '${sample.testName}')">
+                        <button class="btn btn-sm btn-primary" onclick="window.phlebotomyApp?.collectSample(${sample.testId}, '${sample.testName}')">
                             <i class="fas fa-vial"></i> Collect
                         </button>
                     </td>
@@ -161,7 +181,7 @@ class PhlebotomyApp {
                     <td><span class="priority-badge ${this.getPriority(visit.labTests)}">${this.getPriorityText(visit.labTests)}</span></td>
                     <td>${this.calculateWaitTime(visit.createdAt)}</td>
                     <td>
-                        <button class="btn btn-sm btn-success" onclick="phlebotomyApp.callPatient(${visit.visitId})">
+                        <button class="btn btn-sm btn-success" onclick="window.phlebotomyApp?.callPatient(${visit.visitId})">
                             <i class="fas fa-user"></i> Call
                         </button>
                     </td>
@@ -452,10 +472,10 @@ class PhlebotomyApp {
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3>Collect Sample - ${testName}</h3>
-                        <span class="close" onclick="phlebotomyApp.closeSampleModal()">&times;</span>
+                        <span class="close" onclick="window.phlebotomyApp?.closeSampleModal()">&times;</span>
                     </div>
                     <div class="modal-body">
-                        <form id="sample-collection-form">
+                        <form id="modal-sample-collection-form">
                             <div class="form-group">
                                 <label for="sample-type">Sample Type *</label>
                                 <select id="sample-type" name="sampleType" required>
@@ -464,30 +484,37 @@ class PhlebotomyApp {
                                     <option value="SERUM">Serum</option>
                                     <option value="PLASMA">Plasma</option>
                                     <option value="RANDOM_URINE">Random Urine</option>
+                                    <option value="FIRST_MORNING_URINE">First Morning Urine</option>
                                     <option value="STOOL">Stool</option>
+                                    <option value="THROAT_SWAB">Throat Swab</option>
+                                    <option value="NASAL_SWAB">Nasal Swab</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="collected-by">Collected By *</label>
-                                <input type="text" id="collected-by" name="collectedBy" value="phlebotomy" required>
+                                <input type="text" id="collected-by" name="collectedBy" value="phlebotomist" required>
                             </div>
                             <div class="form-group">
                                 <label for="collection-site">Collection Site</label>
-                                <input type="text" id="collection-site" name="collectionSite" placeholder="e.g., Left arm">
+                                <input type="text" id="collection-site" name="collectionSite" placeholder="e.g., Left antecubital vein" value="Left antecubital vein">
                             </div>
                             <div class="form-group">
                                 <label for="container-type">Container Type</label>
-                                <input type="text" id="container-type" name="containerType" placeholder="e.g., EDTA tube">
+                                <input type="text" id="container-type" name="containerType" placeholder="e.g., EDTA tube" value="EDTA tube">
                             </div>
                             <div class="form-group">
                                 <label for="volume">Volume (ml)</label>
-                                <input type="number" id="volume" name="volumeReceived" step="0.1" min="0">
+                                <input type="number" id="volume" name="volumeReceived" step="0.1" min="0" value="5.0">
+                            </div>
+                            <div class="form-group">
+                                <label for="notes">Collection Notes</label>
+                                <textarea id="notes" name="notes" rows="2" placeholder="Any special notes about the collection...">Sample collected successfully</textarea>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="phlebotomyApp.closeSampleModal()">Cancel</button>
-                        <button type="button" class="btn btn-primary" onclick="phlebotomyApp.submitSampleCollection(${testId})">Collect Sample</button>
+                        <button type="button" class="btn btn-secondary" onclick="window.phlebotomyApp?.closeSampleModal()">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="window.phlebotomyApp?.submitSampleCollection(${testId})">Collect Sample</button>
                     </div>
                 </div>
             </div>
@@ -508,15 +535,47 @@ class PhlebotomyApp {
 
     async submitSampleCollection(testId) {
         try {
-            const form = document.getElementById('sample-collection-form');
+            console.log('=== SAMPLE COLLECTION DEBUG ===');
+            console.log('Test ID:', testId);
+
+            const form = document.getElementById('modal-sample-collection-form');
+            console.log('Form found:', form !== null);
+
+            if (!form) {
+                console.error('Form not found! Available forms:', document.querySelectorAll('form'));
+                throw new Error('Sample collection form not found');
+            }
+
             const formData = new FormData(form);
+            console.log('Form data created');
+
+            // Debug all form fields
+            console.log('=== FORM FIELDS DEBUG ===');
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            // Validate required fields
+            const sampleType = formData.get('sampleType');
+            const collectedBy = formData.get('collectedBy');
+
+            console.log('Sample type:', sampleType);
+            console.log('Collected by:', collectedBy);
+
+            if (!sampleType) {
+                throw new Error('Sample type is required');
+            }
+            if (!collectedBy) {
+                throw new Error('Collected by field is required');
+            }
 
             const sampleData = {
-                sampleType: formData.get('sampleType'),
-                collectedBy: formData.get('collectedBy'),
-                collectionSite: formData.get('collectionSite'),
-                containerType: formData.get('containerType'),
-                volumeReceived: formData.get('volumeReceived') ? parseFloat(formData.get('volumeReceived')) : null
+                sampleType: sampleType,
+                collectedBy: collectedBy,
+                collectionSite: formData.get('collectionSite') || 'Not specified',
+                containerType: formData.get('containerType') || 'Standard container',
+                volumeReceived: formData.get('volumeReceived') ? parseFloat(formData.get('volumeReceived')) : 5.0,
+                notes: formData.get('notes') || 'Sample collected via dashboard'
             };
 
             console.log('Collecting sample for test ID:', testId);
@@ -536,6 +595,9 @@ class PhlebotomyApp {
                 throw new Error(`Failed to collect sample: ${response.status} - ${errorText}`);
             }
 
+            const result = await response.json();
+            console.log('Sample collection successful:', result);
+
             this.showNotification('Sample collected successfully', 'success');
             this.closeSampleModal();
             this.loadDashboardData(); // Refresh dashboard statistics
@@ -544,7 +606,7 @@ class PhlebotomyApp {
 
         } catch (error) {
             console.error('Error collecting sample:', error);
-            this.showNotification('Error collecting sample', 'error');
+            this.showNotification(`Error collecting sample: ${error.message}`, 'error');
         }
     }
 
@@ -560,6 +622,10 @@ class PhlebotomyApp {
 
         const sampleTypeMap = {
             'Complete Blood Count (CBC)': 'WHOLE_BLOOD',
+            'Complete Blood Count': 'WHOLE_BLOOD',
+            'Simple CBC Test': 'WHOLE_BLOOD',
+            'Debug CBC Test': 'WHOLE_BLOOD',
+            'Real Test CBC': 'WHOLE_BLOOD',
             'Blood Sugar (Fasting)': 'SERUM',
             'Lipid Profile': 'SERUM',
             'Liver Function Test (LFT)': 'SERUM',
@@ -580,5 +646,10 @@ function logout() {
     }
 }
 
-// Initialize the application
-const phlebotomyApp = new PhlebotomyApp();
+// Initialize the application when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    const phlebotomyApp = new PhlebotomyApp();
+
+    // Make it globally available for debugging
+    window.phlebotomyApp = phlebotomyApp;
+});

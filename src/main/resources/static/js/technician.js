@@ -8,10 +8,12 @@ class TechnicianApp {
     }
 
     init() {
+        console.log('🔬 Initializing Lab Technician Dashboard...');
         this.setupEventListeners();
         this.loadDashboardData();
         this.loadTestQueue();
         this.loadEquipment();
+        console.log('✅ Lab Technician Dashboard initialized');
     }
 
     setupEventListeners() {
@@ -80,11 +82,14 @@ class TechnicianApp {
 
     async loadDashboardData() {
         try {
+            console.log('📊 Loading dashboard data...');
             // Load statistics
             const [visits, equipment] = await Promise.all([
                 this.fetchData('/visits'),
                 this.fetchData('/api/v1/equipment')
             ]);
+            console.log('📊 Dashboard data loaded:', { visits: visits.length, equipment: equipment.length });
+            console.log('📊 Dashboard data loaded:', { visits: visits.length, equipment: equipment.length });
 
             // Extract all tests from visits
             const allTests = [];
@@ -155,14 +160,14 @@ class TechnicianApp {
                         <td><span class="status-badge status-${test.status.toLowerCase().replace('_', '-')}">${test.status}</span></td>
                         <td>
                             ${canStart ?
-                                `<button class="btn btn-sm btn-primary" onclick="technicianApp.startTest(${test.testId})">
+                                `<button class="btn btn-sm btn-primary" onclick="window.technicianApp?.startTest(${test.testId})">
                                     <i class="fas fa-play"></i> Start
                                 </button>` :
                                 `<button class="btn btn-sm btn-secondary" disabled title="Sample not ready">
                                     <i class="fas fa-clock"></i> Waiting
                                 </button>`
                             }
-                            <button class="btn btn-sm btn-success" onclick="technicianApp.viewTest(${test.testId})">
+                            <button class="btn btn-sm btn-success" onclick="window.technicianApp?.viewTest(${test.testId})"
                                 <i class="fas fa-eye"></i> View
                             </button>
                         </td>
@@ -209,10 +214,10 @@ class TechnicianApp {
                     <td>${eq.lastMaintenance ? this.formatDate(eq.lastMaintenance) : 'N/A'}</td>
                     <td>${eq.calibrationDue ? this.formatDate(eq.calibrationDue) : 'N/A'}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary" onclick="technicianApp.useEquipment(${eq.id})">
+                        <button class="btn btn-sm btn-primary" onclick="window.technicianApp?.useEquipment(${eq.id})">
                             <i class="fas fa-cog"></i> Use
                         </button>
-                        <button class="btn btn-sm btn-warning" onclick="technicianApp.maintainEquipment(${eq.id})">
+                        <button class="btn btn-sm btn-warning" onclick="window.technicianApp?.maintainEquipment(${eq.id})"
                             <i class="fas fa-wrench"></i> Maintain
                         </button>
                     </td>
@@ -246,11 +251,11 @@ class TechnicianApp {
                     <td><span class="status-badge status-${test.status.toLowerCase()}">${test.status}</span></td>
                     <td>${test.resultsEnteredAt ? this.formatDate(test.resultsEnteredAt) : 'N/A'}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary" onclick="technicianApp.viewResults(${test.testId})">
+                        <button class="btn btn-sm btn-primary" onclick="window.technicianApp?.viewResults(${test.testId})">
                             <i class="fas fa-eye"></i> View
                         </button>
-                        ${test.status === 'COMPLETED' ? 
-                            `<button class="btn btn-sm btn-success" onclick="technicianApp.approveResults(${test.testId})">
+                        ${test.status === 'COMPLETED' ?
+                            `<button class="btn btn-sm btn-success" onclick="window.technicianApp?.approveResults(${test.testId})"
                                 <i class="fas fa-check"></i> Approve
                             </button>` : ''
                         }
@@ -516,5 +521,10 @@ function logout() {
     }
 }
 
-// Initialize the application
-const technicianApp = new TechnicianApp();
+// Initialize the application when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    const technicianApp = new TechnicianApp();
+
+    // Make it globally available for debugging
+    window.technicianApp = technicianApp;
+});

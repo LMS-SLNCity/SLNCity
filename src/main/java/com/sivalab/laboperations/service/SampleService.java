@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sivalab.laboperations.entity.*;
 import com.sivalab.laboperations.repository.SampleRepository;
 import com.sivalab.laboperations.repository.VisitRepository;
+import com.sivalab.laboperations.repository.LabTestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +28,17 @@ public class SampleService {
     
     private final SampleRepository sampleRepository;
     private final VisitRepository visitRepository;
+    private final LabTestRepository labTestRepository;
     private final ObjectMapper objectMapper;
-    
+
     @Autowired
-    public SampleService(SampleRepository sampleRepository, 
+    public SampleService(SampleRepository sampleRepository,
                         VisitRepository visitRepository,
+                        LabTestRepository labTestRepository,
                         ObjectMapper objectMapper) {
         this.sampleRepository = sampleRepository;
         this.visitRepository = visitRepository;
+        this.labTestRepository = labTestRepository;
         this.objectMapper = objectMapper;
     }
     
@@ -42,23 +46,29 @@ public class SampleService {
      * NABL Requirement: Sample Collection Documentation
      * Create new sample with complete collection documentation
      */
-    public Sample collectSample(Long visitId, SampleType sampleType, String collectedBy, 
+    public Sample collectSample(Long visitId, SampleType sampleType, String collectedBy,
                                String collectionSite, JsonNode collectionConditions) {
         Visit visit = visitRepository.findById(visitId)
                 .orElseThrow(() -> new RuntimeException("Visit not found with ID: " + visitId));
-        
+
         // Generate unique sample number (NABL requirement)
         String sampleNumber = generateSampleNumber(visitId, sampleType);
-        
+
         Sample sample = new Sample(sampleNumber, visit, sampleType, collectedBy, LocalDateTime.now());
         sample.setCollectionSite(collectionSite);
         sample.setCollectionConditions(collectionConditions);
         sample.setStatus(SampleStatus.COLLECTED);
-        
+
         // Initialize chain of custody
         sample.setChainOfCustody(createInitialChainOfCustody(collectedBy));
-        
-        return sampleRepository.save(sample);
+
+        Sample savedSample = sampleRepository.save(sample);
+
+        // CRITICAL FIX: Update lab test status when sample is collected
+        // Find lab tests that are waiting for this sample and update their status
+        updateLabTestStatusAfterSampleCollection(visitId, sampleType, savedSample);
+
+        return savedSample;
     }
     
     /**
@@ -353,6 +363,53 @@ public class SampleService {
             return false;
         }
         
+        return true;
+    }
+
+    /**
+     * CRITICAL FIX: Update lab test status when sample is collected
+     * This ensures the workflow continues from phlebotomy to lab processing
+     */
+    private void updateLabTestStatusAfterSampleCollection(Long visitId, SampleType sampleType, Sample sample) {
+        try {
+            // Find lab tests for this visit that are waiting for samples
+            List<LabTest> pendingTests = labTestRepository.findByVisitVisitIdAndStatus(visitId, TestStatus.SAMPLE_PENDING);
+
+            for (LabTest labTest : pendingTests) {
+                // Check if this sample matches the test requirements
+                if (doesSampleMatchTest(labTest, sampleType)) {
+                    // Link the sample to the lab test
+                    labTest.setSample(sample);
+                    labTest.setStatus(TestStatus.PENDING); // Ready for lab processing
+                    labTestRepository.save(labTest);
+
+                    System.out.println("✅ Updated Lab Test " + labTest.getTestId() + " status to PENDING - sample collected");
+                    break; // One sample per test
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Error updating lab test status after sample collection: " + e.getMessage());
+            // Don't throw exception to avoid breaking sample collection
+        }
+    }
+
+    /**
+     * Check if a sample matches the requirements for a lab test
+     */
+    private boolean doesSampleMatchTest(LabTest labTest, SampleType sampleType) {
+        // Get the test template to check sample requirements
+        TestTemplate template = labTest.getTestTemplate();
+        if (template == null) return false;
+
+        // Check if the sample type matches what the test requires
+        // This is a simplified check - in reality, you'd have more complex matching logic
+        JsonNode parameters = template.getParameters();
+        if (parameters != null && parameters.has("sampleType")) {
+            String requiredSampleType = parameters.get("sampleType").asText();
+            return sampleType.name().equals(requiredSampleType);
+        }
+
+        // Default: accept any sample for any test (for testing purposes)
         return true;
     }
 

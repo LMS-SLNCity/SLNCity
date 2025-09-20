@@ -1,5 +1,6 @@
 package com.sivalab.laboperations.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -30,6 +31,7 @@ public class Visit {
     private VisitStatus status = VisitStatus.PENDING;
     
     @OneToMany(mappedBy = "visit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"visit", "sample", "hibernateLazyInitializer", "handler"})
     private List<LabTest> labTests = new ArrayList<>();
     
     @OneToOne(mappedBy = "visit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

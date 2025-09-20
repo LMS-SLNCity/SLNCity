@@ -30,6 +30,11 @@ public interface LabTestRepository extends JpaRepository<LabTest, Long> {
     List<LabTest> findByStatus(TestStatus status);
 
     /**
+     * Find lab tests by visit ID and status
+     */
+    List<LabTest> findByVisitVisitIdAndStatus(Long visitId, TestStatus status);
+
+    /**
      * Count lab tests by status
      */
     long countByStatus(TestStatus status);

@@ -1,5 +1,6 @@
 package com.sivalab.laboperations.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -19,10 +20,12 @@ public class LabTest {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "visit_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Visit visit;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "test_template_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private TestTemplate testTemplate;
     
     @Enumerated(EnumType.STRING)
@@ -51,11 +54,13 @@ public class LabTest {
     // Sample collection tracking
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "sample_id")
+    @JsonIgnoreProperties({"labTest", "hibernateLazyInitializer", "handler"})
     private Sample sample;
 
     // Machine tracking for internal audit
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipment_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private LabEquipment equipment;
 
     @Column(name = "machine_used")

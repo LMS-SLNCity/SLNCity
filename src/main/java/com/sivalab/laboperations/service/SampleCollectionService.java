@@ -70,8 +70,10 @@ public class SampleCollectionService {
         
         // Update lab test with sample and change status
         labTest.setSample(sample);
-        labTest.setStatus(TestStatus.SAMPLE_PENDING); // Sample collected but not yet processed
+        labTest.setStatus(TestStatus.PENDING); // Sample collected and ready for lab processing
         labTestRepository.save(labTest);
+
+        System.out.println("✅ WORKFLOW FIX: Lab Test " + labTest.getTestId() + " status updated to PENDING - sample collected and ready for lab processing");
         
         return convertToSampleResponse(labTest);
     }

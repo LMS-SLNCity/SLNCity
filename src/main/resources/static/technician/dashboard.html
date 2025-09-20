@@ -48,7 +48,7 @@
                 <h1>Lab Technician Dashboard</h1>
                 <div class="user-info">
                     <span><i class="fas fa-user"></i> Lab Technician</span>
-                    <button class="logout-btn" onclick="logout()">
+                    <button class="logout-btn" onclick="window.technicianApp?.logout()">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 </div>
@@ -264,7 +264,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary" onclick="filterResults()">
+                                <button class="btn btn-primary" onclick="window.technicianApp?.filterResults()">
                                     <i class="fas fa-filter"></i> Filter
                                 </button>
                             </div>

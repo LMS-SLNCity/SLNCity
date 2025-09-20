@@ -31,7 +31,7 @@ public class Sample {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lab_test_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"sample", "hibernateLazyInitializer", "handler"})
     private LabTest labTest;
     
     @Enumerated(EnumType.STRING)

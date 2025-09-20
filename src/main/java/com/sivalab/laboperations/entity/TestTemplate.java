@@ -1,5 +1,6 @@
 package com.sivalab.laboperations.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -36,6 +37,7 @@ public class TestTemplate {
     private LocalDateTime createdAt;
     
     @OneToMany(mappedBy = "testTemplate", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"testTemplate", "visit", "sample", "hibernateLazyInitializer", "handler"})
     private List<LabTest> labTests = new ArrayList<>();
     
     // Constructors
