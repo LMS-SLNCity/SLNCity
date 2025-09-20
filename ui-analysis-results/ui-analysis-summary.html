@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UI Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { background: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .dashboard { border: 1px solid #ddd; margin: 20px 0; padding: 20px; border-radius: 5px; }
+        .working { border-left: 5px solid #28a745; }
+        .broken { border-left: 5px solid #dc3545; }
+        .redirect { border-left: 5px solid #ffc107; }
+        .code { background: #f8f9fa; padding: 10px; border-radius: 3px; font-family: monospace; }
+        .issue { background: #f8d7da; padding: 10px; margin: 10px 0; border-radius: 3px; }
+        .success { background: #d4edda; padding: 10px; margin: 10px 0; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 UI Analysis Report</h1>
+        <p>Generated: $(date)</p>
+        <p>This report analyzes the current state of all dashboard UIs in the Lab Operations System.</p>
+    </div>
+    
+    <div class="header">
+        <h2>🔧 Recommended Actions</h2>
+        <ol>
+            <li><strong>Fix Broken Dashboards:</strong> Start with dashboards showing HTTP errors</li>
+            <li><strong>Authentication Issues:</strong> Configure security for dashboard access</li>
+            <li><strong>Missing Structure:</strong> Add proper HTML structure to broken dashboards</li>
+            <li><strong>CSS/JS Loading:</strong> Ensure all stylesheets and scripts load correctly</li>
+            <li><strong>Test Functionality:</strong> Verify forms, navigation, and interactive elements</li>
+        </ol>
+        
+        <h2>📁 Files Generated</h2>
+        <ul>
+            <li><code>ui-analysis-summary.html</code> - This report</li>
+            <li><code>*-response.html</code> - Raw HTML responses for each dashboard</li>
+        </ul>
+    </div>
+</body>
+</html>

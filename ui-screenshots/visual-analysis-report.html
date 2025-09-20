@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visual Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { background: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .dashboard { border: 1px solid #ddd; margin: 20px 0; padding: 20px; border-radius: 5px; }
+        .working { border-left: 5px solid #28a745; }
+        .issue { border-left: 5px solid #dc3545; }
+        .warning { border-left: 5px solid #ffc107; }
+        .code { background: #f8f9fa; padding: 10px; border-radius: 3px; font-family: monospace; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .comparison { background: #e9ecef; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .issue-list { background: #f8d7da; padding: 15px; border-radius: 5px; margin: 10px 0; }
+        .success-list { background: #d4edda; padding: 15px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📸 Visual Analysis Report</h1>
+        <p>Generated: $(date)</p>
+        <p>Lab Operations System - Dashboard Visual Structure Analysis</p>
+    </div>
+    
+    <div class="comparison">
+        <h2>🔍 Cross-Dashboard Comparison</h2>
+        <p>This section compares consistency across all dashboards.</p>
+        
+        <h3>Key Findings:</h3>
+        <ul>
+            <li><strong>Phlebotomy & Lab Technician:</strong> Fully functional with complete structure</li>
+            <li><strong>Admin:</strong> Has proper structure but may need functionality testing</li>
+            <li><strong>Reception:</strong> Missing navigation - needs structural fixes</li>
+        </ul>
+        
+        <h3>Recommended Actions:</h3>
+        <ol>
+            <li><strong>Priority 1:</strong> Fix Reception dashboard navigation</li>
+            <li><strong>Priority 2:</strong> Test Admin dashboard functionality</li>
+            <li><strong>Priority 3:</strong> Verify CSS and JavaScript loading across all dashboards</li>
+            <li><strong>Priority 4:</strong> Test interactive elements (forms, buttons, tables)</li>
+        </ol>
+    </div>
+    
+    <div class="header">
+        <h2>📁 Files Generated</h2>
+        <ul>
+            <li><code>visual-analysis-report.html</code> - This comprehensive report</li>
+            <li><code>*-screenshot.html</code> - Raw HTML content for each dashboard</li>
+        </ul>
+        
+        <h2>🎯 Next Steps</h2>
+        <p>Based on this analysis, focus on fixing the Reception dashboard navigation first, then test all interactive functionality.</p>
+    </div>
+</body>
+</html>

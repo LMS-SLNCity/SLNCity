@@ -272,10 +272,18 @@ class TechnicianApp {
         try {
             const form = document.getElementById('test-processing-form');
             const formData = new FormData(form);
-            
+
             const testId = formData.get('testId');
             const results = formData.get('results');
             const notes = formData.get('notes');
+
+            // First, get the test details to find the visitId
+            const testResponse = await fetch(`/lab-tests/${testId}`);
+            if (!testResponse.ok) {
+                throw new Error('Failed to get test details');
+            }
+            const testData = await testResponse.json();
+            const visitId = testData.visitId;
 
             // Parse results as JSON
             let parsedResults;
@@ -286,7 +294,7 @@ class TechnicianApp {
                 parsedResults = { result: results, notes: notes };
             }
 
-            const response = await fetch(`/visits/${testId}/tests/${testId}/results`, {
+            const response = await fetch(`/visits/${visitId}/tests/${testId}/results`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -311,6 +319,16 @@ class TechnicianApp {
 
     async startTest(testId) {
         try {
+            // Get test details first to find visitId
+            const testResponse = await fetch(`/lab-tests/${testId}`);
+            if (!testResponse.ok) {
+                this.showNotification('Test not found', 'error');
+                return;
+            }
+
+            const testData = await testResponse.json();
+            const visitId = testData.visitId;
+
             // Check if sample is ready before starting test
             const response = await fetch(`/visits`);
             const visits = await response.json();
@@ -339,23 +357,12 @@ class TechnicianApp {
                 return;
             }
 
-            // Update test status to IN_PROGRESS
-            const updateResponse = await fetch(`/visits/${testId}/status`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ status: 'IN_PROGRESS' })
-            });
-
-            if (updateResponse.ok) {
-                this.showSection('test-processing');
-                document.getElementById('test-id').value = testId;
-                this.showNotification(`Started processing test ${testId}`, 'success');
-                this.loadTestQueue(); // Refresh the queue
-            } else {
-                this.showNotification('Failed to start test', 'error');
-            }
+            // Since there's no separate status endpoint, we'll just proceed to test processing
+            // The status will be updated when results are entered
+            this.showSection('test-processing');
+            document.getElementById('test-id').value = testId;
+            this.showNotification(`Started processing test ${testId}`, 'success');
+            this.loadTestQueue(); // Refresh the queue
 
         } catch (error) {
             console.error('Error starting test:', error);
@@ -385,7 +392,15 @@ class TechnicianApp {
 
     async approveResults(testId) {
         try {
-            const response = await fetch(`/visits/${testId}/tests/${testId}/approve`, {
+            // Get test details first to find visitId
+            const testResponse = await fetch(`/lab-tests/${testId}`);
+            if (!testResponse.ok) {
+                throw new Error('Failed to get test details');
+            }
+            const testData = await testResponse.json();
+            const visitId = testData.visitId;
+
+            const response = await fetch(`/visits/${visitId}/tests/${testId}/approve`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

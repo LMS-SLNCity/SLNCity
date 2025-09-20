@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technician Dashboard - Lab Operations</title>
+    <link rel="stylesheet" href="/css/technician.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-microscope"></i> SivaLab</h2>
+                <div class="role">Lab Technician</div>
+            </div>
+            <nav>
+                <ul class="sidebar-nav">
+                    <li><a href="#dashboard" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a></li>
+                    <li><a href="#test-processing" class="nav-link" data-section="test-processing">
+                        <i class="fas fa-flask"></i> Test Processing
+                    </a></li>
+                    <li><a href="#sample-analysis" class="nav-link" data-section="sample-analysis">
+                        <i class="fas fa-search"></i> Sample Analysis
+                    </a></li>
+                    <li><a href="#equipment" class="nav-link" data-section="equipment">
+                        <i class="fas fa-cogs"></i> Equipment
+                    </a></li>
+                    <li><a href="#quality-control" class="nav-link" data-section="quality-control">
+                        <i class="fas fa-check-circle"></i> Quality Control
+                    </a></li>
+                    <li><a href="#results" class="nav-link" data-section="results">
+                        <i class="fas fa-chart-line"></i> Results
+                    </a></li>
+                    <li><a href="#reports" class="nav-link" data-section="reports">
+                        <i class="fas fa-file-alt"></i> Reports
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Lab Technician Dashboard</h1>
+                <div class="user-info">
+                    <span><i class="fas fa-user"></i> Lab Technician</span>
+                    <button class="logout-btn" onclick="window.technicianApp?.logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="pending-tests">0</h3>
+                        <p>Pending Tests</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="in-progress-tests">0</h3>
+                        <p>Tests In Progress</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="completed-today">0</h3>
+                        <p>Completed Today</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="equipment-active">0</h3>
+                        <p>Active Equipment</p>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <i class="fas fa-list"></i> Today's Test Queue
+                    </div>
+                    <div class="section-content">
+                        <div class="table-container">
+                            <table id="test-queue-table">
+                                <thead>
+                                    <tr>
+                                        <th>Test ID</th>
+                                        <th>Patient</th>
+                                        <th>Test Type</th>
+                                        <th>Sample Type</th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="7" class="text-center">Loading test queue...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Test Processing Section -->
+            <section id="test-processing-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-flask"></i> Test Processing
+                </div>
+                <div class="section-content">
+                    <div class="processing-form">
+                        <h3>Process Test</h3>
+                        <form id="test-processing-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="test-id">Test ID:</label>
+                                    <input type="number" id="test-id" name="testId" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="equipment-used">Equipment Used:</label>
+                                    <select id="equipment-used" name="equipmentId">
+                                        <option value="">Select Equipment</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="test-results">Test Results:</label>
+                                <textarea id="test-results" name="results" rows="4" placeholder="Enter test results in JSON format..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="technician-notes">Technician Notes:</label>
+                                <textarea id="technician-notes" name="notes" rows="3" placeholder="Any observations or notes..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Results
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sample Analysis Section -->
+            <section id="sample-analysis-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-search"></i> Sample Analysis
+                </div>
+                <div class="section-content">
+                    <div class="analysis-tools">
+                        <div class="tool-grid">
+                            <div class="tool-card">
+                                <h4><i class="fas fa-microscope"></i> Microscopy</h4>
+                                <p>Microscopic examination of samples</p>
+                                <button class="btn btn-primary">Start Analysis</button>
+                            </div>
+                            <div class="tool-card">
+                                <h4><i class="fas fa-vial"></i> Chemistry Panel</h4>
+                                <p>Chemical analysis and testing</p>
+                                <button class="btn btn-primary">Start Analysis</button>
+                            </div>
+                            <div class="tool-card">
+                                <h4><i class="fas fa-dna"></i> Hematology</h4>
+                                <p>Blood cell count and analysis</p>
+                                <button class="btn btn-primary">Start Analysis</button>
+                            </div>
+                            <div class="tool-card">
+                                <h4><i class="fas fa-bacteria"></i> Microbiology</h4>
+                                <p>Bacterial and microbial testing</p>
+                                <button class="btn btn-primary">Start Analysis</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Equipment Section -->
+            <section id="equipment-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-cogs"></i> Laboratory Equipment
+                </div>
+                <div class="section-content">
+                    <div class="table-container">
+                        <table id="equipment-table">
+                            <thead>
+                                <tr>
+                                    <th>Equipment</th>
+                                    <th>Model</th>
+                                    <th>Status</th>
+                                    <th>Last Maintenance</th>
+                                    <th>Next Calibration</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="text-center">Loading equipment...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quality Control Section -->
+            <section id="quality-control-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-check-circle"></i> Quality Control
+                </div>
+                <div class="section-content">
+                    <div class="qc-dashboard">
+                        <div class="qc-stats">
+                            <div class="qc-card">
+                                <h4>Daily QC Tests</h4>
+                                <div class="qc-status">
+                                    <span class="qc-count">8/10</span>
+                                    <span class="qc-label">Completed</span>
+                                </div>
+                            </div>
+                            <div class="qc-card">
+                                <h4>Control Samples</h4>
+                                <div class="qc-status">
+                                    <span class="qc-count">15</span>
+                                    <span class="qc-label">Processed</span>
+                                </div>
+                            </div>
+                            <div class="qc-card">
+                                <h4>QC Pass Rate</h4>
+                                <div class="qc-status">
+                                    <span class="qc-count">98.5%</span>
+                                    <span class="qc-label">Success</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="qc-actions">
+                            <button class="btn btn-primary">Run Daily QC</button>
+                            <button class="btn btn-success">View QC Charts</button>
+                            <button class="btn btn-warning">QC Maintenance</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-chart-line"></i> Test Results
+                </div>
+                <div class="section-content">
+                    <div class="results-filter">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="result-date">Date:</label>
+                                <input type="date" id="result-date">
+                            </div>
+                            <div class="form-group">
+                                <label for="result-status">Status:</label>
+                                <select id="result-status">
+                                    <option value="">All Status</option>
+                                    <option value="COMPLETED">Completed</option>
+                                    <option value="PENDING">Pending Review</option>
+                                    <option value="APPROVED">Approved</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" onclick="window.technicianApp?.filterResults()">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Test ID</th>
+                                    <th>Patient</th>
+                                    <th>Test Type</th>
+                                    <th>Results</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7" class="text-center">Loading results...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-file-alt"></i> Lab Reports
+                </div>
+                <div class="section-content">
+                    <div class="reports-grid">
+                        <div class="report-card">
+                            <h4>Daily Test Report</h4>
+                            <p>Summary of all tests processed today</p>
+                            <button class="btn btn-primary">Generate Report</button>
+                        </div>
+                        <div class="report-card">
+                            <h4>Equipment Usage Report</h4>
+                            <p>Equipment utilization and performance</p>
+                            <button class="btn btn-primary">Generate Report</button>
+                        </div>
+                        <div class="report-card">
+                            <h4>Quality Control Report</h4>
+                            <p>QC results and compliance metrics</p>
+                            <button class="btn btn-primary">Generate Report</button>
+                        </div>
+                        <div class="report-card">
+                            <h4>Productivity Report</h4>
+                            <p>Technician productivity and efficiency</p>
+                            <button class="btn btn-primary">Generate Report</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/js/technician.js"></script>
+</body>
+</html>

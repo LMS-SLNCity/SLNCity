@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Phlebotomy Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Phlebotomy Dashboard Debug</h1>
+    
+    <div id="test-results"></div>
+    
+    <h2>Manual Tests</h2>
+    <button onclick="testPendingSamples()">Test Pending Samples API</button>
+    <button onclick="testSampleCollection()">Test Sample Collection</button>
+    <button onclick="testDashboardLoad()">Test Dashboard Load</button>
+    <button onclick="testFullWorkflow()">Test Full Workflow</button>
+    <button onclick="openDashboard()">Open Dashboard in New Tab</button>
+
+    <div id="manual-results"></div>
+
+    <h2>Live Dashboard Test</h2>
+    <iframe id="dashboard-frame" src="/phlebotomy/dashboard.html" width="100%" height="600" style="border: 1px solid #ccc; margin-top: 10px;"></iframe>
+
+    <script>
+        const results = document.getElementById('test-results');
+        const manualResults = document.getElementById('manual-results');
+        
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+        
+        function addManualResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            manualResults.appendChild(div);
+        }
+        
+        // Test 1: Check if we can load the phlebotomy JavaScript
+        addResult('🔍 Testing JavaScript Loading...', 'info');
+        
+        fetch('/js/phlebotomy.js')
+            .then(response => {
+                if (response.ok) {
+                    addResult('✅ Phlebotomy JavaScript loads successfully', 'pass');
+                    return response.text();
+                } else {
+                    addResult('❌ Failed to load phlebotomy JavaScript', 'fail');
+                    throw new Error('JS load failed');
+                }
+            })
+            .then(jsContent => {
+                if (jsContent.includes('class PhlebotomyApp')) {
+                    addResult('✅ PhlebotomyApp class found in JavaScript', 'pass');
+                } else {
+                    addResult('❌ PhlebotomyApp class NOT found in JavaScript', 'fail');
+                }
+                
+                if (jsContent.includes('new PhlebotomyApp()')) {
+                    addResult('✅ PhlebotomyApp initialization found', 'pass');
+                } else {
+                    addResult('❌ PhlebotomyApp initialization NOT found', 'fail');
+                }
+            })
+            .catch(error => {
+                addResult(`❌ JavaScript test failed: ${error.message}`, 'fail');
+            });
+        
+        // Test 2: Check if we can load the CSS
+        fetch('/css/phlebotomy.css')
+            .then(response => {
+                if (response.ok) {
+                    addResult('✅ Phlebotomy CSS loads successfully', 'pass');
+                } else {
+                    addResult('❌ Failed to load phlebotomy CSS', 'fail');
+                }
+            })
+            .catch(error => {
+                addResult(`❌ CSS test failed: ${error.message}`, 'fail');
+            });
+        
+        // Test 3: Check if we can load the dashboard HTML
+        fetch('/phlebotomy/dashboard.html')
+            .then(response => {
+                if (response.ok) {
+                    addResult('✅ Phlebotomy dashboard HTML loads successfully', 'pass');
+                    return response.text();
+                } else {
+                    addResult('❌ Failed to load phlebotomy dashboard HTML', 'fail');
+                    throw new Error('HTML load failed');
+                }
+            })
+            .then(htmlContent => {
+                if (htmlContent.includes('phlebotomy.js')) {
+                    addResult('✅ JavaScript reference found in HTML', 'pass');
+                } else {
+                    addResult('❌ JavaScript reference NOT found in HTML', 'fail');
+                }
+                
+                if (htmlContent.includes('phlebotomy.css')) {
+                    addResult('✅ CSS reference found in HTML', 'pass');
+                } else {
+                    addResult('❌ CSS reference NOT found in HTML', 'fail');
+                }
+            })
+            .catch(error => {
+                addResult(`❌ HTML test failed: ${error.message}`, 'fail');
+            });
+        
+        // Manual test functions
+        async function testPendingSamples() {
+            try {
+                const response = await fetch('/sample-collection/pending');
+                const data = await response.json();
+                addManualResult(`✅ Pending Samples API: ${JSON.stringify(data, null, 2)}`, 'pass');
+            } catch (error) {
+                addManualResult(`❌ Pending Samples API failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        async function testSampleCollection() {
+            try {
+                // First get pending samples
+                const pendingResponse = await fetch('/sample-collection/pending');
+                const pendingData = await pendingResponse.json();
+                
+                if (pendingData.length === 0) {
+                    addManualResult('⚠️ No pending samples to collect', 'info');
+                    return;
+                }
+                
+                const testId = pendingData[0].testId;
+                const collectionData = {
+                    sampleType: "WHOLE_BLOOD",
+                    collectedBy: "debug_test",
+                    collectionSite: "Test Site",
+                    containerType: "Test Container",
+                    volumeReceived: 5.0,
+                    notes: "Debug test collection"
+                };
+                
+                const response = await fetch(`/sample-collection/collect/${testId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(collectionData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    addManualResult(`✅ Sample Collection Success: ${JSON.stringify(result, null, 2)}`, 'pass');
+                } else {
+                    addManualResult(`❌ Sample Collection Failed: ${response.status}`, 'fail');
+                }
+            } catch (error) {
+                addManualResult(`❌ Sample Collection Error: ${error.message}`, 'fail');
+            }
+        }
+        
+        async function testDashboardLoad() {
+            try {
+                // Try to create a PhlebotomyApp instance
+                const script = document.createElement('script');
+                script.src = '/js/phlebotomy.js';
+                script.onload = () => {
+                    setTimeout(() => {
+                        if (typeof PhlebotomyApp !== 'undefined') {
+                            addManualResult('✅ PhlebotomyApp class is available', 'pass');
+                            try {
+                                const testApp = new PhlebotomyApp();
+                                addManualResult('✅ PhlebotomyApp can be instantiated', 'pass');
+                            } catch (error) {
+                                addManualResult(`❌ PhlebotomyApp instantiation failed: ${error.message}`, 'fail');
+                            }
+                        } else {
+                            addManualResult('❌ PhlebotomyApp class is NOT available', 'fail');
+                        }
+                    }, 100);
+                };
+                script.onerror = () => {
+                    addManualResult('❌ Failed to load PhlebotomyApp script', 'fail');
+                };
+                document.head.appendChild(script);
+            } catch (error) {
+                addManualResult(`❌ Dashboard Load Test Error: ${error.message}`, 'fail');
+            }
+        }
+
+        async function testFullWorkflow() {
+            addManualResult('🔍 Testing complete phlebotomy workflow...', 'info');
+
+            try {
+                // Step 1: Create test data
+                addManualResult('Step 1: Creating test template...', 'info');
+                const templateResponse = await fetch('/test-templates', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: "Debug Test CBC",
+                        description: "Complete Blood Count for debugging",
+                        basePrice: 200.00,
+                        parameters: {
+                            sampleType: "WHOLE_BLOOD",
+                            volumeRequired: 5.0,
+                            containerType: "EDTA tube"
+                        }
+                    })
+                });
+                const template = await templateResponse.json();
+                addManualResult(`✅ Template created: ID ${template.templateId}`, 'pass');
+
+                // Step 2: Create visit
+                addManualResult('Step 2: Creating patient visit...', 'info');
+                const visitResponse = await fetch('/visits', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        patientDetails: {
+                            name: "Debug Test Patient",
+                            age: 25,
+                            gender: "FEMALE",
+                            phone: "9999999999",
+                            email: "debug@test.com",
+                            address: "Debug Address"
+                        }
+                    })
+                });
+                const visit = await visitResponse.json();
+                addManualResult(`✅ Visit created: ID ${visit.visitId}`, 'pass');
+
+                // Step 3: Order test
+                addManualResult('Step 3: Ordering lab test...', 'info');
+                const testResponse = await fetch(`/visits/${visit.visitId}/tests`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ testTemplateId: template.templateId })
+                });
+                const test = await testResponse.json();
+                addManualResult(`✅ Test ordered: ID ${test.testId}`, 'pass');
+
+                // Step 4: Check pending samples
+                addManualResult('Step 4: Checking pending samples...', 'info');
+                const pendingResponse = await fetch('/sample-collection/pending');
+                const pending = await pendingResponse.json();
+                addManualResult(`✅ Pending samples: ${pending.length}`, 'pass');
+
+                // Step 5: Collect sample
+                if (pending.length > 0) {
+                    addManualResult('Step 5: Collecting sample...', 'info');
+                    const collectResponse = await fetch(`/sample-collection/collect/${test.testId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            sampleType: "WHOLE_BLOOD",
+                            collectedBy: "debug_user",
+                            collectionSite: "Debug Site",
+                            containerType: "EDTA Tube",
+                            volumeReceived: 5.0,
+                            notes: "Debug collection"
+                        })
+                    });
+
+                    if (collectResponse.ok) {
+                        const collection = await collectResponse.json();
+                        addManualResult(`✅ Sample collected: ID ${collection.sampleId}`, 'pass');
+                        addManualResult('🎉 FULL WORKFLOW SUCCESSFUL!', 'pass');
+                    } else {
+                        addManualResult(`❌ Sample collection failed: ${collectResponse.status}`, 'fail');
+                    }
+                } else {
+                    addManualResult('⚠️ No pending samples to collect', 'info');
+                }
+
+            } catch (error) {
+                addManualResult(`❌ Workflow test failed: ${error.message}`, 'fail');
+            }
+        }
+
+        function openDashboard() {
+            window.open('/phlebotomy/dashboard.html', '_blank');
+            addManualResult('✅ Dashboard opened in new tab', 'pass');
+        }
+        
+        // Auto-run basic tests
+        setTimeout(() => {
+            addResult('🔍 Auto-tests completed. Click buttons above for manual tests.', 'info');
+        }, 2000);
+    </script>
+</body>
+</html>

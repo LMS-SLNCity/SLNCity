@@ -1,5 +1,6 @@
 package com.sivalab.laboperations.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.sivalab.laboperations.dto.SampleCollectionRequest;
 import com.sivalab.laboperations.dto.SampleResponse;
 import com.sivalab.laboperations.entity.*;
@@ -161,7 +162,10 @@ public class SampleCollectionService {
         
         // Patient information
         if (labTest.getVisit().getPatientDetails() != null) {
-            response.setPatientName(labTest.getVisit().getPatientDetails().get("name").asText());
+            JsonNode patientDetails = labTest.getVisit().getPatientDetails();
+            String firstName = patientDetails.has("firstName") ? patientDetails.get("firstName").asText() : "";
+            String lastName = patientDetails.has("lastName") ? patientDetails.get("lastName").asText() : "";
+            response.setPatientName(firstName + " " + lastName);
         }
         
         // Test information

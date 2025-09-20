@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Lab Technician Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .debug-section { margin: 20px 0; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .fail { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        button { margin: 5px; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-success { background-color: #28a745; color: white; }
+        .btn-warning { background-color: #ffc107; color: black; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .data-table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        .data-table th, .data-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .data-table th { background-color: #f8f9fa; }
+        .console-output { background: #000; color: #0f0; padding: 10px; border-radius: 5px; font-family: monospace; max-height: 200px; overflow-y: auto; }
+        h1 { color: #333; text-align: center; }
+        h2 { color: #666; border-bottom: 2px solid #007bff; padding-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔬 Lab Technician Dashboard Debug Tool</h1>
+    
+    <div class="debug-section">
+        <h2>1. API Connectivity Test</h2>
+        <button class="btn-primary" onclick="testAllAPIs()">Test All APIs</button>
+        <button class="btn-warning" onclick="clearResults('api-results')">Clear</button>
+        <div id="api-results"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>2. Dashboard Resources Test</h2>
+        <button class="btn-primary" onclick="testDashboardResources()">Test Resources</button>
+        <button class="btn-warning" onclick="clearResults('resource-results')">Clear</button>
+        <div id="resource-results"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>3. JavaScript Functionality Test</h2>
+        <button class="btn-primary" onclick="testJavaScriptFunctionality()">Test JS Functions</button>
+        <button class="btn-warning" onclick="clearResults('js-results')">Clear</button>
+        <div id="js-results"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>4. Data Display Test</h2>
+        <button class="btn-primary" onclick="testDataDisplay()">Test Data Display</button>
+        <button class="btn-warning" onclick="clearResults('data-results')">Clear</button>
+        <div id="data-results"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>5. Dashboard Integration Test</h2>
+        <button class="btn-success" onclick="openDashboard()">Open Dashboard</button>
+        <button class="btn-primary" onclick="testDashboardIntegration()">Test Integration</button>
+        <button class="btn-danger" onclick="runFullDiagnostic()">Full Diagnostic</button>
+        <div id="integration-results"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>6. Console Output</h2>
+        <button class="btn-primary" onclick="captureConsoleOutput()">Capture Console</button>
+        <button class="btn-warning" onclick="clearConsole()">Clear Console</button>
+        <div id="console-output" class="console-output">Console output will appear here...</div>
+    </div>
+
+    <script>
+        // Console capture
+        let consoleMessages = [];
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        const originalConsoleWarn = console.warn;
+        
+        console.log = function(...args) {
+            consoleMessages.push({type: 'log', message: args.join(' '), timestamp: new Date().toISOString()});
+            originalConsoleLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            consoleMessages.push({type: 'error', message: args.join(' '), timestamp: new Date().toISOString()});
+            originalConsoleError.apply(console, args);
+        };
+        
+        console.warn = function(...args) {
+            consoleMessages.push({type: 'warn', message: args.join(' '), timestamp: new Date().toISOString()});
+            originalConsoleWarn.apply(console, args);
+        };
+        
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            container.appendChild(div);
+        }
+        
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+        
+        function clearConsole() {
+            consoleMessages = [];
+            document.getElementById('console-output').innerHTML = 'Console cleared...';
+        }
+        
+        function captureConsoleOutput() {
+            const output = document.getElementById('console-output');
+            output.innerHTML = '';
+            
+            if (consoleMessages.length === 0) {
+                output.innerHTML = 'No console messages captured yet.';
+                return;
+            }
+            
+            consoleMessages.forEach(msg => {
+                const div = document.createElement('div');
+                div.style.color = msg.type === 'error' ? '#ff6b6b' : msg.type === 'warn' ? '#feca57' : '#0f0';
+                div.innerHTML = `[${msg.timestamp.split('T')[1].split('.')[0]}] ${msg.type.toUpperCase()}: ${msg.message}`;
+                output.appendChild(div);
+            });
+        }
+        
+        async function testAllAPIs() {
+            clearResults('api-results');
+            addResult('api-results', '🔄 Testing all API endpoints...', 'info');
+            
+            const endpoints = [
+                { name: 'Equipment API', url: '/api/v1/equipment', expected: 'array' },
+                { name: 'Lab Tests API', url: '/lab-tests', expected: 'array' },
+                { name: 'Lab Tests Pending', url: '/lab-tests/pending', expected: 'array' },
+                { name: 'Lab Tests Statistics', url: '/lab-tests/statistics', expected: 'object' },
+                { name: 'Samples API', url: '/samples', expected: 'array' },
+                { name: 'Visits API', url: '/visits', expected: 'array' },
+                { name: 'Test Templates API', url: '/test-templates', expected: 'array' }
+            ];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint.url);
+                    const responseText = await response.text();
+                    
+                    if (response.ok) {
+                        try {
+                            const data = JSON.parse(responseText);
+                            const isCorrectType = endpoint.expected === 'array' ? Array.isArray(data) : typeof data === 'object';
+                            const count = Array.isArray(data) ? data.length : 'N/A';
+                            
+                            if (isCorrectType) {
+                                addResult('api-results', 
+                                    `✅ ${endpoint.name}: ${count} items (${response.status})`, 'pass');
+                            } else {
+                                addResult('api-results', 
+                                    `⚠️ ${endpoint.name}: Wrong data type (expected ${endpoint.expected})`, 'warning');
+                            }
+                        } catch (parseError) {
+                            addResult('api-results', 
+                                `❌ ${endpoint.name}: Invalid JSON response`, 'fail');
+                        }
+                    } else {
+                        addResult('api-results', 
+                            `❌ ${endpoint.name}: HTTP ${response.status} - ${responseText.substring(0, 100)}`, 'fail');
+                    }
+                } catch (error) {
+                    addResult('api-results', 
+                        `❌ ${endpoint.name}: Network error - ${error.message}`, 'fail');
+                }
+            }
+        }
+        
+        async function testDashboardResources() {
+            clearResults('resource-results');
+            addResult('resource-results', '🔄 Testing dashboard resources...', 'info');
+            
+            const resources = [
+                { name: 'Dashboard HTML', url: '/technician/dashboard.html' },
+                { name: 'Technician JavaScript', url: '/js/technician.js' },
+                { name: 'Technician CSS', url: '/css/technician.css' },
+                { name: 'Font Awesome CSS', url: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css' }
+            ];
+            
+            for (const resource of resources) {
+                try {
+                    const response = await fetch(resource.url);
+                    if (response.ok) {
+                        const size = response.headers.get('content-length') || 'Unknown';
+                        addResult('resource-results', 
+                            `✅ ${resource.name}: Loaded (${size} bytes)`, 'pass');
+                    } else {
+                        addResult('resource-results', 
+                            `❌ ${resource.name}: HTTP ${response.status}`, 'fail');
+                    }
+                } catch (error) {
+                    addResult('resource-results', 
+                        `❌ ${resource.name}: ${error.message}`, 'fail');
+                }
+            }
+        }
+        
+        async function testJavaScriptFunctionality() {
+            clearResults('js-results');
+            addResult('js-results', '🔄 Testing JavaScript functionality...', 'info');
+            
+            // Test if technician.js creates the global object
+            setTimeout(() => {
+                if (typeof window.technicianApp !== 'undefined') {
+                    addResult('js-results', '✅ TechnicianApp is globally available', 'pass');
+                    
+                    // Test specific methods
+                    const methods = ['loadDashboardData', 'loadTestQueue', 'loadEquipment', 'showSection'];
+                    methods.forEach(method => {
+                        if (typeof window.technicianApp[method] === 'function') {
+                            addResult('js-results', `✅ Method ${method} is available`, 'pass');
+                        } else {
+                            addResult('js-results', `❌ Method ${method} is missing`, 'fail');
+                        }
+                    });
+                } else {
+                    addResult('js-results', '❌ TechnicianApp is not globally available', 'fail');
+                    addResult('js-results', '💡 This means the JavaScript is not loading or initializing properly', 'warning');
+                }
+            }, 2000);
+            
+            // Test DOM elements that should exist
+            const requiredElements = [
+                'pending-tests', 'in-progress-tests', 'completed-today', 'equipment-active',
+                'test-queue-table', 'equipment-table'
+            ];
+            
+            setTimeout(() => {
+                requiredElements.forEach(elementId => {
+                    const element = document.getElementById(elementId);
+                    if (element) {
+                        addResult('js-results', `✅ Element #${elementId} exists in DOM`, 'pass');
+                    } else {
+                        addResult('js-results', `❌ Element #${elementId} missing from DOM`, 'fail');
+                    }
+                });
+            }, 1000);
+        }
+        
+        async function testDataDisplay() {
+            clearResults('data-results');
+            addResult('data-results', '🔄 Testing data display...', 'info');
+            
+            try {
+                // Test equipment data
+                const equipmentResponse = await fetch('/api/v1/equipment');
+                const equipment = await equipmentResponse.json();
+                
+                if (equipment.length > 0) {
+                    addResult('data-results', `📊 Equipment Data (${equipment.length} items):`, 'info');
+                    
+                    let table = '<table class="data-table"><tr><th>Name</th><th>Manufacturer</th><th>Status</th><th>Location</th></tr>';
+                    equipment.forEach(eq => {
+                        table += `<tr><td>${eq.name}</td><td>${eq.manufacturer}</td><td>${eq.status}</td><td>${eq.location}</td></tr>`;
+                    });
+                    table += '</table>';
+                    
+                    const div = document.createElement('div');
+                    div.innerHTML = table;
+                    document.getElementById('data-results').appendChild(div);
+                }
+                
+                // Test lab tests data
+                const testsResponse = await fetch('/lab-tests');
+                const tests = await testsResponse.json();
+                
+                if (tests.length > 0) {
+                    addResult('data-results', `📊 Lab Tests Data (${tests.length} items):`, 'info');
+                    
+                    let table = '<table class="data-table"><tr><th>Test ID</th><th>Status</th><th>Visit ID</th><th>Template ID</th></tr>';
+                    tests.forEach(test => {
+                        table += `<tr><td>${test.testId}</td><td>${test.status}</td><td>${test.visitId}</td><td>${test.templateId}</td></tr>`;
+                    });
+                    table += '</table>';
+                    
+                    const div = document.createElement('div');
+                    div.innerHTML = table;
+                    document.getElementById('data-results').appendChild(div);
+                }
+                
+            } catch (error) {
+                addResult('data-results', `❌ Data display test failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        function openDashboard() {
+            window.open('/technician/dashboard.html', '_blank');
+            addResult('integration-results', '🚀 Dashboard opened in new tab', 'info');
+            addResult('integration-results', '💡 Check the browser console in the new tab for any JavaScript errors', 'warning');
+        }
+        
+        async function testDashboardIntegration() {
+            clearResults('integration-results');
+            addResult('integration-results', '🔄 Testing dashboard integration...', 'info');
+            
+            // Test if we can load the dashboard content
+            try {
+                const response = await fetch('/technician/dashboard.html');
+                const html = await response.text();
+                
+                if (html.includes('Lab Technician Dashboard')) {
+                    addResult('integration-results', '✅ Dashboard HTML contains expected content', 'pass');
+                } else {
+                    addResult('integration-results', '❌ Dashboard HTML missing expected content', 'fail');
+                }
+                
+                if (html.includes('technician.js')) {
+                    addResult('integration-results', '✅ Dashboard references technician.js', 'pass');
+                } else {
+                    addResult('integration-results', '❌ Dashboard missing technician.js reference', 'fail');
+                }
+                
+                if (html.includes('technician.css')) {
+                    addResult('integration-results', '✅ Dashboard references technician.css', 'pass');
+                } else {
+                    addResult('integration-results', '❌ Dashboard missing technician.css reference', 'fail');
+                }
+                
+            } catch (error) {
+                addResult('integration-results', `❌ Integration test failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        async function runFullDiagnostic() {
+            clearResults('integration-results');
+            addResult('integration-results', '🔄 Running full diagnostic...', 'info');
+            
+            await testAllAPIs();
+            await testDashboardResources();
+            await testJavaScriptFunctionality();
+            await testDataDisplay();
+            await testDashboardIntegration();
+            
+            addResult('integration-results', '✅ Full diagnostic completed!', 'pass');
+            addResult('integration-results', '📋 Check all sections above for detailed results', 'info');
+            
+            // Capture console output
+            setTimeout(() => {
+                captureConsoleOutput();
+            }, 1000);
+        }
+        
+        // Auto-run basic tests on page load
+        setTimeout(() => {
+            addResult('integration-results', '🔄 Auto-running basic connectivity tests...', 'info');
+            testAllAPIs();
+        }, 1000);
+    </script>
+</body>
+</html>

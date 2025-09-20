@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Technician Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .error { color: red; }
+        .success { color: green; }
+        .info { color: blue; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+        button { margin: 5px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🔬 Lab Technician Dashboard Debug</h1>
+    
+    <div class="debug-section">
+        <h2>API Tests</h2>
+        <button onclick="testVisitsAPI()">Test /visits API</button>
+        <button onclick="testEquipmentAPI()">Test /api/v1/equipment API</button>
+        <button onclick="testLabTestsAPI()">Test /lab-tests API</button>
+        <div id="api-results"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>Test Queue Data</h2>
+        <button onclick="loadTestQueue()">Load Test Queue</button>
+        <div id="test-queue-results"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>JavaScript Console</h2>
+        <div id="console-output"></div>
+    </div>
+
+    <script>
+        // Override console.log to capture output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const consoleOutput = document.getElementById('console-output');
+        
+        function addToConsole(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = new Date().toLocaleTimeString() + ': ' + message;
+            consoleOutput.appendChild(div);
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToConsole(args.join(' '), 'info');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToConsole(args.join(' '), 'error');
+        };
+
+        // API test functions
+        async function testVisitsAPI() {
+            try {
+                console.log('Testing /visits API...');
+                const response = await fetch('/visits');
+                const data = await response.json();
+                console.log('Visits API response:', data);
+                
+                document.getElementById('api-results').innerHTML = `
+                    <h3>Visits API (/visits)</h3>
+                    <p class="success">✅ Success: ${data.length} visits found</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                console.error('Error testing visits API:', error);
+                document.getElementById('api-results').innerHTML = `
+                    <h3>Visits API (/visits)</h3>
+                    <p class="error">❌ Error: ${error.message}</p>
+                `;
+            }
+        }
+
+        async function testEquipmentAPI() {
+            try {
+                console.log('Testing /api/v1/equipment API...');
+                const response = await fetch('/api/v1/equipment');
+                const data = await response.json();
+                console.log('Equipment API response:', data);
+                
+                document.getElementById('api-results').innerHTML = `
+                    <h3>Equipment API (/api/v1/equipment)</h3>
+                    <p class="success">✅ Success: ${data.length} equipment items found</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                console.error('Error testing equipment API:', error);
+                document.getElementById('api-results').innerHTML = `
+                    <h3>Equipment API (/api/v1/equipment)</h3>
+                    <p class="error">❌ Error: ${error.message}</p>
+                `;
+            }
+        }
+
+        async function testLabTestsAPI() {
+            try {
+                console.log('Testing /lab-tests API...');
+                const response = await fetch('/lab-tests');
+                const data = await response.json();
+                console.log('Lab Tests API response:', data);
+                
+                document.getElementById('api-results').innerHTML = `
+                    <h3>Lab Tests API (/lab-tests)</h3>
+                    <p class="success">✅ Success: ${data.length} lab tests found</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                console.error('Error testing lab tests API:', error);
+                document.getElementById('api-results').innerHTML = `
+                    <h3>Lab Tests API (/lab-tests)</h3>
+                    <p class="error">❌ Error: ${error.message}</p>
+                `;
+            }
+        }
+
+        async function loadTestQueue() {
+            try {
+                console.log('Loading test queue...');
+                
+                // Load visits with tests
+                const visits = await fetch('/visits').then(r => r.json());
+                console.log('Visits loaded:', visits);
+                
+                const allTests = [];
+                
+                // Extract all tests from all visits
+                visits.forEach(visit => {
+                    if (visit.labTests && visit.labTests.length > 0) {
+                        visit.labTests.forEach(test => {
+                            allTests.push({
+                                ...test,
+                                patientName: visit.patientDetails?.name || 'Unknown Patient',
+                                patientPhone: visit.patientDetails?.phone || 'N/A'
+                            });
+                        });
+                    }
+                });
+                
+                console.log('All tests extracted:', allTests);
+                
+                const pendingTests = allTests.filter(t => t.status === 'PENDING' || t.status === 'IN_PROGRESS');
+                console.log('Pending tests:', pendingTests);
+                
+                document.getElementById('test-queue-results').innerHTML = `
+                    <h3>Test Queue Processing</h3>
+                    <p class="info">📊 Total visits: ${visits.length}</p>
+                    <p class="info">📊 Total tests: ${allTests.length}</p>
+                    <p class="success">✅ Pending tests: ${pendingTests.length}</p>
+                    <h4>Pending Tests Details:</h4>
+                    <pre>${JSON.stringify(pendingTests, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                console.error('Error loading test queue:', error);
+                document.getElementById('test-queue-results').innerHTML = `
+                    <h3>Test Queue Processing</h3>
+                    <p class="error">❌ Error: ${error.message}</p>
+                `;
+            }
+        }
+
+        // Initialize
+        console.log('🔬 Debug page loaded');
+    </script>
+</body>
+</html>

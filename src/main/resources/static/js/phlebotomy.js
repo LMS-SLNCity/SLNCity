@@ -102,16 +102,21 @@ class PhlebotomyApp {
 
     async loadDashboardData() {
         try {
-            // Load statistics using the same data sources as the tables
-            const [pendingSamples, samples] = await Promise.all([
-                this.fetchData('/sample-collection/pending'),
+            // Load visits and lab tests to find pending collections
+            const [visits, labTests, samples] = await Promise.all([
+                this.fetchData('/visits'),
+                this.fetchData('/lab-tests'),
                 this.fetchData('/samples')
             ]);
 
-            // Calculate statistics
-            const pendingCollections = pendingSamples.length; // Use actual pending samples, not visits
+            // Find tests that need sample collection (status SAMPLE_PENDING or PENDING without samples)
+            const pendingCollections = labTests.filter(test =>
+                test.status === 'SAMPLE_PENDING' ||
+                (test.status === 'PENDING' && !test.sample)
+            ).length;
+
             const todayCollections = this.getTodayCount(samples);
-            const samplesProcessing = samples.filter(s => s.status === 'PROCESSING').length;
+            const samplesProcessing = samples.filter(s => s.status === 'PROCESSING' || s.status === 'IN_ANALYSIS').length;
             const efficiency = this.calculateEfficiency(samples);
 
             // Update dashboard cards
@@ -128,8 +133,31 @@ class PhlebotomyApp {
 
     async loadCollectionSchedule() {
         try {
-            // Load pending samples that need collection
-            const pendingSamples = await this.fetchData('/sample-collection/pending');
+            // Load visits and lab tests to find tests needing sample collection
+            const [visits, labTests] = await Promise.all([
+                this.fetchData('/visits'),
+                this.fetchData('/lab-tests')
+            ]);
+
+            // Find tests that need sample collection
+            const pendingTests = labTests.filter(test =>
+                test.status === 'SAMPLE_PENDING' ||
+                (test.status === 'PENDING' && !test.sample)
+            );
+
+            // Get visit details for each test
+            const pendingSamples = pendingTests.map(test => {
+                const visit = visits.find(v => v.visitId === test.visitId);
+                return {
+                    ...test,
+                    visit: visit,
+                    patientName: visit ? `${visit.patientDetails.firstName} ${visit.patientDetails.lastName}` : 'Unknown',
+                    patientPhone: visit ? visit.patientDetails.phoneNumber : 'N/A',
+                    testName: test.testTemplate ? test.testTemplate.name : 'Unknown Test',
+                    priority: 'Normal', // Default priority
+                    scheduledTime: visit ? visit.createdAt : new Date().toISOString()
+                };
+            });
 
             const tableBody = document.querySelector('#collection-schedule-table tbody');
             if (!tableBody) return;

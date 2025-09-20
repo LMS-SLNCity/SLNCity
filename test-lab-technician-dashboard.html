@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Technician Dashboard Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        .warning { background-color: #fff3cd; color: #856404; }
+        button { margin: 5px; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-success { background-color: #28a745; color: white; }
+        .btn-warning { background-color: #ffc107; color: black; }
+    </style>
+</head>
+<body>
+    <h1>🔬 Lab Technician Dashboard Test</h1>
+    
+    <div class="test-section">
+        <h2>1. API Endpoints Test</h2>
+        <button class="btn-primary" onclick="testAPIs()">Test All APIs</button>
+        <div id="api-test-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Dashboard JavaScript Test</h2>
+        <button class="btn-primary" onclick="testDashboardJS()">Test Dashboard JS</button>
+        <div id="js-test-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Equipment Management Test</h2>
+        <button class="btn-primary" onclick="testEquipment()">Test Equipment</button>
+        <div id="equipment-test-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Lab Test Processing Test</h2>
+        <button class="btn-primary" onclick="testLabTests()">Test Lab Tests</button>
+        <div id="labtest-test-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>5. Sample Analysis Test</h2>
+        <button class="btn-primary" onclick="testSamples()">Test Samples</button>
+        <div id="sample-test-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>6. Dashboard Integration Test</h2>
+        <button class="btn-success" onclick="openDashboard()">Open Lab Technician Dashboard</button>
+        <button class="btn-warning" onclick="runFullTest()">Run Full Test Suite</button>
+        <div id="integration-test-results"></div>
+    </div>
+
+    <script>
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.innerHTML = message;
+            container.appendChild(div);
+        }
+        
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+        
+        async function testAPIs() {
+            clearResults('api-test-results');
+            addResult('api-test-results', '🔄 Testing API endpoints...', 'info');
+            
+            const endpoints = [
+                { name: 'Equipment API', url: '/api/v1/equipment' },
+                { name: 'Lab Tests API', url: '/lab-tests' },
+                { name: 'Samples API', url: '/samples' },
+                { name: 'Visits API', url: '/visits' },
+                { name: 'Test Templates API', url: '/test-templates' }
+            ];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint.url);
+                    if (response.ok) {
+                        const data = await response.json();
+                        addResult('api-test-results', 
+                            `✅ ${endpoint.name}: ${Array.isArray(data) ? data.length + ' items' : 'OK'}`, 'pass');
+                    } else {
+                        addResult('api-test-results', 
+                            `❌ ${endpoint.name}: HTTP ${response.status}`, 'fail');
+                    }
+                } catch (error) {
+                    addResult('api-test-results', 
+                        `❌ ${endpoint.name}: ${error.message}`, 'fail');
+                }
+            }
+        }
+        
+        async function testDashboardJS() {
+            clearResults('js-test-results');
+            addResult('js-test-results', '🔄 Testing dashboard JavaScript...', 'info');
+            
+            // Test if technician.js loads
+            try {
+                const response = await fetch('/js/technician.js');
+                if (response.ok) {
+                    addResult('js-test-results', '✅ Technician JS file loads correctly', 'pass');
+                } else {
+                    addResult('js-test-results', '❌ Technician JS file failed to load', 'fail');
+                }
+            } catch (error) {
+                addResult('js-test-results', `❌ JS loading error: ${error.message}`, 'fail');
+            }
+            
+            // Test CSS loading
+            try {
+                const response = await fetch('/css/technician.css');
+                if (response.ok) {
+                    addResult('js-test-results', '✅ Technician CSS file loads correctly', 'pass');
+                } else {
+                    addResult('js-test-results', '❌ Technician CSS file failed to load', 'fail');
+                }
+            } catch (error) {
+                addResult('js-test-results', `❌ CSS loading error: ${error.message}`, 'fail');
+            }
+            
+            // Test dashboard HTML
+            try {
+                const response = await fetch('/technician/dashboard.html');
+                if (response.ok) {
+                    addResult('js-test-results', '✅ Dashboard HTML loads correctly', 'pass');
+                } else {
+                    addResult('js-test-results', '❌ Dashboard HTML failed to load', 'fail');
+                }
+            } catch (error) {
+                addResult('js-test-results', `❌ HTML loading error: ${error.message}`, 'fail');
+            }
+        }
+        
+        async function testEquipment() {
+            clearResults('equipment-test-results');
+            addResult('equipment-test-results', '🔄 Testing equipment functionality...', 'info');
+            
+            try {
+                const response = await fetch('/api/v1/equipment');
+                const equipment = await response.json();
+                
+                if (equipment.length > 0) {
+                    addResult('equipment-test-results', 
+                        `✅ Found ${equipment.length} equipment items`, 'pass');
+                    
+                    equipment.forEach(eq => {
+                        addResult('equipment-test-results', 
+                            `📋 ${eq.name} (${eq.manufacturer} ${eq.model}) - Status: ${eq.status}`, 'info');
+                    });
+                } else {
+                    addResult('equipment-test-results', '⚠️ No equipment found', 'warning');
+                }
+            } catch (error) {
+                addResult('equipment-test-results', `❌ Equipment test failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        async function testLabTests() {
+            clearResults('labtest-test-results');
+            addResult('labtest-test-results', '🔄 Testing lab test functionality...', 'info');
+            
+            try {
+                const response = await fetch('/lab-tests');
+                const tests = await response.json();
+                
+                if (tests.length > 0) {
+                    addResult('labtest-test-results', 
+                        `✅ Found ${tests.length} lab tests`, 'pass');
+                    
+                    const statusCounts = {};
+                    tests.forEach(test => {
+                        const status = test.status || 'UNKNOWN';
+                        statusCounts[status] = (statusCounts[status] || 0) + 1;
+                    });
+                    
+                    Object.entries(statusCounts).forEach(([status, count]) => {
+                        addResult('labtest-test-results', 
+                            `📊 ${status}: ${count} tests`, 'info');
+                    });
+                } else {
+                    addResult('labtest-test-results', '⚠️ No lab tests found', 'warning');
+                }
+            } catch (error) {
+                addResult('labtest-test-results', `❌ Lab test failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        async function testSamples() {
+            clearResults('sample-test-results');
+            addResult('sample-test-results', '🔄 Testing sample functionality...', 'info');
+            
+            try {
+                const response = await fetch('/samples');
+                const samples = await response.json();
+                
+                if (samples.length > 0) {
+                    addResult('sample-test-results', 
+                        `✅ Found ${samples.length} samples`, 'pass');
+                    
+                    const statusCounts = {};
+                    samples.forEach(sample => {
+                        const status = sample.status || 'UNKNOWN';
+                        statusCounts[status] = (statusCounts[status] || 0) + 1;
+                    });
+                    
+                    Object.entries(statusCounts).forEach(([status, count]) => {
+                        addResult('sample-test-results', 
+                            `📊 ${status}: ${count} samples`, 'info');
+                    });
+                } else {
+                    addResult('sample-test-results', '⚠️ No samples found', 'warning');
+                }
+            } catch (error) {
+                addResult('sample-test-results', `❌ Sample test failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        function openDashboard() {
+            window.open('/technician/dashboard.html', '_blank');
+            addResult('integration-test-results', '🚀 Dashboard opened in new tab', 'info');
+        }
+        
+        async function runFullTest() {
+            clearResults('integration-test-results');
+            addResult('integration-test-results', '🔄 Running full test suite...', 'info');
+            
+            await testAPIs();
+            await testDashboardJS();
+            await testEquipment();
+            await testLabTests();
+            await testSamples();
+            
+            addResult('integration-test-results', '✅ Full test suite completed!', 'pass');
+            addResult('integration-test-results', 
+                '📋 Check individual test sections above for detailed results', 'info');
+        }
+        
+        // Auto-run basic tests on page load
+        setTimeout(() => {
+            addResult('integration-test-results', '🔄 Auto-running basic connectivity tests...', 'info');
+            testAPIs();
+        }, 1000);
+    </script>
+</body>
+</html>

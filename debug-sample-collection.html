@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Sample Collection</title>
+    <link rel="stylesheet" href="/css/phlebotomy.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        .debug-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .form-test { background: #fff; padding: 20px; border: 1px solid #ccc; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔬 Sample Collection Debug Tool</h1>
+    
+    <div class="debug-section">
+        <h2>1. API Status Check</h2>
+        <div id="api-status"></div>
+        <button onclick="checkAPIs()">Check APIs</button>
+    </div>
+    
+    <div class="debug-section">
+        <h2>2. Pending Samples</h2>
+        <div id="pending-samples"></div>
+        <button onclick="loadPendingSamples()">Load Pending Samples</button>
+    </div>
+    
+    <div class="debug-section">
+        <h2>3. Manual Sample Collection Test</h2>
+        <div class="form-test">
+            <h3>Collect Sample Manually</h3>
+            <form id="manual-collection-form">
+                <div style="margin: 10px 0;">
+                    <label>Test ID:</label>
+                    <input type="number" id="test-id" name="testId" placeholder="Enter test ID" required>
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>Sample Type:</label>
+                    <select id="sample-type-manual" name="sampleType" required>
+                        <option value="">Select Sample Type</option>
+                        <option value="WHOLE_BLOOD">Whole Blood</option>
+                        <option value="SERUM">Serum</option>
+                        <option value="PLASMA">Plasma</option>
+                        <option value="RANDOM_URINE">Random Urine</option>
+                        <option value="STOOL">Stool</option>
+                    </select>
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>Collected By:</label>
+                    <input type="text" id="collected-by-manual" name="collectedBy" value="debug_user" required>
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>Collection Site:</label>
+                    <input type="text" id="collection-site-manual" name="collectionSite" placeholder="e.g., Left arm">
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>Container Type:</label>
+                    <input type="text" id="container-type-manual" name="containerType" placeholder="e.g., EDTA tube">
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>Volume (ml):</label>
+                    <input type="number" id="volume-manual" name="volumeReceived" step="0.1" min="0" placeholder="5.0">
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>Notes:</label>
+                    <textarea id="notes-manual" name="notes" placeholder="Collection notes"></textarea>
+                </div>
+                <button type="submit">Collect Sample</button>
+            </form>
+        </div>
+        <div id="manual-collection-result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>4. Dashboard Integration Test</h2>
+        <button onclick="testDashboardIntegration()">Test Dashboard JS</button>
+        <div id="dashboard-test-result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>5. Create Test Data</h2>
+        <button onclick="createTestData()">Create Test Data</button>
+        <div id="test-data-result"></div>
+    </div>
+
+    <script>
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            container.appendChild(div);
+        }
+        
+        async function checkAPIs() {
+            const container = document.getElementById('api-status');
+            container.innerHTML = '';
+            
+            const endpoints = [
+                '/sample-collection/pending',
+                '/samples',
+                '/visits',
+                '/test-templates',
+                '/lab-tests'
+            ];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint);
+                    if (response.ok) {
+                        addResult('api-status', `✅ ${endpoint}: ${response.status}`, 'pass');
+                    } else {
+                        addResult('api-status', `❌ ${endpoint}: ${response.status}`, 'fail');
+                    }
+                } catch (error) {
+                    addResult('api-status', `❌ ${endpoint}: ${error.message}`, 'fail');
+                }
+            }
+        }
+        
+        async function loadPendingSamples() {
+            const container = document.getElementById('pending-samples');
+            container.innerHTML = '';
+            
+            try {
+                const response = await fetch('/sample-collection/pending');
+                const data = await response.json();
+                
+                addResult('pending-samples', `Found ${data.length} pending samples`, 'info');
+                
+                if (data.length > 0) {
+                    data.forEach((sample, index) => {
+                        addResult('pending-samples', 
+                            `Sample ${index + 1}: Test ID ${sample.testId}, Patient: ${sample.patientName}, Test: ${sample.testName}`, 
+                            'info');
+                    });
+                } else {
+                    addResult('pending-samples', 'No pending samples found', 'info');
+                }
+                
+            } catch (error) {
+                addResult('pending-samples', `Error: ${error.message}`, 'fail');
+            }
+        }
+        
+        async function createTestData() {
+            const container = document.getElementById('test-data-result');
+            container.innerHTML = '';
+            
+            try {
+                // Create test template
+                addResult('test-data-result', 'Creating test template...', 'info');
+                const templateResponse = await fetch('/test-templates', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: "Debug CBC Test",
+                        description: "Complete Blood Count for debugging",
+                        basePrice: 250.00,
+                        parameters: {
+                            sampleType: "WHOLE_BLOOD",
+                            volumeRequired: 5.0,
+                            containerType: "EDTA tube"
+                        }
+                    })
+                });
+                
+                const template = await templateResponse.json();
+                addResult('test-data-result', `✅ Template created: ID ${template.templateId}`, 'pass');
+                
+                // Create visit
+                addResult('test-data-result', 'Creating patient visit...', 'info');
+                const visitResponse = await fetch('/visits', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        patientDetails: {
+                            name: "Debug Test Patient",
+                            age: 30,
+                            gender: "MALE",
+                            phone: "9999999999",
+                            email: "debug@test.com",
+                            address: "Debug Address"
+                        }
+                    })
+                });
+                
+                const visit = await visitResponse.json();
+                addResult('test-data-result', `✅ Visit created: ID ${visit.visitId}`, 'pass');
+                
+                // Order test
+                addResult('test-data-result', 'Ordering lab test...', 'info');
+                const testResponse = await fetch(`/visits/${visit.visitId}/tests`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ testTemplateId: template.templateId })
+                });
+                
+                const test = await testResponse.json();
+                addResult('test-data-result', `✅ Test ordered: ID ${test.testId}`, 'pass');
+                
+                // Auto-fill the manual form
+                document.getElementById('test-id').value = test.testId;
+                document.getElementById('sample-type-manual').value = 'WHOLE_BLOOD';
+                document.getElementById('container-type-manual').value = 'EDTA tube';
+                document.getElementById('volume-manual').value = '5.0';
+                
+                addResult('test-data-result', '✅ Form auto-filled with test data', 'pass');
+                
+            } catch (error) {
+                addResult('test-data-result', `❌ Error: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Manual collection form handler
+        document.getElementById('manual-collection-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const container = document.getElementById('manual-collection-result');
+            container.innerHTML = '';
+            
+            const formData = new FormData(e.target);
+            const testId = formData.get('testId');
+            
+            const sampleData = {
+                sampleType: formData.get('sampleType'),
+                collectedBy: formData.get('collectedBy'),
+                collectionSite: formData.get('collectionSite'),
+                containerType: formData.get('containerType'),
+                volumeReceived: formData.get('volumeReceived') ? parseFloat(formData.get('volumeReceived')) : null,
+                notes: formData.get('notes')
+            };
+            
+            addResult('manual-collection-result', `Collecting sample for test ID: ${testId}`, 'info');
+            addResult('manual-collection-result', `Sample data: ${JSON.stringify(sampleData, null, 2)}`, 'info');
+            
+            try {
+                const response = await fetch(`/sample-collection/collect/${testId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(sampleData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    addResult('manual-collection-result', '✅ Sample collected successfully!', 'pass');
+                    addResult('manual-collection-result', `Result: ${JSON.stringify(result, null, 2)}`, 'info');
+                } else {
+                    const errorText = await response.text();
+                    addResult('manual-collection-result', `❌ Collection failed: ${response.status}`, 'fail');
+                    addResult('manual-collection-result', `Error: ${errorText}`, 'fail');
+                }
+                
+            } catch (error) {
+                addResult('manual-collection-result', `❌ Error: ${error.message}`, 'fail');
+            }
+        });
+        
+        async function testDashboardIntegration() {
+            const container = document.getElementById('dashboard-test-result');
+            container.innerHTML = '';
+            
+            try {
+                // Load the phlebotomy JS
+                const script = document.createElement('script');
+                script.src = '/js/phlebotomy.js';
+                script.onload = () => {
+                    setTimeout(() => {
+                        if (typeof window.phlebotomyApp !== 'undefined') {
+                            addResult('dashboard-test-result', '✅ PhlebotomyApp loaded successfully', 'pass');
+                            
+                            // Test key methods
+                            if (typeof window.phlebotomyApp.loadDashboardData === 'function') {
+                                addResult('dashboard-test-result', '✅ loadDashboardData method exists', 'pass');
+                            }
+                            if (typeof window.phlebotomyApp.collectSample === 'function') {
+                                addResult('dashboard-test-result', '✅ collectSample method exists', 'pass');
+                            }
+                            if (typeof window.phlebotomyApp.submitSampleCollection === 'function') {
+                                addResult('dashboard-test-result', '✅ submitSampleCollection method exists', 'pass');
+                            }
+                        } else {
+                            addResult('dashboard-test-result', '❌ PhlebotomyApp not loaded', 'fail');
+                        }
+                    }, 1000);
+                };
+                script.onerror = () => {
+                    addResult('dashboard-test-result', '❌ Failed to load phlebotomy JS', 'fail');
+                };
+                document.head.appendChild(script);
+                
+            } catch (error) {
+                addResult('dashboard-test-result', `❌ Error: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Auto-run basic checks
+        setTimeout(() => {
+            checkAPIs();
+            loadPendingSamples();
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard JS Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Dashboard JavaScript Test</h1>
+    
+    <div id="test-results"></div>
+    
+    <h2>Manual Tests</h2>
+    <button onclick="testAPI()">Test API Calls</button>
+    <button onclick="testJSLoading()">Test JS Loading</button>
+    <button onclick="openDashboard()">Open Dashboard</button>
+    
+    <div id="manual-results"></div>
+
+    <script>
+        const results = document.getElementById('test-results');
+        const manualResults = document.getElementById('manual-results');
+        
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+        
+        function addManualResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            manualResults.appendChild(div);
+        }
+        
+        // Test API endpoints
+        async function testAPI() {
+            addManualResult('🔍 Testing API endpoints...', 'info');
+            
+            try {
+                const pendingResponse = await fetch('/sample-collection/pending');
+                const pendingData = await pendingResponse.json();
+                addManualResult(`✅ Pending samples: ${pendingData.length} found`, 'pass');
+                
+                if (pendingData.length > 0) {
+                    addManualResult(`📋 Sample details: ${JSON.stringify(pendingData[0], null, 2)}`, 'info');
+                }
+                
+                const samplesResponse = await fetch('/samples');
+                const samplesData = await samplesResponse.json();
+                addManualResult(`✅ Total samples: ${samplesData.length}`, 'pass');
+                
+                const visitsResponse = await fetch('/visits');
+                const visitsData = await visitsResponse.json();
+                addManualResult(`✅ Total visits: ${visitsData.length}`, 'pass');
+                
+            } catch (error) {
+                addManualResult(`❌ API test failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test JavaScript loading
+        async function testJSLoading() {
+            addManualResult('🔍 Testing JavaScript loading...', 'info');
+            
+            try {
+                const jsResponse = await fetch('/js/phlebotomy.js');
+                const jsContent = await jsResponse.text();
+                
+                if (jsContent.includes('class PhlebotomyApp')) {
+                    addManualResult('✅ PhlebotomyApp class found in JS file', 'pass');
+                } else {
+                    addManualResult('❌ PhlebotomyApp class NOT found in JS file', 'fail');
+                }
+                
+                if (jsContent.includes('DOMContentLoaded')) {
+                    addManualResult('✅ DOM ready event listener found', 'pass');
+                } else {
+                    addManualResult('❌ DOM ready event listener NOT found', 'fail');
+                }
+                
+                if (jsContent.includes('window.phlebotomyApp')) {
+                    addManualResult('✅ Global phlebotomyApp assignment found', 'pass');
+                } else {
+                    addManualResult('❌ Global phlebotomyApp assignment NOT found', 'fail');
+                }
+                
+            } catch (error) {
+                addManualResult(`❌ JS loading test failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        function openDashboard() {
+            window.open('/phlebotomy/dashboard.html', '_blank');
+            addManualResult('✅ Dashboard opened in new tab', 'pass');
+            addManualResult('📋 Check the browser console (F12) for any JavaScript errors', 'info');
+            addManualResult('📋 Check if statistics cards show numbers', 'info');
+            addManualResult('📋 Check if pending samples appear in the table', 'info');
+        }
+        
+        // Auto-run basic tests
+        setTimeout(() => {
+            addResult('🔍 Running automatic tests...', 'info');
+            testAPI();
+            testJSLoading();
+        }, 1000);
+    </script>
+</body>
+</html>

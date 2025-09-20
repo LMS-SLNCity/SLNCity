@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phlebotomy Dashboard - Lab Operations</title>
+    <link rel="stylesheet" href="/css/phlebotomy.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-syringe"></i> SivaLab</h2>
+                <div class="role">Phlebotomy Department</div>
+            </div>
+            <nav>
+                <ul class="sidebar-nav">
+                    <li><a href="#dashboard" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a></li>
+                    <li><a href="#sample-collection" class="nav-link" data-section="sample-collection">
+                        <i class="fas fa-vial"></i> Sample Collection
+                    </a></li>
+                    <li><a href="#collection-queue" class="nav-link" data-section="collection-queue">
+                        <i class="fas fa-list"></i> Collection Queue
+                    </a></li>
+                    <li><a href="#sample-tracking" class="nav-link" data-section="sample-tracking">
+                        <i class="fas fa-search"></i> Sample Tracking
+                    </a></li>
+                    <li><a href="#collection-history" class="nav-link" data-section="collection-history">
+                        <i class="fas fa-history"></i> Collection History
+                    </a></li>
+                    <li><a href="#supplies" class="nav-link" data-section="supplies">
+                        <i class="fas fa-boxes"></i> Supplies
+                    </a></li>
+                    <li><a href="#reports" class="nav-link" data-section="reports">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Phlebotomy Dashboard</h1>
+                <div class="user-info">
+                    <span><i class="fas fa-user"></i> Phlebotomist</span>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="pending-collections">0</h3>
+                        <p>Pending Collections</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="today-collections">0</h3>
+                        <p>Today's Collections</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="samples-processing">0</h3>
+                        <p>Samples Processing</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="collection-efficiency">0%</h3>
+                        <p>Collection Efficiency</p>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <i class="fas fa-clock"></i> Today's Collection Schedule
+                    </div>
+                    <div class="section-content">
+                        <div class="table-container">
+                            <table id="collection-schedule-table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Patient</th>
+                                        <th>Tests</th>
+                                        <th>Sample Type</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6" class="text-center">Loading collection schedule...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sample Collection Section -->
+            <section id="sample-collection-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-vial"></i> Sample Collection
+                </div>
+                <div class="section-content">
+                    <div class="collection-form">
+                        <h3>New Sample Collection</h3>
+                        <form id="sample-collection-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="visit-id">Visit ID:</label>
+                                    <input type="number" id="visit-id" name="visitId" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sample-type">Sample Type:</label>
+                                    <select id="sample-type" name="sampleType" required>
+                                        <option value="">Select Sample Type</option>
+                                        <option value="WHOLE_BLOOD">Whole Blood</option>
+                                        <option value="SERUM">Serum</option>
+                                        <option value="PLASMA">Plasma</option>
+                                        <option value="RANDOM_URINE">Random Urine</option>
+                                        <option value="FIRST_MORNING_URINE">First Morning Urine</option>
+                                        <option value="STOOL">Stool</option>
+                                        <option value="THROAT_SWAB">Throat Swab</option>
+                                        <option value="NASAL_SWAB">Nasal Swab</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="collection-site">Collection Site:</label>
+                                    <input type="text" id="collection-site" name="collectionSite" placeholder="e.g., Left Antecubital Vein">
+                                </div>
+                                <div class="form-group">
+                                    <label for="collected-by">Collected By:</label>
+                                    <input type="text" id="collected-by" name="collectedBy" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="collection-notes">Collection Notes:</label>
+                                <textarea id="collection-notes" name="notes" rows="3" placeholder="Any special notes about the collection..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-vial"></i> Collect Sample
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Collection Queue Section -->
+            <section id="collection-queue-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-list"></i> Collection Queue
+                </div>
+                <div class="section-content">
+                    <div class="table-container">
+                        <table id="collection-queue-table">
+                            <thead>
+                                <tr>
+                                    <th>Queue #</th>
+                                    <th>Patient Name</th>
+                                    <th>Visit ID</th>
+                                    <th>Tests Ordered</th>
+                                    <th>Priority</th>
+                                    <th>Wait Time</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7" class="text-center">Loading collection queue...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sample Tracking Section -->
+            <section id="sample-tracking-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-search"></i> Sample Tracking
+                </div>
+                <div class="section-content">
+                    <div class="search-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="search-sample">Search Sample:</label>
+                                <input type="text" id="search-sample" placeholder="Enter sample number or visit ID">
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="window.phlebotomyApp?.searchSample()">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                    <div id="sample-tracking-results">
+                        <p class="text-center">Enter a sample number or visit ID to track sample status</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Collection History Section -->
+            <section id="collection-history-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-history"></i> Collection History
+                </div>
+                <div class="section-content">
+                    <div class="table-container">
+                        <table id="collection-history-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Sample #</th>
+                                    <th>Patient</th>
+                                    <th>Sample Type</th>
+                                    <th>Collected By</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="text-center">Loading collection history...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Supplies Section -->
+            <section id="supplies-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-boxes"></i> Phlebotomy Supplies
+                </div>
+                <div class="section-content">
+                    <div class="supplies-grid">
+                        <div class="supply-card">
+                            <h4>Collection Tubes</h4>
+                            <div class="supply-status">
+                                <span class="supply-count">45</span>
+                                <span class="supply-unit">units</span>
+                            </div>
+                            <div class="supply-level good">Good Stock</div>
+                        </div>
+                        <div class="supply-card">
+                            <h4>Needles (21G)</h4>
+                            <div class="supply-status">
+                                <span class="supply-count">12</span>
+                                <span class="supply-unit">units</span>
+                            </div>
+                            <div class="supply-level low">Low Stock</div>
+                        </div>
+                        <div class="supply-card">
+                            <h4>Syringes</h4>
+                            <div class="supply-status">
+                                <span class="supply-count">28</span>
+                                <span class="supply-unit">units</span>
+                            </div>
+                            <div class="supply-level good">Good Stock</div>
+                        </div>
+                        <div class="supply-card">
+                            <h4>Alcohol Swabs</h4>
+                            <div class="supply-status">
+                                <span class="supply-count">156</span>
+                                <span class="supply-unit">units</span>
+                            </div>
+                            <div class="supply-level good">Good Stock</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-chart-bar"></i> Phlebotomy Reports
+                </div>
+                <div class="section-content">
+                    <div class="reports-grid">
+                        <div class="report-card">
+                            <h4>Daily Collection Report</h4>
+                            <p>Summary of today's sample collections</p>
+                            <button class="btn btn-primary">Generate Report</button>
+                        </div>
+                        <div class="report-card">
+                            <h4>Collection Efficiency</h4>
+                            <p>Analysis of collection success rates</p>
+                            <button class="btn btn-primary">View Analytics</button>
+                        </div>
+                        <div class="report-card">
+                            <h4>Supply Usage Report</h4>
+                            <p>Track supply consumption and needs</p>
+                            <button class="btn btn-primary">Generate Report</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/js/phlebotomy.js"></script>
+</body>
+</html>

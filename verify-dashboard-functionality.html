@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Functionality Verification</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        button { margin: 5px; padding: 10px 15px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🔬 Lab Technician Dashboard - Functionality Verification</h1>
+    
+    <div id="test-results"></div>
+    
+    <button onclick="runAllTests()">🧪 Run All Tests</button>
+    <button onclick="testDashboardData()">📊 Test Dashboard Data</button>
+    <button onclick="testTestQueue()">📋 Test Queue Loading</button>
+    <button onclick="openMainDashboard()">🚀 Open Main Dashboard</button>
+
+    <script>
+        const resultsDiv = document.getElementById('test-results');
+        
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            resultsDiv.appendChild(div);
+        }
+        
+        function clearResults() {
+            resultsDiv.innerHTML = '';
+        }
+        
+        async function testDashboardData() {
+            addResult('🔄 Testing dashboard data loading...', 'info');
+            
+            try {
+                // Test visits API
+                const visitsResponse = await fetch('/visits');
+                const visits = await visitsResponse.json();
+                addResult(`✅ Visits API: ${visits.length} visits loaded`, 'success');
+                
+                // Extract tests
+                let totalTests = 0;
+                let pendingTests = 0;
+                
+                visits.forEach(visit => {
+                    if (visit.labTests && visit.labTests.length > 0) {
+                        totalTests += visit.labTests.length;
+                        visit.labTests.forEach(test => {
+                            if (test.status === 'PENDING' || test.status === 'IN_PROGRESS') {
+                                pendingTests++;
+                            }
+                        });
+                    }
+                });
+                
+                addResult(`✅ Total tests: ${totalTests}, Pending: ${pendingTests}`, 'success');
+                
+                if (pendingTests > 0) {
+                    addResult(`🎯 Dashboard should show ${pendingTests} test(s) in the queue`, 'success');
+                } else {
+                    addResult(`⚠️ No pending tests - dashboard will show empty queue`, 'info');
+                }
+                
+            } catch (error) {
+                addResult(`❌ Error testing dashboard data: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testTestQueue() {
+            addResult('🔄 Testing test queue functionality...', 'info');
+            
+            try {
+                // Simulate the same logic as the dashboard JavaScript
+                const visits = await fetch('/visits').then(r => r.json());
+                const allTests = [];
+                
+                visits.forEach(visit => {
+                    if (visit.labTests && visit.labTests.length > 0) {
+                        visit.labTests.forEach(test => {
+                            allTests.push({
+                                ...test,
+                                patientName: visit.patientDetails?.name || 'Unknown Patient',
+                                patientPhone: visit.patientDetails?.phone || 'N/A'
+                            });
+                        });
+                    }
+                });
+                
+                const pendingTests = allTests.filter(t => t.status === 'PENDING' || t.status === 'IN_PROGRESS');
+                
+                addResult(`✅ Test queue processing successful`, 'success');
+                addResult(`📊 Found ${pendingTests.length} tests ready for processing`, 'success');
+                
+                if (pendingTests.length > 0) {
+                    addResult(`📋 Test details:<pre>${JSON.stringify(pendingTests, null, 2)}</pre>`, 'info');
+                }
+                
+            } catch (error) {
+                addResult(`❌ Error testing test queue: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testJavaScriptLoading() {
+            addResult('🔄 Testing JavaScript loading...', 'info');
+            
+            try {
+                const jsResponse = await fetch('/js/technician.js');
+                if (jsResponse.ok) {
+                    addResult('✅ JavaScript file loads successfully', 'success');
+                } else {
+                    addResult(`❌ JavaScript file failed to load: ${jsResponse.status}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Error loading JavaScript: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testCSSLoading() {
+            addResult('🔄 Testing CSS loading...', 'info');
+            
+            try {
+                const cssResponse = await fetch('/css/technician.css');
+                if (cssResponse.ok) {
+                    addResult('✅ CSS file loads successfully', 'success');
+                } else {
+                    addResult(`❌ CSS file failed to load: ${cssResponse.status}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Error loading CSS: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runAllTests() {
+            clearResults();
+            addResult('🧪 Running comprehensive dashboard tests...', 'info');
+            
+            await testJavaScriptLoading();
+            await testCSSLoading();
+            await testDashboardData();
+            await testTestQueue();
+            
+            addResult('✅ All tests completed!', 'success');
+            addResult('🚀 If all tests passed, the dashboard should be fully functional', 'success');
+        }
+        
+        function openMainDashboard() {
+            window.open('/technician/dashboard.html', '_blank');
+        }
+        
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            addResult('🔬 Dashboard verification page loaded', 'info');
+            addResult('Click "Run All Tests" to verify dashboard functionality', 'info');
+        });
+    </script>
+</body>
+</html>

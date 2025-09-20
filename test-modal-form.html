@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Modal Form</title>
+    <link rel="stylesheet" href="/css/phlebotomy.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Modal Form Test</h1>
+    
+    <div class="test-section">
+        <h2>1. Test Sample Collection Modal</h2>
+        <button onclick="testModal()">Open Sample Collection Modal</button>
+        <button onclick="testFormFields()">Test Form Fields</button>
+        <div id="modal-test-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Manual Form Test</h2>
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 5px;">
+            <h3>Manual Sample Collection Form</h3>
+            <form id="test-form">
+                <div style="margin: 10px 0;">
+                    <label>Sample Type *:</label>
+                    <select name="sampleType" required>
+                        <option value="">Select sample type</option>
+                        <option value="WHOLE_BLOOD">Whole Blood</option>
+                        <option value="SERUM">Serum</option>
+                        <option value="PLASMA">Plasma</option>
+                        <option value="RANDOM_URINE">Random Urine</option>
+                    </select>
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>Collected By *:</label>
+                    <input type="text" name="collectedBy" value="test_phlebotomist" required>
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>Collection Site:</label>
+                    <input type="text" name="collectionSite" value="Left arm">
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>Container Type:</label>
+                    <input type="text" name="containerType" value="EDTA tube">
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>Volume (ml):</label>
+                    <input type="number" name="volumeReceived" value="5.0" step="0.1">
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>Notes:</label>
+                    <textarea name="notes">Test collection</textarea>
+                </div>
+                <button type="button" onclick="testFormData()">Test Form Data</button>
+            </form>
+        </div>
+        <div id="form-test-results"></div>
+    </div>
+
+    <script src="/js/phlebotomy.js"></script>
+    <script>
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.innerHTML = message;
+            container.appendChild(div);
+        }
+        
+        function testModal() {
+            const container = document.getElementById('modal-test-results');
+            container.innerHTML = '';
+            
+            try {
+                // Wait for phlebotomyApp to be available
+                setTimeout(() => {
+                    if (typeof window.phlebotomyApp !== 'undefined') {
+                        addResult('modal-test-results', '✅ PhlebotomyApp is available', 'pass');
+                        
+                        // Test the modal creation
+                        try {
+                            window.phlebotomyApp.collectSample(999, 'Test Sample Collection');
+                            addResult('modal-test-results', '✅ Modal opened successfully', 'pass');
+                            
+                            // Check if modal form exists
+                            setTimeout(() => {
+                                const modalForm = document.getElementById('modal-sample-collection-form');
+                                if (modalForm) {
+                                    addResult('modal-test-results', '✅ Modal form found', 'pass');
+                                    
+                                    // Check form fields
+                                    const fields = ['sampleType', 'collectedBy', 'collectionSite', 'containerType', 'volumeReceived', 'notes'];
+                                    fields.forEach(fieldName => {
+                                        const field = modalForm.querySelector(`[name="${fieldName}"]`);
+                                        if (field) {
+                                            addResult('modal-test-results', `✅ Field '${fieldName}' found: ${field.tagName}`, 'pass');
+                                        } else {
+                                            addResult('modal-test-results', `❌ Field '${fieldName}' NOT found`, 'fail');
+                                        }
+                                    });
+                                } else {
+                                    addResult('modal-test-results', '❌ Modal form NOT found', 'fail');
+                                }
+                            }, 500);
+                            
+                        } catch (error) {
+                            addResult('modal-test-results', `❌ Modal creation failed: ${error.message}`, 'fail');
+                        }
+                    } else {
+                        addResult('modal-test-results', '❌ PhlebotomyApp not available', 'fail');
+                    }
+                }, 1000);
+                
+            } catch (error) {
+                addResult('modal-test-results', `❌ Test failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        function testFormFields() {
+            const container = document.getElementById('modal-test-results');
+            
+            // Check if modal exists
+            const modal = document.getElementById('sample-collection-modal');
+            if (!modal) {
+                addResult('modal-test-results', '⚠️ No modal found. Click "Open Sample Collection Modal" first.', 'info');
+                return;
+            }
+            
+            const form = document.getElementById('modal-sample-collection-form');
+            if (!form) {
+                addResult('modal-test-results', '❌ Modal form not found', 'fail');
+                return;
+            }
+            
+            // Test form data extraction
+            const formData = new FormData(form);
+            const data = {
+                sampleType: formData.get('sampleType'),
+                collectedBy: formData.get('collectedBy'),
+                collectionSite: formData.get('collectionSite'),
+                containerType: formData.get('containerType'),
+                volumeReceived: formData.get('volumeReceived'),
+                notes: formData.get('notes')
+            };
+            
+            addResult('modal-test-results', `📋 Form Data: ${JSON.stringify(data, null, 2)}`, 'info');
+            
+            // Check required fields
+            if (!data.sampleType) {
+                addResult('modal-test-results', '❌ Sample type is empty', 'fail');
+            } else {
+                addResult('modal-test-results', `✅ Sample type: ${data.sampleType}`, 'pass');
+            }
+            
+            if (!data.collectedBy) {
+                addResult('modal-test-results', '❌ Collected by is empty', 'fail');
+            } else {
+                addResult('modal-test-results', `✅ Collected by: ${data.collectedBy}`, 'pass');
+            }
+        }
+        
+        function testFormData() {
+            const container = document.getElementById('form-test-results');
+            container.innerHTML = '';
+            
+            const form = document.getElementById('test-form');
+            const formData = new FormData(form);
+            
+            const data = {
+                sampleType: formData.get('sampleType'),
+                collectedBy: formData.get('collectedBy'),
+                collectionSite: formData.get('collectionSite'),
+                containerType: formData.get('containerType'),
+                volumeReceived: formData.get('volumeReceived'),
+                notes: formData.get('notes')
+            };
+            
+            addResult('form-test-results', `📋 Manual Form Data: ${JSON.stringify(data, null, 2)}`, 'info');
+            
+            // Validate
+            if (data.sampleType && data.collectedBy) {
+                addResult('form-test-results', '✅ Required fields are filled', 'pass');
+            } else {
+                addResult('form-test-results', '❌ Required fields are missing', 'fail');
+            }
+        }
+        
+        // Auto-test when page loads
+        setTimeout(() => {
+            if (typeof window.phlebotomyApp !== 'undefined') {
+                addResult('modal-test-results', '✅ PhlebotomyApp loaded automatically', 'pass');
+            } else {
+                addResult('modal-test-results', '❌ PhlebotomyApp not loaded', 'fail');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

@@ -87,8 +87,8 @@ class ReceptionApp {
                 const visits = await visitsResponse.json();
                 const today = new Date().toDateString();
                 
-                const todayVisits = visits.filter(visit => 
-                    new Date(visit.visitDate).toDateString() === today
+                const todayVisits = visits.filter(visit =>
+                    new Date(visit.createdAt).toDateString() === today
                 );
                 
                 const pendingVisits = todayVisits.filter(visit => 
@@ -130,10 +130,10 @@ class ReceptionApp {
                 const visits = await response.json();
                 const today = new Date().toDateString();
                 
-                const queueVisits = visits.filter(visit => 
-                    new Date(visit.visitDate).toDateString() === today &&
-                    (visit.status === 'PENDING' || visit.status === 'SCHEDULED')
-                ).sort((a, b) => new Date(a.visitDate) - new Date(b.visitDate));
+                const queueVisits = visits.filter(visit =>
+                    new Date(visit.createdAt).toDateString() === today &&
+                    (visit.status === 'PENDING' || visit.status === 'IN_PROGRESS')
+                ).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
                 this.renderPatientQueue(queueVisits);
             }
@@ -158,8 +158,8 @@ class ReceptionApp {
         queueContainer.innerHTML = visits.map((visit, index) => `
             <div class="queue-item">
                 <div class="queue-patient-info">
-                    <h4>${visit.patientDetails?.name || 'N/A'}</h4>
-                    <p>Phone: ${visit.patientDetails?.phone || 'N/A'} | Age: ${visit.patientDetails?.age || 'N/A'} | Gender: ${visit.patientDetails?.gender || 'N/A'}</p>
+                    <h4>${visit.patientDetails?.firstName || 'N/A'} ${visit.patientDetails?.lastName || ''}</h4>
+                    <p>Phone: ${visit.patientDetails?.phoneNumber || 'N/A'} | DOB: ${visit.patientDetails?.dateOfBirth || 'N/A'} | Gender: ${visit.patientDetails?.gender || 'N/A'}</p>
                     <small>Created: ${new Date(visit.createdAt).toLocaleTimeString()}</small>
                 </div>
                 <div class="queue-actions">
