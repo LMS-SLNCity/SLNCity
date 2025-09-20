@@ -47,6 +47,9 @@ public class LabTest {
 
     @Column(name = "results_entered_at")
     private LocalDateTime resultsEnteredAt;
+
+    @Column(name = "expected_completion_time")
+    private LocalDateTime expectedCompletionTime;
     
     // Constructors
     public LabTest() {}
@@ -139,5 +142,13 @@ public class LabTest {
 
     public void setResultsEnteredAt(LocalDateTime resultsEnteredAt) {
         this.resultsEnteredAt = resultsEnteredAt;
+    }
+
+    public LocalDateTime getExpectedCompletionTime() {
+        return expectedCompletionTime;
+    }
+
+    public void setExpectedCompletionTime(LocalDateTime expectedCompletionTime) {
+        this.expectedCompletionTime = expectedCompletionTime;
     }
 }

@@ -17,6 +17,7 @@ public class LabTestResponse {
     private Boolean approved;
     private String approvedBy;
     private LocalDateTime approvedAt;
+    private LocalDateTime expectedCompletionTime;
     
     // Constructors
     public LabTestResponse() {}
@@ -92,5 +93,13 @@ public class LabTestResponse {
     
     public void setApprovedAt(LocalDateTime approvedAt) {
         this.approvedAt = approvedAt;
+    }
+
+    public LocalDateTime getExpectedCompletionTime() {
+        return expectedCompletionTime;
+    }
+
+    public void setExpectedCompletionTime(LocalDateTime expectedCompletionTime) {
+        this.expectedCompletionTime = expectedCompletionTime;
     }
 }

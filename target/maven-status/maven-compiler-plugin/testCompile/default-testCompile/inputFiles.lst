@@ -1,3 +1,14 @@
 /app/src/test/java/com/sivalab/laboperations/config/TestSecurityConfig.java
 /app/src/test/java/com/sivalab/laboperations/SimpleApplicationTest.java
-/app/src/test/java/com/sivalab/laboperations/integration/BasicIntegrationTest.java
+/app/src/test/java/com/sivalab/laboperations/service/QualityControlServiceTest.java
+/app/src/test/java/com/sivalab/laboperations/integration/QualityIndicatorControllerTest.java
+/app/src/test/java/com/sivalab/laboperations/service/WestgardServiceTest.java
+/app/src/test/java/com/sivalab/laboperations/integration/QualityControlControllerTest.java
+/app/src/test/java/com/sivalab/laboperations/integration/AbstractIntegrationTest.java
+/app/src/test/java/com/sivalab/laboperations/service/ProficiencyTestServiceTest.java
+/app/src/test/java/com/sivalab/laboperations/integration/ProficiencyTestControllerTest.java
+/app/src/test/java/com/sivalab/laboperations/common/AbstractIntegrationTest.java
+/app/src/test/java/com/sivalab/laboperations/service/QualityIndicatorServiceTest.java
+/app/src/test/java/com/sivalab/laboperations/integration/TATControllerTest.java
+/app/src/test/java/com/sivalab/laboperations/integration/LabOperationsApplicationIT.java
+/app/src/test/java/com/sivalab/laboperations/web/PersonnelControllerIT.java

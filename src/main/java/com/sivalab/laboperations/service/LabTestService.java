@@ -24,18 +24,21 @@ public class LabTestService {
     private final TestTemplateRepository testTemplateRepository;
     private final TestTemplateService testTemplateService;
     private final TestResultsValidator testResultsValidator;
+    private final TATService tatService;
 
     @Autowired
     public LabTestService(LabTestRepository labTestRepository,
                          VisitRepository visitRepository,
                          TestTemplateRepository testTemplateRepository,
                          TestTemplateService testTemplateService,
-                         TestResultsValidator testResultsValidator) {
+                         TestResultsValidator testResultsValidator,
+                         TATService tatService) {
         this.labTestRepository = labTestRepository;
         this.visitRepository = visitRepository;
         this.testTemplateRepository = testTemplateRepository;
         this.testTemplateService = testTemplateService;
         this.testResultsValidator = testResultsValidator;
+        this.tatService = tatService;
     }
     
     /**
@@ -52,9 +55,23 @@ public class LabTestService {
         BigDecimal price = request.getPrice() != null ? request.getPrice() : testTemplate.getBasePrice();
         
         LabTest labTest = new LabTest(visit, testTemplate, price);
-        labTest = labTestRepository.save(labTest);
+
+        tatService.getTATByTestTemplate_TemplateId(testTemplate.getTemplateId()).ifPresent(tat -> {
+            LocalDateTime now = LocalDateTime.now();
+            final LocalDateTime expectedCompletionTime;
+            if (tat.getTatUnit() == TAT.TATUnit.HOURS) {
+                expectedCompletionTime = now.plusHours(tat.getTatValue());
+            } else if (tat.getTatUnit() == TAT.TATUnit.DAYS) {
+                expectedCompletionTime = now.plusDays(tat.getTatValue());
+            } else {
+                expectedCompletionTime = now;
+            }
+            labTest.setExpectedCompletionTime(expectedCompletionTime);
+        });
+
+        LabTest savedLabTest = labTestRepository.save(labTest);
         
-        return convertToResponse(labTest);
+        return convertToResponse(savedLabTest);
     }
     
     /**
@@ -170,6 +187,7 @@ public class LabTestService {
         response.setApproved(labTest.getApproved());
         response.setApprovedBy(labTest.getApprovedBy());
         response.setApprovedAt(labTest.getApprovedAt());
+        response.setExpectedCompletionTime(labTest.getExpectedCompletionTime());
         return response;
     }
 }
